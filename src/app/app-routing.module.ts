@@ -22,6 +22,20 @@ const routes: Routes = [
             (m) => m.DashboardModule
           ),
       },
+      {
+        path: 'admin',
+        loadChildren: () =>
+          import('./pages/layout/components/admin/admin.module').then(
+            (m) => m.AdminModule
+          ),
+      },
+      {
+        path: 'user',
+        loadChildren: () =>
+          import('./pages/layout/components/users/users.module').then(
+            (m) => m.UsersModule
+          ),
+      },
     ],
   },
   {
