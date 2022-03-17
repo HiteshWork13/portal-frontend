@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', loadChildren: () => import('./components/authentication/authentication.module').then(m => m.AuthenticationModule) },
-  { path: 'dashboard', loadChildren: () => import('./components/dashboard/dashboard.module').then(m => m.DashboardModule) }
+  { path: '', loadChildren: () => import('./layout/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
+  { path: 'dashboard', loadChildren: () => import('./layout/components/dashboard/dashboard.module').then(m => m.DashboardModule) }
 ];
 
 @NgModule({
