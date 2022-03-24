@@ -10,8 +10,11 @@
     <li nz-menu-item nzMatchRouter>
       <a routerLink="/dashboard">Dashboard</a>
     </li>
-    <li nz-menu-item nzMatchRouter>
+    <li nz-menu-item nzMatchRouter *ngIf="role_id !== '2' && role_id !== '3'">
       <a routerLink="/admin">Admins</a>
+    </li>
+    <li nz-menu-item nzMatchRouter *ngIf="role_id !== '3'">
+      <a routerLink="/admin">Sub Admins</a>
     </li>
     <li nz-menu-item nzMatchRouter>
       <a routerLink="/users">Users</a>

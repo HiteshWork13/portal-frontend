@@ -30,6 +30,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'sub-admin',
+        loadChildren: () =>
+          import('./pages/layout/components/sub-admin/sub-admin.module').then(
+            (m) => m.SubAdminModule
+          ),
+      },
+      {
         path: 'user',
         loadChildren: () =>
           import('./pages/layout/components/users/users.module').then(
