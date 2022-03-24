@@ -1,4 +1,4 @@
-<div class="app-header">
+<div class="app-header" style="display: flex">
   <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
     <i
       class="trigger"
@@ -6,4 +6,19 @@
       [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
     ></i>
   </span>
+  <nz-button-group>
+    <button
+      nz-button
+      nz-dropdown
+      [nzDropdownMenu]="menu2"
+      nzPlacement="bottomRight"
+    >
+      <i nz-icon nzType="user"></i>
+    </button>
+  </nz-button-group>
+  <nz-dropdown-menu #menu2="nzDropdownMenu">
+    <ul nz-menu>
+      <li nz-menu-item (click)="logout()">Logout</li>
+    </ul>
+  </nz-dropdown-menu>
 </div>

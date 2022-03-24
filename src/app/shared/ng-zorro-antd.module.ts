@@ -44,6 +44,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzRateModule } from 'ng-zorro-antd/rate';
+import { NzResizableModule } from 'ng-zorro-antd/resizable';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
@@ -63,13 +64,10 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
-import { NzResizableModule } from 'ng-zorro-antd/resizable';
-
-
 
 @NgModule({
   declarations: [],
-  exports:[
+  exports: [
     NzAffixModule,
     NzAlertModule,
     NzAnchorModule,
@@ -134,7 +132,7 @@ import { NzResizableModule } from 'ng-zorro-antd/resizable';
     NzTypographyModule,
     NzUploadModule,
     NzWaveModule,
-    NzResizableModule
-  ]
+    NzResizableModule,
+  ],
 })
-export class NgZorroAntdModule { }
+export class NgZorroAntdModule {}

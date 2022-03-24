@@ -1,1 +1,45 @@
-<p>admin works!</p>
+<div class="page-header p-t-0 m-t-0 minus-m-b-25">
+  <!-- <div class="row align-items-md-center">
+    <div class="col-md-6">hi</div>
+    <div class="col-md-4">hi</div>
+    <div class="col-md-2">hi</div>
+  </div> -->
+  <nz-table
+    #fixedTable
+    [nzData]="listOfData"
+    [nzScroll]="{ x: '1000px', y: '240px' }"
+  >
+    <thead>
+      <tr>
+        <th nzLeft>#Admin Id</th>
+        <th nzLeft>Role</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <!-- <th>Column 4</th>
+          <th>Column 5</th>
+          <th>Column 6</th>
+          <th>Column 7</th>
+          <th>Column 8</th> -->
+        <th nzRight>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of fixedTable.data">
+        <td nzLeft>{{ data.age }}</td>
+        <td nzLeft>{{ data.name }}</td>
+        <td nzBreakWord>{{ data.address }}</td>
+        <td nzBreakWord>{{ data.address }}</td>
+        <td nzBreakWord>{{ data.address }}</td>
+        <!-- <td nzBreakWord>{{ data.address }}</td>
+          <td nzBreakWord>{{ data.address }}</td>
+          <td nzBreakWord>{{ data.address }}</td>
+          <td nzBreakWord>{{ data.address }}</td>
+          <td nzBreakWord>{{ data.address }}</td> -->
+        <td nzRight>
+          <a>Delete</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

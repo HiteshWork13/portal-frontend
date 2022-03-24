@@ -1,9 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconsProviderModule } from "./icons-provider.module";
-import { NgZorroAntdModule } from "./ng-zorro-antd.module";
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IconsProviderModule } from './icons-provider.module';
+import { NgZorroAntdModule } from './ng-zorro-antd.module';
 
 @NgModule({
   imports: [
@@ -11,12 +10,13 @@ import { FormsModule } from '@angular/forms';
     IconsProviderModule,
     NgZorroAntdModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
   ],
-  exports:[
+  exports: [
     NgZorroAntdModule,
     ReactiveFormsModule,
-    FormsModule
-  ]
+    FormsModule,
+    IconsProviderModule,
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}
