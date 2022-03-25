@@ -1,4 +1,7 @@
-<div class="app-header" style="display: flex">
+<div
+  class="app-header"
+  style="display: flex; justify-content: space-between; align-items: center"
+>
   <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
     <i
       class="trigger"
@@ -6,14 +9,15 @@
       [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
     ></i>
   </span>
-  <nz-button-group>
+  <nz-button-group style="padding: 0 25px">
     <button
       nz-button
       nz-dropdown
       [nzDropdownMenu]="menu2"
       nzPlacement="bottomRight"
     >
-      <i nz-icon nzType="user"></i>
+      <!-- <i nz-icon nzType="user" nzTheme="outline"></i> -->
+      User Profile
     </button>
   </nz-button-group>
   <nz-dropdown-menu #menu2="nzDropdownMenu">

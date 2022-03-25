@@ -1,0 +1,280 @@
+{
+  "Caption": "Expenses Analysis",
+  "Header": {
+    "showColumnToggle": true,
+    "showSearch": false,
+    "showAdd": true,
+    "addTooltipText": "Add Expense",
+    "showReset": false,
+    "showDownload": false,
+    "showClose": true
+  },
+  "Pagination": false,
+  "PageSizeChanger": false,
+  "PaginationType": "static",
+  "SortingType": "static",
+  "SearchType": "static",
+  "selectedRowClassName": "selected-row",
+  "noDataLabel": "No Data Found",
+  "Columns": [
+    {
+      "name": "ID",
+      "dataType": "text",
+      "property": "id",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "150px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "Entity Name",
+      "dataType": "text",
+      "property": "entity_name",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "200px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "EXPENSE TYPE",
+      "dataType": "text",
+      "property": "expense_type",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "200px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "dropdown",
+        "dropdownItems": ["PREVENTIVO", "CONSUNTIVO"],
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "PERIOD",
+      "dataType": "text",
+      "property": "period",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "280px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "date_range",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "DESCRIPTION",
+      "dataType": "text",
+      "property": "description",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "250px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "CATEGORY",
+      "dataType": "text",
+      "property": "category",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "250px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "STATUS",
+      "dataType": "text",
+      "property": "status",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "150px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "dropdown",
+        "dropdownItems": [],
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "BUDGET VALUE",
+      "dataType": "text",
+      "property": "budget_value",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "250px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "price_range",
+        "minInputPlaceholder": "Minimum currency",
+        "maxInputPlaceholder": "Maximum currency",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "PREVIOUS BALANCE",
+      "dataType": "text",
+      "property": "previous_balance",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "250px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "price_range",
+        "minInputPlaceholder": "Minimum currency",
+        "maxInputPlaceholder": "Maximum currency",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "REAL BUDGET VALUE",
+      "dataType": "text",
+      "property": "real_budget_value",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "250px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "price_range",
+        "minInputPlaceholder": "Minimum currency",
+        "maxInputPlaceholder": "Maximum currency",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "PAYMENTS PAID",
+      "dataType": "text",
+      "property": "payments_paid",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "250px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "price_range",
+        "minInputPlaceholder": "Minimum currency",
+        "maxInputPlaceholder": "Maximum currency",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "MANAGEMENT STATUS",
+      "dataType": "text",
+      "property": "management_status",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "250px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "Actions",
+      "property": "actions",
+      "visible": true,
+      "searchable": false,
+      "sortable": false,
+      "columnWidth": "150px",
+      "actionTemplate": null
+    }
+  ]
+}

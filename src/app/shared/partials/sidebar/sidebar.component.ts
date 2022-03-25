@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MENUITEMS } from 'src/app/shared/constants/menu.constant';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class SidebarComponent implements OnInit {
   isCollapsed: boolean = false;
   role_id: any = 1;
+  menuItems = MENUITEMS;
 
   constructor() {}
 

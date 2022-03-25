@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import * as adminJSON from '../../config/tables/admin-table.config.json';
+import * as adminData from '../../config/tables/admin-table.data.json';
 
 @Component({
   selector: 'app-admin',
@@ -7,6 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminComponent implements OnInit {
   listOfData: Array<{ name: string; age: number; address: string }> = [];
+  /* Table's Configuration */
+  adminTableJSON: any = JSON.parse(JSON.stringify((adminJSON as any).default));
+  /* Table's Data List */
+  adminList: Array<any> = [...(adminData as any).default.expenses];
 
   constructor() {}
 
