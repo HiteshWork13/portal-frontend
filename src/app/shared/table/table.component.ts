@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+} from '@angular/core';
 import { Config } from './table.model';
 
 @Component({
@@ -37,6 +44,15 @@ export class TableComponent implements OnInit {
     /\d/,
     /\d/,
   ];
+  @Output() onSortColumn: EventEmitter<any> = new EventEmitter();
+  @Input() ExtraHeaderButtons: TemplateRef<any>;
+  @Output() header_searchClick: EventEmitter<any> = new EventEmitter();
+  @Output() header_addClick: EventEmitter<any> = new EventEmitter();
+  @Output() header_resetClick: EventEmitter<any> = new EventEmitter();
+  @Output() header_closeClick: EventEmitter<any> = new EventEmitter();
+  @Output() header_downloadClick: EventEmitter<any> = new EventEmitter();
+  @Output() header_uploadClick: EventEmitter<any> = new EventEmitter();
+  @Output() header_deleteClick: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 
@@ -100,6 +116,55 @@ export class TableComponent implements OnInit {
     } else {
       /* Handle Static Search */
     }
+  }
+
+  sortColumnChanges(index: any) {
+    console.log('column index', this.Config.Columns[index]);
+    if (this.Config.SortingType == 'Dynamic') {
+      /* Emit sorting event to the page to `get sorted data from API` */
+      this.onSortColumn.emit({ index, column: this.Config.Columns[index] });
+    } else {
+      /* Sort data here that is displayed in table widgets */
+    }
+  }
+
+  search() {
+    this.header_searchClick.emit();
+  }
+
+  add() {
+    this.header_addClick.emit();
+  }
+
+  reset() {
+    this.header_resetClick.emit();
+  }
+
+  close() {
+    this.header_closeClick.emit();
+  }
+
+  upload() {
+    this.header_uploadClick.emit();
+  }
+
+  download() {
+    if (this.Config.rowSelectable == true) {
+      const records = this.Data.filter((item) => {
+        return item.selected;
+      });
+      this.header_downloadClick.emit({ Data: this.Data, Selected: records });
+    } else {
+      this.header_downloadClick.emit({ Data: this.Data, Selected: [] });
+    }
+  }
+
+  delete() {
+    this.header_deleteClick.emit();
+  }
+
+  addAdmin() {
+    this.header_addClick.emit();
   }
 
   /*  onResizeEnd(event: ResizeEvent, columnIndex: any) {

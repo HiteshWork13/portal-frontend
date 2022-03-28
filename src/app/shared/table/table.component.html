@@ -1,187 +1,228 @@
-<nz-table
-  #fixedTable
-  [nzData]="listOfData"
-  [nzScroll]="{ x: '1000px', y: '240px' }"
-  [id]="tableId"
->
-  <thead>
-    <tr class="header_row" [ngClass]="{ 'table-view-header': Mode == 'View' }">
-      <ng-container *ngIf="Config.Columns.length > 0">
-        <ng-container
-          *ngFor="
-            let column of Config.Columns;
-            trackBy: trackBy;
-            let i = index;
-            let last = last
-          "
-        >
-          <ng-container *ngIf="column.visible">
-            <th
-              [ngClass]="{ 'bg-white': Mode == 'Normal', 'flex-1': last }"
-              class="text-left header_column header_column_{{ tableId }}_{{
-                i
-              }}"
-              mwlResizable
-              [ngStyle]="{ width: column.columnWidth }"
-            >
-              <!-- [enableGhostResize]="true"
-              (resizeEnd)="onResizeEnd($event, i)"
-              [resizeEdges]="resizableEdge" -->
-              <!-- <wic-table-column-sort-header
-                [index]="i"
-                [column]="column"
-                (sortColumnChanges)="sortColumnChanges($event)"
-              >
-              </wic-table-column-sort-header> -->
-            </th>
-          </ng-container>
-        </ng-container>
-        <th
-          [ngClass]="{ 'bg-white': Mode == 'Normal' }"
-          class="text-center header_column_{{ tableId }}_checkbox"
-          *ngIf="Config?.rowSelectable == true"
-          style="width: 100px"
-        >
-          Select
-        </th>
-      </ng-container>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngIf="Data.length > 0">
-      <ng-container *ngFor="let row of Data; let ri = index">
-        <!-- Config remain for deleted row (Conditional Css for particular row) -->
-        <tr
-          (click)="selectRow(ri, row)"
-          class="{{
-            ri == clickedRowIndex || row?.selected == true
-              ? Config.selectedRowClassName
-              : ''
-          }}"
-        >
-          <td
+<nz-card [nzTitle]="Config?.Caption">
+  <!-- | translate -->
+  <div class="card-header py-3">
+    <div class="d-flex">
+      <button
+        nz-button
+        nzType="primary"
+        style="float: right; margin: 0 15px 15px"
+        (click)="addAdmin()"
+      >
+        Add Admin
+      </button>
+      <!--  <app-table-header
+        [Header]="Config.Header"
+        [Columns]="Config.Columns"
+        [ExtraButtons]="ExtraHeaderButtons"
+        [ExtraButtonContext]="{ Data: Data }"
+        (searchClick)="search()"
+        (addClick)="add()"
+        (resetClick)="reset()"
+        (closeClick)="close()"
+        (downloadClick)="download()"
+        (uploadClick)="upload()"
+      ></app-table-header> -->
+    </div>
+  </div>
+  <nz-table
+    #fixedTable
+    [nzData]="listOfData"
+    [id]="tableId"
+    [nzShowPagination]="false"
+  >
+    <!-- [nzScroll]="{ x: '1000px', y: '240px' }" -->
+    <thead>
+      <tr
+        class="header_row"
+        [ngClass]="{ 'table-view-header': Mode == 'View' }"
+      >
+        <ng-container *ngIf="Config.Columns.length > 0">
+          <ng-container
             *ngFor="
               let column of Config.Columns;
               trackBy: trackBy;
               let i = index;
               let last = last
             "
-            [ngClass]="{ 'flex-1': last }"
-            class="data_column_{{ tableId }}_{{ i }} data_row_{{ tableId }}_{{
-              ri
-            }} {{ column?.clickableCell == true ? 'cp' : '' }}"
-            [hidden]="!column.visible"
-            [ngStyle]="{ width: column.columnWidth }"
-            (click)="
-              column?.clickableCell == true
-                ? emitTableCellClick($event, row, column, ri, i)
-                : null
-            "
           >
-            <span *ngIf="column.property != 'actions' && !column.isHtml">
-              <ng-container *ngIf="!column.actionTemplate">
-                <!--  <ng-container
-                  *ngIf="
-                    column.dataType == 'date' || column.dataType == 'date_range'
-                  "
+            <ng-container *ngIf="column.visible">
+              <th
+                [ngClass]="{ 'bg-white': Mode == 'Normal', 'flex-1': last }"
+                class="text-left header_column header_column_{{ tableId }}_{{
+                  i
+                }}"
+                mwlResizable
+                [ngStyle]="{ width: column.columnWidth }"
+              >
+                <!-- nzLeft -->
+                <!-- [enableGhostResize]="true"
+                (resizeEnd)="onResizeEnd($event, i)"
+                [resizeEdges]="resizableEdge" -->
+                <!-- <wic-table-column-sort-header
+                  [index]="i"
+                  [column]="column"
+                  (sortColumnChanges)="sortColumnChanges($event)"
                 >
-                  {{ getData(row, column) | dateFormat }}
-                </ng-container> -->
-                <ng-container *ngIf="column.dataType == 'price_range'">
-                  {{ getData(row, column) }}
-                </ng-container>
-                <!--   <ng-container *ngIf="column.dataType == 'date_time'">
-                  {{
-                    getData(row, column) | dateTimeFormat: "dd.MM.yyyy HH:mm"
-                  }}
-                </ng-container> -->
-                <ng-container *ngIf="column.dataType == 'decimal'">
-                  {{ getData(row, column) | number: "1.3-3" }}
-                </ng-container>
-                <ng-container *ngIf="column.dataType == 'image'">
-                  <img
-                    class="img-fluid"
-                    [ngClass]="column.imgClass"
-                    [src]="getData(row, column)"
-                  />
-                </ng-container>
-                <ng-container
-                  *ngIf="
-                    column.dataType != 'decimal' &&
-                    column.dataType != 'price_range' &&
-                    column.dataType != 'date' &&
-                    column.dataType != 'date_range' &&
-                    column.dataType != 'date_time' &&
-                    column.dataType != 'image'
-                  "
+                </wic-table-column-sort-header> -->
+                <app-table-column-header
+                  [index]="i"
+                  [column]="column"
+                  (sortColumnChanges)="sortColumnChanges($event)"
                 >
-                  {{ getData(row, column) }}
-                </ng-container>
-              </ng-container>
-              <ng-container *ngIf="column.actionTemplate">
-                <ng-container
-                  *ngTemplateOutlet="
-                    column.actionTemplate;
-                    context: {
-                      column: column,
-                      row: row,
-                      data: row[column.property],
-                      rowIndex: ri,
-                      columnIndex: i
-                    }
-                  "
-                >
-                </ng-container>
-              </ng-container>
-            </span>
-            <div
-              *ngIf="column.property != 'actions' && column.isHtml"
-              [innerHtml]="getData(row, column)"
-            ></div>
-            <span *ngIf="column.property == 'actions'">
-              <ng-container *ngIf="!column.actionTemplate">
-                No Action Template
-              </ng-container>
-              <ng-container *ngIf="column.actionTemplate">
-                <ng-container
-                  *ngTemplateOutlet="
-                    column.actionTemplate;
-                    context: {
-                      column: column,
-                      row: row,
-                      data: row[column.property],
-                      rowIndex: ri,
-                      columnIndex: i
-                    }
-                  "
-                >
-                </ng-container>
-              </ng-container>
-            </span>
-          </td>
-          <td
-            class="text-center data_column_{{ tableId }}_checkbox data_row_{{
-              tableId
-            }}_checkbox_{{ ri }}"
+                </app-table-column-header>
+              </th>
+            </ng-container>
+          </ng-container>
+          <th
+            [ngClass]="{ 'bg-white': Mode == 'Normal' }"
+            class="text-center header_column_{{ tableId }}_checkbox"
             *ngIf="Config?.rowSelectable == true"
             style="width: 100px"
           >
-            <label class="wi-checkbox" (click)="$event.stopPropagation()">
-              <input
-                type="checkbox"
-                [(ngModel)]="row.selected"
-                (change)="uncheckSelectAll(row.selected)"
-              />
-              <span class="wi-checkmark"></span>
-            </label>
-          </td>
+            Select
+          </th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="Data.length > 0">
+        <ng-container *ngFor="let row of Data; let ri = index">
+          <!-- Config remain for deleted row (Conditional Css for particular row) -->
+          <tr
+            (click)="selectRow(ri, row)"
+            class="{{
+              ri == clickedRowIndex || row?.selected == true
+                ? Config.selectedRowClassName
+                : ''
+            }}"
+          >
+            <td
+              *ngFor="
+                let column of Config.Columns;
+                trackBy: trackBy;
+                let i = index;
+                let last = last
+              "
+              [ngClass]="{ 'flex-1': last }"
+              class="data_column_{{ tableId }}_{{ i }} data_row_{{ tableId }}_{{
+                ri
+              }} {{ column?.clickableCell == true ? 'cp' : '' }}"
+              [hidden]="!column.visible"
+              [ngStyle]="{ width: column.columnWidth }"
+              (click)="
+                column?.clickableCell == true
+                  ? emitTableCellClick($event, row, column, ri, i)
+                  : null
+              "
+            >
+              <span *ngIf="column.property != 'actions' && !column.isHtml">
+                <ng-container *ngIf="!column.actionTemplate">
+                  <!--  <ng-container
+                    *ngIf="
+                      column.dataType == 'date' || column.dataType == 'date_range'
+                    "
+                  >
+                    {{ getData(row, column) | dateFormat }}
+                  </ng-container> -->
+                  <ng-container *ngIf="column.dataType == 'price_range'">
+                    {{ getData(row, column) }}
+                  </ng-container>
+                  <!--   <ng-container *ngIf="column.dataType == 'date_time'">
+                    {{
+                      getData(row, column) | dateTimeFormat: "dd.MM.yyyy HH:mm"
+                    }}
+                  </ng-container> -->
+                  <ng-container *ngIf="column.dataType == 'decimal'">
+                    {{ getData(row, column) | number: "1.3-3" }}
+                  </ng-container>
+                  <ng-container *ngIf="column.dataType == 'image'">
+                    <img
+                      class="img-fluid"
+                      [ngClass]="column.imgClass"
+                      [src]="getData(row, column)"
+                    />
+                  </ng-container>
+                  <ng-container
+                    *ngIf="
+                      column.dataType != 'decimal' &&
+                      column.dataType != 'price_range' &&
+                      column.dataType != 'date' &&
+                      column.dataType != 'date_range' &&
+                      column.dataType != 'date_time' &&
+                      column.dataType != 'image'
+                    "
+                  >
+                    {{ getData(row, column) }}
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="column.actionTemplate">
+                  <ng-container
+                    *ngTemplateOutlet="
+                      column.actionTemplate;
+                      context: {
+                        column: column,
+                        row: row,
+                        data: row[column.property],
+                        rowIndex: ri,
+                        columnIndex: i
+                      }
+                    "
+                  >
+                  </ng-container>
+                </ng-container>
+              </span>
+              <div
+                *ngIf="column.property != 'actions' && column.isHtml"
+                [innerHtml]="getData(row, column)"
+              ></div>
+              <span *ngIf="column.property == 'actions'">
+                <!-- <ng-container *ngIf="!column.actionTemplate">
+                  No Action Template
+                </ng-container>
+                <ng-container *ngIf="column.actionTemplate">
+                  <ng-container
+                    *ngTemplateOutlet="
+                      column.actionTemplate;
+                      context: {
+                        column: column,
+                        row: row,
+                        data: row[column.property],
+                        rowIndex: ri,
+                        columnIndex: i
+                      }
+                    "
+                  >
+                  </ng-container>
+                </ng-container> -->
+                <button nz-button nzType="dashed" (click)="delete()">
+                  <i nz-icon nzType="delete" nzTheme="outline"></i> Delete
+                </button>
+              </span>
+            </td>
+            <td
+              class="text-center data_column_{{ tableId }}_checkbox data_row_{{
+                tableId
+              }}_checkbox_{{ ri }}"
+              *ngIf="Config?.rowSelectable == true"
+              style="width: 100px"
+            >
+              <label class="wi-checkbox" (click)="$event.stopPropagation()">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="row.selected"
+                  (change)="uncheckSelectAll(row.selected)"
+                />
+                <span class="wi-checkmark"></span>
+              </label>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="Data.length <= 0">
+        <tr>
+          <td class="text-center flex-1">{{ Config.noDataLabel }}</td>
         </tr>
       </ng-container>
-    </ng-container>
-    <ng-container *ngIf="Data.length <= 0">
-      <tr>
-        <td class="text-center flex-1">{{ Config.noDataLabel }}</td>
-      </tr>
-    </ng-container>
-  </tbody>
-</nz-table>
+    </tbody>
+  </nz-table>
+</nz-card>
