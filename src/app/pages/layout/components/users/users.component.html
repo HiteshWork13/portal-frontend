@@ -1,1 +1,158 @@
-<p>users</p>
+<div class="page-header p-t-0 m-t-0 minus-m-b-25">
+  <!-- <div class="row align-items-md-center">
+    <div class="col-md-6">hi</div>
+    <div class="col-md-4">hi</div>
+    <div class="col-md-2">hi</div>
+  </div> -->
+</div>
+<ng-container *ngIf="userTableJSON">
+  <app-table
+    [listOfData]="listOfData"
+    [Config]="userTableJSON"
+    [Data]="userList"
+    (header_addClick)="openModal(temp, 'create', '')"
+    (header_deleteClick)="showDeleteConfirm()"
+  ></app-table>
+</ng-container>
+
+<ng-template
+  #userActionTemplate
+  let-column="column"
+  let-row="row"
+  let-rowIndex="rowIndex"
+  let-columnIndex="columnIndex"
+>
+  <div style="position: relative" class="text-center" dropdown>
+    <a
+      dropdownToggle
+      class="btn btn-light px-2 py-1 font-size-xl dropdown-toggle"
+      (click)="$event.stopPropagation()"
+    >
+      <i nz-icon nzType="ellipsis" nzTheme="outline"></i>
+      <!-- <fa-icon [icon]="['fas', 'ellipsis-v']"></fa-icon> -->
+    </a>
+    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+      <li role="menuitem">
+        <a class="dropdown-item" (click)="openModal(temp, 'create', '')">{{
+          "Edit"
+        }}</a>
+        <!-- | translate -->
+      </li>
+      <!-- <li role="menuitem">
+                <a class="dropdown-item" (click)="showInstallments(row)">{{ 'Installments' | translate }}</a>
+            </li> -->
+      <li role="menuitem">
+        <a class="dropdown-item" (click)="showAssociates(row)">{{
+          "Associate"
+        }}</a>
+        <!-- | translate -->
+      </li>
+      <li role="menuitem">
+        <a class="dropdown-item" (click)="deleteRow(row)">{{ "Delete" }}</a>
+        <!-- | translate -->
+      </li>
+    </ul>
+  </div>
+</ng-template>
+
+<ng-template #temp>
+  <form
+    nz-form
+    nzLayout="vertical"
+    id="addUserForm"
+    [formGroup]="userForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <nz-form-item>
+      <nz-form-label>Name</nz-form-label>
+      <nz-form-control nzErrorTip="Enter a valid admin name">
+        <input
+          nz-input
+          trim="blur"
+          formControlName="name"
+          maxlength="80"
+          #userName
+          placeholder="Enter admin name"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label>Email</nz-form-label>
+      <nz-form-control nzErrorTip="Enter a valid admin email">
+        <input
+          nz-input
+          trim="blur"
+          formControlName="email"
+          maxlength="80"
+          #adminEmail
+          placeholder="Enter email address"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzFor="newPassword" class="text-black"
+        >Password
+      </nz-form-label>
+      <nz-form-control [nzErrorTip]="newPasswordRef">
+        <nz-input-group [nzPrefix]="prefixLock">
+          <input
+            #name
+            id="myinputbox"
+            type="password"
+            nz-input
+            formControlName="newPassword"
+            placeholder="Enter new password"
+            autofocus
+          />
+        </nz-input-group>
+        <ng-template #newPasswordRef>
+          Password is not valid
+          <i
+            class="fa fa-info-circle float-right pt-1"
+            nzPopoverPlacement="bottom"
+            nz-popover
+            nzType="primary"
+            nzPopoverTitle="Password Criteria"
+            [nzPopoverContent]="popoverContent"
+          ></i>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzFor="newPasswordRepeat" class="text-black"
+        >Confirm Password
+      </nz-form-label>
+      <nz-form-control
+        [nzErrorTip]="
+          matchPasswordErr
+            ? 'Passwords must match'
+            : 'Confirm Password is required'
+        "
+      >
+        <nz-input-group [nzPrefix]="prefixLock">
+          <input
+            #name
+            id="myinputbox"
+            type="password"
+            nz-input
+            formControlName="newPasswordRepeat"
+            (input)="matchPassword()"
+            placeholder="Re-enter new password"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</ng-template>
+<ng-template #prefixLock><i nz-icon nzType="lock"></i></ng-template>
+
+<ng-template #popoverContent>
+  <ul class="p-l-20">
+    <li>Alpahnumeric and at least 8 characters long <br /></li>
+    <li>At least one uppercase letter <br /></li>
+    <li>
+      At least one of these characters ( @ / # / $ / % / ^ / & / + / = )<br />
+    </li>
+    <li>Must not contain spaces</li>
+  </ul>
+</ng-template>

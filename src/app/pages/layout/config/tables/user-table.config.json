@@ -1,0 +1,111 @@
+{
+  "Caption": "Users",
+  "Header": {
+    "showColumnToggle": true,
+    "showSearch": false,
+    "showAdd": true,
+    "addTooltipText": "Add User",
+    "showReset": false,
+    "showDownload": false,
+    "showClose": true
+  },
+  "Pagination": false,
+  "PageSizeChanger": false,
+  "PaginationType": "static",
+  "SortingType": "static",
+  "SearchType": "static",
+  "selectedRowClassName": "selected-row",
+  "noDataLabel": "No Data Found",
+  "Columns": [
+    {
+      "name": "ID",
+      "dataType": "text",
+      "property": "id",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "150px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "User NAME",
+      "dataType": "text",
+      "property": "user_name",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "250px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "CREATED AT",
+      "dataType": "text",
+      "property": "created_at",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "280px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "date_range",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "STATUS",
+      "dataType": "text",
+      "property": "status",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "columnWidth": "150px",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "dropdown",
+        "dropdownItems": [],
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "Actions",
+      "property": "actions",
+      "visible": true,
+      "searchable": false,
+      "sortable": false,
+      "columnWidth": "150px",
+      "actionTemplate": null
+    }
+  ]
+}

@@ -57,20 +57,6 @@ export class AdminComponent implements OnInit {
       password: new FormControl(null, Validators.required),
       confirm_password: new FormControl(null, Validators.required),
     });
-    // description: new FormControl(null, Validators.required),
-    // product_url: new FormControl('', [
-    //   Validators.required,
-    //   Validators.pattern(reg),
-    // ]),
-    // additional_url: new FormControl(''),
-    // image_url: new FormControl(null, Validators.required),
-    // price: new FormControl(null, Validators.required),
-    // price_range_min: new FormControl(null),
-    // price_range_max: new FormControl(null),
-    // enable_price_from: new FormControl(false),
-    // enable_price_range: new FormControl(false),
-    // categories: new FormControl(null, Validators.required),
-    // featured_product: new FormControl(false),
   }
 
   getTableData() {
@@ -128,19 +114,14 @@ export class AdminComponent implements OnInit {
     // });
   }
 
-  openAddorUpdateAdminModal(
-    productContent: TemplateRef<{}>,
-    state: any,
-    item: any
-  ) {
-    console.log('productContent: ', productContent);
+  openModal(temp: TemplateRef<{}>, state: any, item: any) {
     setTimeout(() => {
       this.adminName.nativeElement.focus();
     });
     if (state == 'create') {
       this.modalService.create({
         nzTitle: 'Add New Admin',
-        nzContent: productContent,
+        nzContent: temp,
         nzFooter: [
           {
             label: 'Save Admin',

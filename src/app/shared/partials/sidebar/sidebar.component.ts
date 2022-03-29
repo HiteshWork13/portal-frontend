@@ -14,6 +14,7 @@ export class SidebarComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    // console.log('menuItems: ', this.menuItems);
     this.role_id = localStorage.getItem('role');
   }
 }

@@ -10,7 +10,7 @@
     [listOfData]="listOfData"
     [Config]="adminTableJSON"
     [Data]="adminList"
-    (header_addClick)="openAddorUpdateAdminModal(eventContent, 'create', '')"
+    (header_addClick)="openModal(temp, 'create', '')"
     (header_deleteClick)="showDeleteConfirm()"
   ></app-table>
 </ng-container>
@@ -57,7 +57,7 @@
   </div>
 </ng-template>
 
-<ng-template #eventContent>
+<ng-template #temp>
   <form
     nz-form
     nzLayout="vertical"
