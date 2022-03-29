@@ -14,6 +14,16 @@
     (header_deleteClick)="showDeleteConfirm()"
   ></app-table>
 </ng-container>
+<div *ngIf="isUserVisible">
+  <!-- <app-associates (close)="isUserVisible = false"></app-associates> -->
+  <app-sub-admin></app-sub-admin>
+</div>
+<div *ngIf="isInstallmentVisible">
+  <!-- <app-installments
+    [Data]="installmentData"
+    (close)="isInstallmentVisible = false"
+  ></app-installments> -->
+</div>
 
 <ng-template
   #adminActionTemplate
@@ -28,32 +38,37 @@
       class="btn btn-light px-2 py-1 font-size-xl dropdown-toggle"
       (click)="$event.stopPropagation()"
     >
-      <i nz-icon nzType="ellipsis" nzTheme="outline"></i>
-      <!-- <fa-icon [icon]="['fas', 'ellipsis-v']"></fa-icon> -->
     </a>
-    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-      <li role="menuitem">
-        <a
-          class="dropdown-item"
-          (click)="openAddorUpdateExpenseModal(row, true)"
-          >{{ "Edit" }}</a
-        >
-        <!-- | translate -->
-      </li>
-      <!-- <li role="menuitem">
-                <a class="dropdown-item" (click)="showInstallments(row)">{{ 'Installments' | translate }}</a>
-            </li> -->
-      <li role="menuitem">
-        <a class="dropdown-item" (click)="showAssociates(row)">{{
-          "Associate"
-        }}</a>
-        <!-- | translate -->
-      </li>
-      <li role="menuitem">
-        <a class="dropdown-item" (click)="deleteRow(row)">{{ "Delete" }}</a>
-        <!-- | translate -->
-      </li>
-    </ul>
+    <nz-button-group>
+      <span
+        nz-button
+        nz-dropdown
+        [nzDropdownMenu]="menu1"
+        nzPlacement="bottomRight"
+        style="cursor: pointer"
+      >
+        <i nz-icon nzType="ellipsis"></i>
+      </span>
+    </nz-button-group>
+    <nz-dropdown-menu #menu1="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item role="menuitem">
+          <a
+            class="dropdown-item"
+            (click)="openAddorUpdateExpenseModal(row, true)"
+            >{{ "Edit" }}</a
+          >
+        </li>
+        <li nz-menu-item role="menuitem">
+          <a class="dropdown-item" (click)="showAssociates(row)">{{
+            "Users"
+          }}</a>
+        </li>
+        <li nz-menu-item role="menuitem">
+          <a class="dropdown-item" (click)="deleteRow(row)">{{ "Delete" }}</a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
   </div>
 </ng-template>
 

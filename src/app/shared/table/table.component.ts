@@ -4,6 +4,7 @@ import {
   Input,
   OnInit,
   Output,
+  SimpleChanges,
   TemplateRef,
 } from '@angular/core';
 import { Config } from './table.model';
@@ -57,7 +58,7 @@ export class TableComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.Config);
+    console.log('TABLE COMPONENT', this.Config.Columns);
   }
 
   trackBy(index: number): number {
@@ -194,4 +195,10 @@ export class TableComponent implements OnInit {
       currentEl.style.width = childWidth + 'px';
     }
   } */
+
+  ngOnChanges(changes: SimpleChanges): void {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+    // console.log('this.Config: ', this.Config);
+  }
 }

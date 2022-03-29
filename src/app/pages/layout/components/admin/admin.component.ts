@@ -23,7 +23,7 @@ export class AdminComponent implements OnInit {
   adminList: Array<any> = [...(adminData as any).default.expenses];
   // expenseFormJSON: any = this.expenseFormConfig.formConfig;
   @ViewChild('adminActionTemplate') adminActionTemplate: TemplateRef<any>;
-  isAssociatesVisible: boolean = false;
+  isUserVisible: boolean = false;
   isInstallmentVisible: boolean = false;
   @ViewChild('adminName', { static: false }) adminName: ElementRef;
   adminForm: FormGroup;
@@ -91,7 +91,7 @@ export class AdminComponent implements OnInit {
   showAssociates(row: any) {
     /* Fire after click on `Reminders` option from menu of action column */
     // this.isInstallmentVisible = false;
-    this.isAssociatesVisible = true;
+    this.isUserVisible = true;
     this.isInstallmentVisible = false;
   }
 
