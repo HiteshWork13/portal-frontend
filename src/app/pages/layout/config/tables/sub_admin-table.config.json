@@ -1,10 +1,10 @@
 {
-  "Caption": "Users",
+  "Caption": "Sub admin",
   "Header": {
     "showColumnToggle": true,
     "showSearch": false,
     "showAdd": true,
-    "addTooltipText": "Add User",
+    "addTooltipText": "Add Sub admin",
     "showReset": false,
     "showDownload": false,
     "showClose": true
@@ -38,9 +38,9 @@
       }
     },
     {
-      "name": "USER NAME",
+      "name": "SUB ADMIN NAME",
       "dataType": "text",
-      "property": "user_name",
+      "property": "sub_admin_name",
       "visible": true,
       "searchable": true,
       "searchValue": null,

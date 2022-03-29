@@ -5,9 +5,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgZorroAntdModule } from './ng-zorro-antd.module';
 import { TableWidgetComponentsModule } from './table//table-widget-components/table-widget-components.module';
 import { TableComponent } from './table/table.component';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
-  declarations: [TableComponent],
+  declarations: [TableComponent, UserComponent],
   imports: [
     CommonModule,
     NgZorroAntdModule,
@@ -20,6 +21,7 @@ import { TableComponent } from './table/table.component';
     ReactiveFormsModule,
     FormsModule,
     TableComponent,
+    UserComponent,
     TableWidgetComponentsModule,
   ],
 })

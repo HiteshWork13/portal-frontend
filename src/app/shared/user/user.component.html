@@ -5,28 +5,18 @@
     <div class="col-md-2">hi</div>
   </div> -->
 </div>
-<ng-container *ngIf="adminTableJSON">
+<ng-container *ngIf="userTableJSON">
   <app-table
     [listOfData]="listOfData"
-    [Config]="adminTableJSON"
-    [Data]="adminList"
+    [Config]="userTableJSON"
+    [Data]="userList"
     (header_addClick)="openModal(temp, 'create', '')"
     (header_deleteClick)="showDeleteConfirm()"
   ></app-table>
 </ng-container>
-<div *ngIf="isUserVisible" style="margin: 25px 0 0 0">
-  <app-sub-admin (close)="isUserVisible = false"></app-sub-admin>
-</div>
-<div *ngIf="isInstallmentVisible" style="margin: 25px 0 0 0">
-  <!-- <app-installments
-    [Data]="installmentData"
-    (close)="isInstallmentVisible = false"
-    ></app-installments> -->
-  <app-user></app-user>
-</div>
 
 <ng-template
-  #adminActionTemplate
+  #userActionTemplate
   let-column="column"
   let-row="row"
   let-rowIndex="rowIndex"
@@ -38,37 +28,30 @@
       class="btn btn-light px-2 py-1 font-size-xl dropdown-toggle"
       (click)="$event.stopPropagation()"
     >
+      <i nz-icon nzType="ellipsis" nzTheme="outline"></i>
+      <!-- <fa-icon [icon]="['fas', 'ellipsis-v']"></fa-icon> -->
     </a>
-    <nz-button-group>
-      <span
-        nz-button
-        nz-dropdown
-        [nzDropdownMenu]="menu1"
-        nzPlacement="bottomRight"
-        style="cursor: pointer"
-      >
-        <i nz-icon nzType="ellipsis"></i>
-      </span>
-    </nz-button-group>
-    <nz-dropdown-menu #menu1="nzDropdownMenu">
-      <ul nz-menu>
-        <li nz-menu-item role="menuitem">
-          <a class="dropdown-item" (click)="showAssociates(row)">{{
-            "Sub admins"
-          }}</a>
-        </li>
-        <li nz-menu-item role="menuitem">
-          <a
-            class="dropdown-item"
-            (click)="openAddorUpdateExpenseModal(row, true)"
-            >{{ "Edit" }}</a
-          >
-        </li>
-        <li nz-menu-item role="menuitem">
-          <a class="dropdown-item" (click)="deleteRow(row)">{{ "Delete" }}</a>
-        </li>
-      </ul>
-    </nz-dropdown-menu>
+    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+      <li role="menuitem">
+        <a class="dropdown-item" (click)="openModal(temp, 'create', '')">{{
+          "Edit"
+        }}</a>
+        <!-- | translate -->
+      </li>
+      <!-- <li role="menuitem">
+                <a class="dropdown-item" (click)="showInstallments(row)">{{ 'Installments' | translate }}</a>
+            </li> -->
+      <li role="menuitem">
+        <a class="dropdown-item" (click)="showAssociates(row)">{{
+          "Associate"
+        }}</a>
+        <!-- | translate -->
+      </li>
+      <li role="menuitem">
+        <a class="dropdown-item" (click)="deleteRow(row)">{{ "Delete" }}</a>
+        <!-- | translate -->
+      </li>
+    </ul>
   </div>
 </ng-template>
 
@@ -76,8 +59,8 @@
   <form
     nz-form
     nzLayout="vertical"
-    id="addAdminForm"
-    [formGroup]="adminForm"
+    id="addUserForm"
+    [formGroup]="userForm"
     (ngSubmit)="onSubmit()"
   >
     <nz-form-item>
@@ -88,7 +71,7 @@
           trim="blur"
           formControlName="name"
           maxlength="80"
-          #adminName
+          #userName
           placeholder="Enter admin name"
         />
       </nz-form-control>
