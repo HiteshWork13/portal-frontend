@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
     { username: 'admin@gmail.com', password: 'admin@123', role: 2 },
     { username: 'sub_admin@gmail.com', password: 'sub_admin@123', role: 3 },
   ];
+  btn_loader: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -37,9 +38,6 @@ export class LoginComponent implements OnInit {
 
   submitForm(): void {
     if (this.validateForm.valid) {
-      // let role = this.getRole(this.validateForm.value);
-      // localStorage.setItem('role', role);
-      // this.router.navigate(['/dashboard']);
       this.fnLogin(this.validateForm.value);
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
@@ -60,10 +58,13 @@ export class LoginComponent implements OnInit {
   } */
 
   fnLogin(data: any) {
+    this.btn_loader = true;
     this.loginservice.LogIn(data).subscribe(
       (response: any) => {
+        this.btn_loader = false;
+        this.router.navigate(['/dashboard']);
         console.log('response: ', response);
-        let login_response = response.data;
+        let login_response: any = response.data;
         let current_user_details: any = {
           id: login_response.id,
           username: login_response.username,
@@ -74,7 +75,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('access_token', login_response.access_token);
       },
       (error) => {
-        console.log('error: ', error);
+        this.btn_loader = false;
         this.notification.error(error.message);
       }
     );
