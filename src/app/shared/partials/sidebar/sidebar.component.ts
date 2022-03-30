@@ -14,7 +14,16 @@ export class SidebarComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    // console.log('menuItems: ', this.menuItems);
-    this.role_id = localStorage.getItem('role');
+    this.role_id = Number(localStorage.getItem('role'));
+    // this.roleWiseMenu();
   }
+
+  // roleWiseMenu() {
+  // this.menuItems.map((element, index) => {
+  //   // console.log('element: ', element);
+  //   if (this.role_id == 1 && element.id == 'admin') {
+  //     element.enabled = true;
+  //   }
+  // });
+  // }
 }

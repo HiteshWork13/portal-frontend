@@ -51,4 +51,8 @@ export class LoginComponent implements OnInit {
     );
     return userData.role;
   }
+
+  fnLogin() {
+    //
+  }
 }
