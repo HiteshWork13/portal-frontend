@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginService } from 'src/app/services/api/login.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -10,12 +12,17 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   validateForm!: FormGroup;
   admin_creds: any = [
-    { userName: 'super_admin@gmail.com', password: 'super_admin@123', role: 1 },
-    { userName: 'admin@gmail.com', password: 'admin@123', role: 2 },
-    { userName: 'sub_admin@gmail.com', password: 'sub_admin@123', role: 3 },
+    { username: 'super_admin@gmail.com', password: 'super_admin@123', role: 1 },
+    { username: 'admin@gmail.com', password: 'admin@123', role: 2 },
+    { username: 'sub_admin@gmail.com', password: 'sub_admin@123', role: 3 },
   ];
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private loginservice: LoginService,
+    private notification: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -23,17 +30,17 @@ export class LoginComponent implements OnInit {
 
   createForm() {
     this.validateForm = this.fb.group({
-      userName: [null, [Validators.required]],
+      username: [null, [Validators.required]],
       password: [null, [Validators.required]],
-      remember: [true],
     });
   }
 
   submitForm(): void {
     if (this.validateForm.valid) {
-      let role = this.getRole(this.validateForm.value);
-      localStorage.setItem('role', role);
-      this.router.navigate(['/dashboard']);
+      // let role = this.getRole(this.validateForm.value);
+      // localStorage.setItem('role', role);
+      // this.router.navigate(['/dashboard']);
+      this.fnLogin(this.validateForm.value);
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -44,15 +51,32 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  getRole(value: any) {
+  /* getRole(value: any) {
     let userData: any = this.admin_creds.find(
       (element: any) =>
-        element.userName == value.userName && element.password == value.password
+        element.username == value.username && element.password == value.password
     );
     return userData.role;
-  }
+  } */
 
-  fnLogin() {
-    //
+  fnLogin(data: any) {
+    this.loginservice.LogIn(data).subscribe(
+      (response: any) => {
+        console.log('response: ', response);
+        let login_response = response.data;
+        let current_user_details: any = {
+          id: login_response.id,
+          username: login_response.username,
+          email: login_response.email,
+          role: login_response.role,
+        };
+        localStorage.setItem('current_user_details', current_user_details);
+        localStorage.setItem('access_token', login_response.access_token);
+      },
+      (error) => {
+        console.log('error: ', error);
+        this.notification.error(error.message);
+      }
+    );
   }
 }
