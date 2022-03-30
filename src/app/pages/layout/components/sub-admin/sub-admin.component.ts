@@ -7,7 +7,8 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import * as subAdminJSON from '../../config/tables/sub_admin-table.config.json';
 import * as subAdminData from '../../config/tables/sub_admin-table.data.json';
 
@@ -27,29 +28,37 @@ export class SubAdminComponent implements OnInit {
   /* Table's Data List */
   userList: Array<any> = [...(subAdminData as any).default.expenses];
   isAssociatesVisible: boolean = false;
-  isInstallmentVisible: boolean = false;
-  @ViewChild('userName', { static: false }) userName: ElementRef;
+  usersVisible: boolean = false;
+  @ViewChild('subAdminName', { static: false }) subAdminName: ElementRef;
   subAdminForm: FormGroup;
   matchPasswordErr: boolean = false;
 
-  constructor() {}
+  constructor(private modalService: NzModalService) {}
 
   ngOnInit(): void {
-    // console.log('subAdminJSON: ', subAdminJSON);
+    this.createForm();
     this.getTableData();
     this.subAdminTableJSON.Header.showClose = false;
     setTimeout(() => {
       this.subAdminTableJSON.Columns = this.subAdminTableJSON.Columns.map(
         (column: any) => {
-          console.log('SUB ADMIN this.subAdminTableJSON: ', column);
           if (column.property == 'actions') {
-            column.actionTemplate = console.log(this.subAdminActionTemplate);
-            this.subAdminActionTemplate; /* Injecting Template into table */
+            column.actionTemplate =
+              this.subAdminActionTemplate; /* Injecting Template into table */
           }
           return column;
         }
       );
     }, 0);
+  }
+
+  createForm() {
+    this.subAdminForm = new FormGroup({
+      name: new FormControl(null, Validators.required),
+      email: new FormControl(null, Validators.required),
+      password: new FormControl(null, Validators.required),
+      confirm_password: new FormControl(null, Validators.required),
+    });
   }
 
   getTableData() {
@@ -63,15 +72,44 @@ export class SubAdminComponent implements OnInit {
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
-    //
+    setTimeout(() => {
+      this.subAdminName.nativeElement.focus();
+    });
+    if (state == 'create') {
+      this.modalService.create({
+        nzTitle: 'Add New Sub admin',
+        nzContent: temp,
+        nzFooter: [
+          {
+            label: 'Save Sub admin',
+            type: 'primary',
+
+            onClick: () => this.onSubmit(),
+          },
+        ],
+        nzWidth: 500,
+        nzMaskClosable: false,
+        nzOnCancel: () => this.editClose(),
+        nzAutofocus: null,
+      });
+    }
   }
 
-  showDeleteConfirm() {
-    //
+  showDeleteConfirm(row: any) {
+    this.modalService.confirm({
+      nzTitle: 'Are you sure you want to delete this sub admin?',
+      nzOkText: 'Yes',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOnOk: () => console.log('OK'),
+      nzCancelText: 'No',
+      nzOnCancel: () => console.log('Cancel'),
+    });
+    // nzContent: '<b style="color: red;">Sub admin will be permenently deleted</b>',
   }
 
-  showAssociates(row: any) {
-    //
+  showUsers(row: any) {
+    this.usersVisible = true;
   }
 
   deleteRow(row: any) {
@@ -97,5 +135,9 @@ export class SubAdminComponent implements OnInit {
     ) {
       this.matchPasswordErr = true;
     }
+  }
+
+  editClose() {
+    // this.showAddAdminModal = false;
   }
 }

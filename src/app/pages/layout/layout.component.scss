@@ -17,6 +17,12 @@ nz-content {
   padding: 24px;
   background: #fff;
   height: 100%;
+  overflow: auto;
+  //  min-height: 360px;
+}
+
+.inner-content::-webkit-scrollbar {
+  display: none;
 }
 
 .menu-sidebar {
@@ -77,4 +83,12 @@ nz-header {
   padding: 0;
   width: 100%;
   z-index: 2;
+}
+
+nz-breadcrumb {
+  margin: 16px 0;
+}
+
+nz-footer {
+  padding: 12px 50px;
 }

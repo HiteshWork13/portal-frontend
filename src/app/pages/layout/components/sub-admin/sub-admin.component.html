@@ -11,47 +11,16 @@
     [Config]="subAdminTableJSON"
     [Data]="userList"
     (header_addClick)="openModal(temp, 'create', '')"
-    (header_deleteClick)="showDeleteConfirm()"
+    (header_deleteClick)="showDeleteConfirm(null)"
   ></app-table>
 </ng-container>
-
-<ng-template
-  #userActionTemplate
-  let-column="column"
-  let-row="row"
-  let-rowIndex="rowIndex"
-  let-columnIndex="columnIndex"
->
-  <div style="position: relative" class="text-center" dropdown>
-    <a
-      dropdownToggle
-      class="btn btn-light px-2 py-1 font-size-xl dropdown-toggle"
-      (click)="$event.stopPropagation()"
-    >
-      <i nz-icon nzType="ellipsis" nzTheme="outline"></i>
-      <!-- <fa-icon [icon]="['fas', 'ellipsis-v']"></fa-icon> -->
-    </a>
-    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-      <li role="menuitem">
-        <a class="dropdown-item" (click)="openModal(temp, 'create', '')">{{
-          "Edit"
-        }}</a>
-        <!-- | translate -->
-      </li>
-      <!-- <li role="menuitem">
-                <a class="dropdown-item" (click)="showInstallments(row)">{{ 'Installments' | translate }}</a>
-            </li> -->
-      <li role="menuitem">
-        <a class="dropdown-item" (click)="showAssociates(row)">{{ "Users" }}</a>
-        <!-- | translate -->
-      </li>
-      <li role="menuitem">
-        <a class="dropdown-item" (click)="deleteRow(row)">{{ "Delete" }}</a>
-        <!-- | translate -->
-      </li>
-    </ul>
-  </div>
-</ng-template>
+<div *ngIf="usersVisible" style="margin: 25px 0 0 0">
+  <!-- <app-installments
+      [Data]="installmentData"
+      (close)="usersVisible = false"
+      ></app-installments> -->
+  <app-user (close)="usersVisible = false"></app-user>
+</div>
 
 <ng-template #temp>
   <form
@@ -69,7 +38,7 @@
           trim="blur"
           formControlName="name"
           maxlength="80"
-          #userName
+          #subAdminName
           placeholder="Enter admin name"
         />
       </nz-form-control>
@@ -183,9 +152,7 @@
     <nz-dropdown-menu #menu1="nzDropdownMenu">
       <ul nz-menu>
         <li nz-menu-item role="menuitem">
-          <a class="dropdown-item" (click)="showAssociates(row)">{{
-            "Users"
-          }}</a>
+          <a class="dropdown-item" (click)="showUsers(row)">{{ "Users" }}</a>
         </li>
         <li nz-menu-item role="menuitem">
           <a class="dropdown-item" (click)="openModal(temp, 'create', '')">{{
@@ -193,7 +160,9 @@
           }}</a>
         </li>
         <li nz-menu-item role="menuitem">
-          <a class="dropdown-item" (click)="deleteRow(row)">{{ "Delete" }}</a>
+          <a class="dropdown-item" (click)="showDeleteConfirm(row)">{{
+            "Delete"
+          }}</a>
         </li>
       </ul>
     </nz-dropdown-menu>

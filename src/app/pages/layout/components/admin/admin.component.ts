@@ -146,7 +146,7 @@ export class AdminComponent implements OnInit {
     // this.showAddAdminModal = false;
   }
 
-  showDeleteConfirm(): void {
+  showDeleteConfirm(row_id: any): void {
     this.modalService.confirm({
       nzTitle: 'Are you sure you want to delete this admin?',
       nzOkText: 'Yes',

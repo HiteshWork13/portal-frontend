@@ -16,6 +16,7 @@ import * as userData from '../../pages/layout/config/tables/user-table.data.json
   styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnInit {
+  @ViewChild('userActionTemplate') userActionTemplate: TemplateRef<any>;
   listOfData: Array<{ name: string; age: number; address: string }> = [];
   /* Table's Configuration */
   userTableJSON: any = JSON.parse(JSON.stringify((userJSON as any).default));
@@ -32,6 +33,18 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
     this.getTableData();
+    this.userTableJSON.Header.showClose = false;
+    setTimeout(() => {
+      this.userTableJSON.Columns = this.userTableJSON.Columns.map(
+        (column: any) => {
+          if (column.property == 'actions') {
+            column.actionTemplate =
+              this.userActionTemplate; /* Injecting Template into table */
+          }
+          return column;
+        }
+      );
+    }, 0);
   }
 
   createForm() {
@@ -81,7 +94,7 @@ export class UserComponent implements OnInit {
     // this.showAddAdminModal = false;
   }
 
-  showDeleteConfirm(): void {
+  showDeleteConfirm(row: any): void {
     this.modalService.confirm({
       nzTitle: 'Are you sure you want to delete this user?',
       nzOkText: 'Yes',

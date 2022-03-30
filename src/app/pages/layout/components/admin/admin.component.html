@@ -1,9 +1,10 @@
+<!-- <nz-card> -->
 <div class="page-header p-t-0 m-t-0 minus-m-b-25">
   <!-- <div class="row align-items-md-center">
-    <div class="col-md-6">hi</div>
-    <div class="col-md-4">hi</div>
-    <div class="col-md-2">hi</div>
-  </div> -->
+      <div class="col-md-6">hi</div>
+      <div class="col-md-4">hi</div>
+      <div class="col-md-2">hi</div>
+    </div> -->
 </div>
 <ng-container *ngIf="adminTableJSON">
   <app-table
@@ -11,7 +12,7 @@
     [Config]="adminTableJSON"
     [Data]="adminList"
     (header_addClick)="openModal(temp, 'create', '')"
-    (header_deleteClick)="showDeleteConfirm()"
+    (header_deleteClick)="showDeleteConfirm(null)"
   ></app-table>
 </ng-container>
 <div *ngIf="isUserVisible" style="margin: 25px 0 0 0">
@@ -19,11 +20,12 @@
 </div>
 <div *ngIf="isInstallmentVisible" style="margin: 25px 0 0 0">
   <!-- <app-installments
-    [Data]="installmentData"
-    (close)="isInstallmentVisible = false"
-    ></app-installments> -->
+      [Data]="installmentData"
+      (close)="isInstallmentVisible = false"
+      ></app-installments> -->
   <app-user></app-user>
 </div>
+<!-- </nz-card> -->
 
 <ng-template
   #adminActionTemplate
@@ -58,14 +60,14 @@
           }}</a>
         </li>
         <li nz-menu-item role="menuitem">
-          <a
-            class="dropdown-item"
-            (click)="openAddorUpdateExpenseModal(row, true)"
-            >{{ "Edit" }}</a
-          >
+          <a class="dropdown-item" (click)="openModal(temp, 'create', row)">{{
+            "Edit"
+          }}</a>
         </li>
         <li nz-menu-item role="menuitem">
-          <a class="dropdown-item" (click)="deleteRow(row)">{{ "Delete" }}</a>
+          <a class="dropdown-item" (click)="showDeleteConfirm(row)">{{
+            "Delete"
+          }}</a>
         </li>
       </ul>
     </nz-dropdown-menu>
@@ -101,7 +103,6 @@
           trim="blur"
           formControlName="email"
           maxlength="80"
-          #adminEmail
           placeholder="Enter email address"
         />
       </nz-form-control>
@@ -113,7 +114,6 @@
       <nz-form-control [nzErrorTip]="newPasswordRef">
         <nz-input-group [nzPrefix]="prefixLock">
           <input
-            #name
             id="myinputbox"
             type="password"
             nz-input
@@ -148,7 +148,6 @@
       >
         <nz-input-group [nzPrefix]="prefixLock">
           <input
-            #name
             id="myinputbox"
             type="password"
             nz-input
