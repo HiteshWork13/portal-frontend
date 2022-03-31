@@ -58,7 +58,7 @@ export class TableComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log('TABLE COMPONENT', this.Config.Columns);
+    // console.log('TABLE COMPONENT', this.Config.Columns);
   }
 
   trackBy(index: number): number {

@@ -7,6 +7,8 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { AdminService } from 'src/app/services/api/admin.service';
+import { NotificationService } from 'src/app/services/notification.service';
 import * as adminJSON from '../../config/tables/admin-table.config.json';
 import * as adminData from '../../config/tables/admin-table.data.json';
 
@@ -16,25 +18,38 @@ import * as adminData from '../../config/tables/admin-table.data.json';
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
+  @ViewChild('adminActionTemplate') adminActionTemplate: TemplateRef<any>;
+  @ViewChild('adminName', { static: false }) adminName: ElementRef;
   listOfData: Array<{ name: string; age: number; address: string }> = [];
   /* Table's Configuration */
   adminTableJSON: any = JSON.parse(JSON.stringify((adminJSON as any).default));
   /* Table's Data List */
   adminList: Array<any> = [...(adminData as any).default.expenses];
   // expenseFormJSON: any = this.expenseFormConfig.formConfig;
-  @ViewChild('adminActionTemplate') adminActionTemplate: TemplateRef<any>;
   isUserVisible: boolean = false;
   isInstallmentVisible: boolean = false;
-  @ViewChild('adminName', { static: false }) adminName: ElementRef;
   adminForm: FormGroup;
   matchPasswordErr: boolean = false;
+  currentUserDetails: any;
 
-  constructor(private modalService: NzModalService) {}
+  constructor(
+    private modalService: NzModalService,
+    private adminService: AdminService,
+    private notification: NotificationService
+  ) {}
   /* Table's Configuration */
 
   ngOnInit(): void {
+    this.getDefaults();
     this.createForm();
-    this.getTableData();
+    this.getAdminData();
+  }
+
+  getDefaults() {
+    let current_user_details: any = localStorage.getItem(
+      'current_user_details'
+    );
+    this.currentUserDetails = JSON.parse(current_user_details);
     // this.expenseFormJSON = this.expenseFormConfig.formConfig;
     this.adminTableJSON.Header.showClose = false;
     setTimeout(() => {
@@ -52,21 +67,30 @@ export class AdminComponent implements OnInit {
 
   createForm() {
     this.adminForm = new FormGroup({
-      name: new FormControl(null, Validators.required),
+      username: new FormControl(null, Validators.required),
       email: new FormControl(null, Validators.required),
       password: new FormControl(null, Validators.required),
-      confirm_password: new FormControl(null, Validators.required),
+      status: new FormControl(1),
+      role: new FormControl(2),
+      created_by: new FormControl(String(this.currentUserDetails.id)),
     });
   }
 
-  getTableData() {
-    for (let i = 0; i < 100; i++) {
-      this.listOfData.push({
-        name: `Edward King`,
-        age: 32,
-        address: `London`,
-      });
-    }
+  getAdminData() {
+    let data: any = {
+      role: 2,
+      created_by: String(this.currentUserDetails.id),
+    };
+    this.adminService.getAdmins(data).subscribe(
+      (response: any) => {
+        console.log('response: ', response.data);
+        this.listOfData = response.data;
+      },
+      (error) => {
+        console.log('error: ', error);
+        this.notification.error(error.message);
+      }
+    );
   }
 
   /* Insert/Update Modal for Expense */
@@ -164,7 +188,14 @@ export class AdminComponent implements OnInit {
       this.adminForm.controls[i].markAsDirty();
       this.adminForm.controls[i].updateValueAndValidity();
     }
+    const formObj = this.adminForm.value;
     if (this.adminForm.valid && !this.matchPasswordErr) {
+      this.adminService.createAdminapi(formObj).subscribe((response) => {
+        console.log('response: ', response);
+        // this.listOfData = [...this.listOfData,response.data];
+        //
+      });
+    } else {
       //
     }
   }

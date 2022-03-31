@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
   submitForm(): void {
     if (this.validateForm.valid) {
       this.fnLogin(this.validateForm.value);
+      // this.router.navigate(['/dashboard']);
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -61,18 +62,24 @@ export class LoginComponent implements OnInit {
     this.btn_loader = true;
     this.loginservice.LogIn(data).subscribe(
       (response: any) => {
-        this.btn_loader = false;
-        this.router.navigate(['/dashboard']);
-        console.log('response: ', response);
-        let login_response: any = response.data;
-        let current_user_details: any = {
-          id: login_response.id,
-          username: login_response.username,
-          email: login_response.email,
-          role: login_response.role,
-        };
-        localStorage.setItem('current_user_details', current_user_details);
-        localStorage.setItem('access_token', login_response.access_token);
+        if (response?.success) {
+          let login_response: any = response.data;
+          let current_user_details: any = {
+            id: login_response.id,
+            username: login_response.username,
+            email: login_response.email,
+            role: login_response.role,
+            status: login_response.status,
+          };
+          localStorage.setItem(
+            'current_user_details',
+            JSON.stringify(current_user_details)
+          );
+          localStorage.setItem('access_token', login_response.access_token);
+          this.btn_loader = false;
+          this.notification.success(response.message);
+          this.router.navigate(['/dashboard']);
+        }
       },
       (error) => {
         this.btn_loader = false;

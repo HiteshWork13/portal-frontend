@@ -88,7 +88,7 @@
         <input
           nz-input
           trim="blur"
-          formControlName="name"
+          formControlName="username"
           maxlength="80"
           #adminName
           placeholder="Enter admin name"
@@ -117,7 +117,7 @@
             id="myinputbox"
             type="password"
             nz-input
-            formControlName="newPassword"
+            formControlName="password"
             placeholder="Enter new password"
             autofocus
           />
@@ -133,29 +133,6 @@
             [nzPopoverContent]="popoverContent"
           ></i>
         </ng-template>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzFor="newPasswordRepeat" class="text-black"
-        >Confirm Password
-      </nz-form-label>
-      <nz-form-control
-        [nzErrorTip]="
-          matchPasswordErr
-            ? 'Passwords must match'
-            : 'Confirm Password is required'
-        "
-      >
-        <nz-input-group [nzPrefix]="prefixLock">
-          <input
-            id="myinputbox"
-            type="password"
-            nz-input
-            formControlName="newPasswordRepeat"
-            (input)="matchPassword()"
-            placeholder="Re-enter new password"
-          />
-        </nz-input-group>
       </nz-form-control>
     </nz-form-item>
   </form>

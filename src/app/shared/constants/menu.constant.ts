@@ -1,4 +1,6 @@
-let role = Number(localStorage.getItem('role'));
+let current_user_details: any = localStorage.getItem('current_user_details');
+let user_data = JSON.parse(current_user_details);
+let role = user_data.role;
 
 export const MENUITEMS = [
   {
