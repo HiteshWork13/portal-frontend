@@ -16,9 +16,6 @@ export class AdminService {
     let headers = new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     });
-    /* params?: new HttpParams | {
-        [param: string]: string | string[];
-    }; */
     this.body = {
       headers: headers,
       responseType: 'json',

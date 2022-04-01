@@ -21,11 +21,8 @@ export class AdminComponent implements OnInit {
   @ViewChild('adminActionTemplate') adminActionTemplate: TemplateRef<any>;
   @ViewChild('adminName', { static: false }) adminName: ElementRef;
   listOfData: Array<{ name: string; age: number; address: string }> = [];
-  /* Table's Configuration */
   adminTableJSON: any = JSON.parse(JSON.stringify((adminJSON as any).default));
-  /* Table's Data List */
   adminList: Array<any> = [...(adminData as any).default.admins];
-  // expenseFormJSON: any = this.expenseFormConfig.formConfig;
   isUserVisible: boolean = false;
   isInstallmentVisible: boolean = false;
   adminForm: FormGroup;
@@ -37,7 +34,6 @@ export class AdminComponent implements OnInit {
     private adminService: AdminService,
     private notification: NotificationService
   ) {}
-  /* Table's Configuration */
 
   ngOnInit(): void {
     this.getDefaults();
@@ -83,10 +79,6 @@ export class AdminComponent implements OnInit {
     };
     this.adminService.getAdminsApi(data).subscribe(
       (response: any) => {
-        /* let adminData: any = response.data;
-        adminData.map((element, index) => {
-          element.sr_no = index;
-        }); */
         this.listOfData = response.data;
         this.adminList = this.listOfData;
       },
@@ -96,49 +88,9 @@ export class AdminComponent implements OnInit {
     );
   }
 
-  /* Insert/Update Modal for Expense */
-  openAddorUpdateExpenseModal(data: any = null, isEditMode: any = false) {
-    // const Config: any = {
-    //   class: 'modal-lg',
-    //   initialState: {
-    //     isEditMode: isEditMode,
-    //     Config: this.expenseFormJSON,
-    //     Data: Object.assign({}, data) ?? [],
-    //   },
-    // };
-    // this.bsModalRef = this.modalService.openModalFromComponent(
-    //   ApiFormComponent,
-    //   Config
-    // );
-    // this.bsModalRef.content.submit.subscribe((formData: any) => {
-    //   /* Submit event will execute after form submit */
-    // });
-  }
-
   showAssociates(row: any) {
-    /* Fire after click on `Reminders` option from menu of action column */
-    // this.isInstallmentVisible = false;
     this.isUserVisible = true;
     this.isInstallmentVisible = false;
-  }
-
-  deleteRow(row: any) {
-    /* Fire after click on `Delete`  option from menu of action column */
-    // const Config = {
-    //   initialState: {
-    //     title: 'Delete confirmation',
-    //     body_message: 'Are you sure you want perform this operation ?',
-    //     cancel_button_text: 'Cancel',
-    //     ok_button_text: 'Yes',
-    //   },
-    // };
-    // this.deleteConfirmRef = this.modalService.openModalFromComponent(
-    //   ConfirmDialogComponent,
-    //   Config
-    // );
-    // this.deleteConfirmRef.content.close.subscribe((isPressYes: boolean) => {
-    //   /* Fire this event after confirm from dialog */
-    // });
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
@@ -212,11 +164,11 @@ export class AdminComponent implements OnInit {
     this.adminService.deleteAdminApi(admin_id).subscribe(
       (response) => {
         console.log('delete admin api response: ', response);
-        //
+        this.notification.success(response['message']);
       },
       (error) => {
         console.log('delete admin api error: ', error);
-        //
+        this.notification.error(error['message']);
       }
     );
   }
@@ -252,6 +204,8 @@ export class AdminComponent implements OnInit {
       const formObj = this.adminForm.value;
       this.adminService.updateAdminApi(item.id, formObj).subscribe(
         (response) => {
+          this.listOfData = [...this.listOfData, response['data'].raw];
+          this.adminList = this.listOfData;
           this.notification.success(response['message']);
           this.modalService.closeAll();
         },

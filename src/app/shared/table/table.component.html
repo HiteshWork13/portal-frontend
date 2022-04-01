@@ -119,7 +119,16 @@
                 : null
             "
           >
-            <span *ngIf="column.property != 'actions' && !column.isHtml">
+            <span *ngIf="column.property == 'status'">
+              <nz-tag [nzColor]="'#87d068'">Active</nz-tag>
+            </span>
+            <span
+              *ngIf="
+                column.property != 'actions' &&
+                !column.isHtml &&
+                column.property !== 'status'
+              "
+            >
               <ng-container *ngIf="!column.actionTemplate">
                 <!--  <ng-container
                     *ngIf="
@@ -176,7 +185,11 @@
               </ng-container>
             </span>
             <div
-              *ngIf="column.property != 'actions' && column.isHtml"
+              *ngIf="
+                column.property != 'actions' &&
+                column.property !== 'status' &&
+                column.isHtml
+              "
               [innerHtml]="getData(row, column)"
             ></div>
             <span *ngIf="column.property == 'actions'">
