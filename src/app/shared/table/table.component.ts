@@ -66,7 +66,6 @@ export class TableComponent implements OnInit {
   }
 
   selectRow(index: any, data: any) {
-    console.log('row click: ');
     this.onRowClick.emit({ index, data });
     this.clickedRowIndex = index;
   }

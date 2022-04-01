@@ -24,7 +24,7 @@ export class AdminComponent implements OnInit {
   /* Table's Configuration */
   adminTableJSON: any = JSON.parse(JSON.stringify((adminJSON as any).default));
   /* Table's Data List */
-  adminList: Array<any> = [...(adminData as any).default.expenses];
+  adminList: Array<any> = [...(adminData as any).default.admins];
   // expenseFormJSON: any = this.expenseFormConfig.formConfig;
   isUserVisible: boolean = false;
   isInstallmentVisible: boolean = false;
@@ -81,13 +81,16 @@ export class AdminComponent implements OnInit {
       role: 2,
       created_by: String(this.currentUserDetails.id),
     };
-    this.adminService.getAdmins(data).subscribe(
+    this.adminService.getAdminsApi(data).subscribe(
       (response: any) => {
-        console.log('response: ', response.data);
+        /* let adminData: any = response.data;
+        adminData.map((element, index) => {
+          element.sr_no = index;
+        }); */
         this.listOfData = response.data;
+        this.adminList = this.listOfData;
       },
       (error) => {
-        console.log('error: ', error);
         this.notification.error(error.message);
       }
     );
@@ -151,23 +154,45 @@ export class AdminComponent implements OnInit {
             label: 'Save Admin',
             type: 'primary',
 
-            onClick: () => this.onSubmit(),
+            onClick: () => this.createAdmin(),
           },
         ],
         nzWidth: 500,
         nzMaskClosable: false,
-        nzOnCancel: () => this.editClose(),
+        nzOnCancel: () => this.onClose(),
+        nzAutofocus: null,
+      });
+    } else {
+      this.editAdmin(item);
+      this.modalService.create({
+        nzTitle: 'Update Admin',
+        nzContent: temp,
+        nzFooter: [
+          {
+            label: 'Update Admin',
+            type: 'primary',
+
+            onClick: () => this.updateAdmin(item),
+          },
+        ],
+        nzWidth: 500,
+        nzMaskClosable: false,
+        nzOnCancel: () => this.onClose(),
         nzAutofocus: null,
       });
     }
   }
 
-  fnCreateNewProduct() {
-    //
+  editAdmin(item) {
+    this.adminForm.patchValue({
+      username: item.username,
+      email: item.email,
+      status: item.status,
+    });
   }
 
-  editClose() {
-    // this.showAddAdminModal = false;
+  onClose() {
+    this.modalService.closeAll();
   }
 
   showDeleteConfirm(row_id: any): void {
@@ -176,27 +201,65 @@ export class AdminComponent implements OnInit {
       nzOkText: 'Yes',
       nzOkType: 'primary',
       nzOkDanger: true,
-      nzOnOk: () => console.log('OK'),
+      nzOnOk: () => this.deleteAdmin(row_id),
       nzCancelText: 'No',
-      nzOnCancel: () => console.log('Cancel'),
+      nzOnCancel: () => this.onClose(),
     });
     // nzContent: '<b style="color: red;">Admin will be permenently deleted</b>',
   }
 
-  onSubmit() {
+  deleteAdmin(admin_id) {
+    this.adminService.deleteAdminApi(admin_id).subscribe(
+      (response) => {
+        console.log('delete admin api response: ', response);
+        //
+      },
+      (error) => {
+        console.log('delete admin api error: ', error);
+        //
+      }
+    );
+  }
+
+  createAdmin() {
     for (const i in this.adminForm.controls) {
       this.adminForm.controls[i].markAsDirty();
       this.adminForm.controls[i].updateValueAndValidity();
     }
-    const formObj = this.adminForm.value;
     if (this.adminForm.valid && !this.matchPasswordErr) {
-      this.adminService.createAdminapi(formObj).subscribe((response) => {
-        console.log('response: ', response);
-        // this.listOfData = [...this.listOfData,response.data];
-        //
-      });
-    } else {
-      //
+      const formObj = this.adminForm.value;
+      this.adminService.createAdminapi(formObj).subscribe(
+        (response) => {
+          this.listOfData = [...this.listOfData, response['data']];
+          this.adminList = this.listOfData;
+          this.modalService.closeAll();
+          this.notification.success(response['message']);
+        },
+        (error) => {
+          this.notification.error(error['message']);
+          this.modalService.closeAll();
+        }
+      );
+    }
+  }
+
+  updateAdmin(item) {
+    for (const i in this.adminForm.controls) {
+      this.adminForm.controls[i].markAsDirty();
+      this.adminForm.controls[i].updateValueAndValidity();
+    }
+    if (this.adminForm.valid && !this.matchPasswordErr) {
+      const formObj = this.adminForm.value;
+      this.adminService.updateAdminApi(item.id, formObj).subscribe(
+        (response) => {
+          this.notification.success(response['message']);
+          this.modalService.closeAll();
+        },
+        (error) => {
+          this.notification.error(error['message']);
+          this.modalService.closeAll();
+        }
+      );
     }
   }
 

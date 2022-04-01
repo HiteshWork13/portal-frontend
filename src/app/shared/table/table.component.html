@@ -37,6 +37,7 @@
   <thead>
     <tr class="header_row" [ngClass]="{ 'table-view-header': Mode == 'View' }">
       <ng-container *ngIf="Config.Columns.length > 0">
+        <th>#ID</th>
         <ng-container
           *ngFor="
             let column of Config.Columns;
@@ -96,6 +97,9 @@
               : ''
           }}"
         >
+          <td>
+            <span>{{ ri + 1 }}</span>
+          </td>
           <td
             *ngFor="
               let column of Config.Columns;

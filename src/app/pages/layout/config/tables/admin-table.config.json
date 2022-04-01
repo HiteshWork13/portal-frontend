@@ -18,29 +18,9 @@
   "noDataLabel": "No Data Found",
   "Columns": [
     {
-      "name": "ID",
-      "dataType": "text",
-      "property": "id",
-      "visible": true,
-      "searchable": true,
-      "searchValue": null,
-      "sortable": true,
-      "sortOrder": "",
-      "columnWidth": "150px",
-      "SearchFormTemplate": null,
-      "advanceFilter": {
-        "dataType": "text",
-        "dpConfig": null,
-        "dprConfig": null,
-        "textMask": null,
-        "placeholder": "",
-        "searchQuery": null
-      }
-    },
-    {
       "name": "ADMIN NAME",
       "dataType": "text",
-      "property": "admin_name",
+      "property": "username",
       "visible": true,
       "searchable": true,
       "searchValue": null,
@@ -58,9 +38,9 @@
       }
     },
     {
-      "name": "CREATED AT",
+      "name": "EMAIL",
       "dataType": "text",
-      "property": "created_at",
+      "property": "email",
       "visible": true,
       "searchable": true,
       "searchValue": null,
@@ -79,7 +59,7 @@
     },
     {
       "name": "STATUS",
-      "dataType": "text",
+      "dataType": "number",
       "property": "status",
       "visible": true,
       "searchable": true,

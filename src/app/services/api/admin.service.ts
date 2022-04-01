@@ -6,30 +6,39 @@ import { config } from '../../app.config';
   providedIn: 'root',
 })
 export class AdminService {
+  body: any;
   getAllAdmins = config() + 'admin/getAllAdminByRoleIdAndCreatedId';
   createAdmin = config() + 'admin/createAdminUser';
+  deleteAdmin = config() + 'admin/deleteAdminById';
+  updateAdmin = config() + 'admin/updateAdminById';
 
-  constructor(private http: HttpClient) {}
-
-  getAdmins(data: any) {
+  constructor(private http: HttpClient) {
     let headers = new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     });
-    let body: any = {
+    /* params?: new HttpParams | {
+        [param: string]: string | string[];
+    }; */
+    this.body = {
       headers: headers,
       responseType: 'json',
     };
-    return this.http.post(this.getAllAdmins, data, body);
+  }
+
+  getAdminsApi(data: any) {
+    return this.http.post(this.getAllAdmins, data, this.body);
   }
 
   createAdminapi(data: any) {
-    let headers = new HttpHeaders({
-      Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-    });
-    let body: any = {
-      headers: headers,
-      responseType: 'json',
-    };
-    return this.http.post(this.createAdmin, data, body);
+    return this.http.post(this.createAdmin, data, this.body);
+  }
+
+  deleteAdminApi(data) {
+    console.log('this.body: ', this.body);
+    return this.http.delete(this.deleteAdmin + '/' + data, this.body);
+  }
+
+  updateAdminApi(id, data) {
+    return this.http.put(this.updateAdmin + '/' + id, data, this.body);
   }
 }

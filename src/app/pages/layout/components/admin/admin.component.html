@@ -60,12 +60,12 @@
           }}</a>
         </li>
         <li nz-menu-item role="menuitem">
-          <a class="dropdown-item" (click)="openModal(temp, 'create', row)">{{
+          <a class="dropdown-item" (click)="openModal(temp, 'edit', row)">{{
             "Edit"
           }}</a>
         </li>
         <li nz-menu-item role="menuitem">
-          <a class="dropdown-item" (click)="showDeleteConfirm(row)">{{
+          <a class="dropdown-item" (click)="showDeleteConfirm(row.id)">{{
             "Delete"
           }}</a>
         </li>
@@ -75,15 +75,9 @@
 </ng-template>
 
 <ng-template #temp>
-  <form
-    nz-form
-    nzLayout="vertical"
-    id="addAdminForm"
-    [formGroup]="adminForm"
-    (ngSubmit)="onSubmit()"
-  >
+  <form nz-form nzLayout="vertical" id="addAdminForm" [formGroup]="adminForm">
     <nz-form-item>
-      <nz-form-label>Name</nz-form-label>
+      <nz-form-label>Admin Name</nz-form-label>
       <nz-form-control nzErrorTip="Enter a valid admin name">
         <input
           nz-input
@@ -96,7 +90,7 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label>Email</nz-form-label>
+      <nz-form-label>Admin Email</nz-form-label>
       <nz-form-control nzErrorTip="Enter a valid admin email">
         <input
           nz-input
