@@ -9,11 +9,31 @@ import { MENUITEMS } from 'src/app/shared/constants/menu.constant';
 export class SidebarComponent implements OnInit {
   isCollapsed: boolean = false;
   role_id: any = 1;
-  menuItems = MENUITEMS;
+  menuItems: any;
+  currentUserDetails: any;
 
   constructor() {}
 
   ngOnInit(): void {
-    this.role_id = Number(localStorage.getItem('role'));
+    let current_user_details: any = localStorage.getItem(
+      'current_user_details'
+    );
+    this.currentUserDetails = JSON.parse(current_user_details);
+    this.menuItems = MENUITEMS;
+    this.roleWiseSidebar();
+  }
+
+  roleWiseSidebar() {
+    this.menuItems.map((element) => {
+      if (
+        element.id == 'admin' &&
+        (this.currentUserDetails.role == 2 || this.currentUserDetails.role == 3)
+      ) {
+        element.enabled = false;
+      } else if (element.id == 'user' && this.currentUserDetails.role == 3) {
+        element.enabled = false;
+      }
+      return element;
+    });
   }
 }
