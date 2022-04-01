@@ -79,7 +79,7 @@
       }
     },
     {
-      "name": "Actions",
+      "name": "ACTIONS",
       "property": "actions",
       "visible": true,
       "searchable": false,

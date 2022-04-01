@@ -163,11 +163,13 @@ export class AdminComponent implements OnInit {
   deleteAdmin(admin_id) {
     this.adminService.deleteAdminApi(admin_id).subscribe(
       (response) => {
-        console.log('delete admin api response: ', response);
+        this.listOfData = this.listOfData.filter(
+          (element) => element['id'] !== admin_id
+        );
+        this.adminList = this.listOfData;
         this.notification.success(response['message']);
       },
       (error) => {
-        console.log('delete admin api error: ', error);
         this.notification.error(error['message']);
       }
     );
@@ -204,7 +206,13 @@ export class AdminComponent implements OnInit {
       const formObj = this.adminForm.value;
       this.adminService.updateAdminApi(item.id, formObj).subscribe(
         (response) => {
-          this.listOfData = [...this.listOfData, response['data'].raw];
+          let updatedList: any = this.listOfData.map((element) => {
+            if (element['id'] == item.id) {
+              element = response['data'];
+            }
+            return element;
+          });
+          this.listOfData = updatedList;
           this.adminList = this.listOfData;
           this.notification.success(response['message']);
           this.modalService.closeAll();

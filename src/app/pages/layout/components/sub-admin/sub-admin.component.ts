@@ -9,6 +9,8 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { SubAdminService } from 'src/app/services/api/sub-admin.service';
+import { NotificationService } from 'src/app/services/notification.service';
 import * as subAdminJSON from '../../config/tables/sub_admin-table.config.json';
 import * as subAdminData from '../../config/tables/sub_admin-table.data.json';
 
@@ -26,18 +28,31 @@ export class SubAdminComponent implements OnInit {
     JSON.stringify((subAdminJSON as any).default)
   );
   /* Table's Data List */
-  userList: Array<any> = [...(subAdminData as any).default.expenses];
+  subadminList: Array<any> = [...(subAdminData as any).default.subadminList];
   isAssociatesVisible: boolean = false;
   usersVisible: boolean = false;
-  @ViewChild('subAdminName', { static: false }) subAdminName: ElementRef;
+  @ViewChild('username', { static: false }) username: ElementRef;
   subAdminForm: FormGroup;
   matchPasswordErr: boolean = false;
+  currentUserDetails: any;
 
-  constructor(private modalService: NzModalService) {}
+  constructor(
+    private modalService: NzModalService,
+    private subAdminService: SubAdminService,
+    private notification: NotificationService
+  ) {}
 
   ngOnInit(): void {
+    this.getDefaults();
     this.createForm();
-    this.getTableData();
+    this.getSubAdminData();
+  }
+
+  getDefaults() {
+    let current_user_details: any = localStorage.getItem(
+      'current_user_details'
+    );
+    this.currentUserDetails = JSON.parse(current_user_details);
     this.subAdminTableJSON.Header.showClose = false;
     setTimeout(() => {
       this.subAdminTableJSON.Columns = this.subAdminTableJSON.Columns.map(
@@ -54,26 +69,34 @@ export class SubAdminComponent implements OnInit {
 
   createForm() {
     this.subAdminForm = new FormGroup({
-      name: new FormControl(null, Validators.required),
+      username: new FormControl(null, Validators.required),
       email: new FormControl(null, Validators.required),
       password: new FormControl(null, Validators.required),
-      confirm_password: new FormControl(null, Validators.required),
+      status: new FormControl(1),
+      role: new FormControl(3),
+      created_by: new FormControl(String(this.currentUserDetails.id)),
     });
   }
 
-  getTableData() {
-    for (let i = 0; i < 100; i++) {
-      this.listOfData.push({
-        name: `Edward King`,
-        age: 32,
-        address: `London`,
-      });
-    }
+  getSubAdminData() {
+    let data: any = {
+      role: 3,
+      created_by: String(this.currentUserDetails.id),
+    };
+    this.subAdminService.getSubAdminsApi(data).subscribe(
+      (response: any) => {
+        this.listOfData = response.data;
+        this.subadminList = this.listOfData;
+      },
+      (error) => {
+        this.notification.error(error.message);
+      }
+    );
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
     setTimeout(() => {
-      this.subAdminName.nativeElement.focus();
+      this.username.nativeElement.focus();
     });
     if (state == 'create') {
       this.modalService.create({
@@ -84,7 +107,7 @@ export class SubAdminComponent implements OnInit {
             label: 'Save Sub admin',
             type: 'primary',
 
-            onClick: () => this.onSubmit(),
+            onClick: () => this.createSubAdmin(),
           },
         ],
         nzWidth: 500,
@@ -92,6 +115,8 @@ export class SubAdminComponent implements OnInit {
         nzOnCancel: () => this.editClose(),
         nzAutofocus: null,
       });
+    } else {
+      //
     }
   }
 
@@ -116,13 +141,25 @@ export class SubAdminComponent implements OnInit {
     //
   }
 
-  onSubmit() {
+  createSubAdmin() {
     for (const i in this.subAdminForm.controls) {
       this.subAdminForm.controls[i].markAsDirty();
       this.subAdminForm.controls[i].updateValueAndValidity();
     }
     if (this.subAdminForm.valid && !this.matchPasswordErr) {
-      //
+      const formObj = this.subAdminForm.value;
+      this.subAdminService.createSubAdminApi(formObj).subscribe(
+        (response) => {
+          this.listOfData = [...this.listOfData, response['data']];
+          this.subadminList = this.listOfData;
+          this.modalService.closeAll();
+          this.notification.success(response['message']);
+        },
+        (error) => {
+          this.notification.error(error['message']);
+          this.modalService.closeAll();
+        }
+      );
     }
   }
 
@@ -138,6 +175,6 @@ export class SubAdminComponent implements OnInit {
   }
 
   editClose() {
-    // this.showAddAdminModal = false;
+    this.modalService.closeAll();
   }
 }

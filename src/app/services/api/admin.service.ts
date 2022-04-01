@@ -31,7 +31,6 @@ export class AdminService {
   }
 
   deleteAdminApi(data) {
-    console.log('this.body: ', this.body);
     return this.http.delete(this.deleteAdmin + '/' + data, this.body);
   }
 
