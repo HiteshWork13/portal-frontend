@@ -9,8 +9,8 @@ export class SubAdminService {
   body: any;
   getAllSubAdmins = config() + 'admin/getAllAdminByRoleIdAndCreatedId';
   createSubAdmin = config() + 'admin/createAdminUser';
-  // deleteSubAdmin = config() + 'admin/deleteAdminById';
-  // updateSubAdmin = config() + 'admin/updateAdminById';
+  deleteSubAdmin = config() + 'admin/deleteAdminById';
+  updateSubAdmin = config() + 'admin/updateAdminById';
 
   constructor(private http: HttpClient) {
     let headers = new HttpHeaders({
@@ -28,5 +28,13 @@ export class SubAdminService {
 
   getSubAdminsApi(data) {
     return this.http.post(this.getAllSubAdmins, data, this.body);
+  }
+
+  updateSubAdminApi(id, data) {
+    return this.http.put(this.updateSubAdmin + '/' + id, data, this.body);
+  }
+
+  deleteAdminApi(id) {
+    return this.http.delete(this.deleteSubAdmin + '/' + id, this.body);
   }
 }

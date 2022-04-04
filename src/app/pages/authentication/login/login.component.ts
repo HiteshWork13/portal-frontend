@@ -11,11 +11,6 @@ import { NotificationService } from 'src/app/services/notification.service';
 })
 export class LoginComponent implements OnInit {
   validateForm!: FormGroup;
-  admin_creds: any = [
-    { username: 'super_admin@gmail.com', password: 'super_admin@123', role: 1 },
-    { username: 'admin@gmail.com', password: 'admin@123', role: 2 },
-    { username: 'sub_admin@gmail.com', password: 'sub_admin@123', role: 3 },
-  ];
   btn_loader: boolean = false;
 
   constructor(
@@ -23,7 +18,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private loginservice: LoginService,
     private notification: NotificationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -31,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   createForm() {
     this.validateForm = this.fb.group({
-      username: [null, [Validators.required]],
+      email: [null, [Validators.required]],
       password: [null, [Validators.required]],
     });
   }
@@ -49,14 +44,6 @@ export class LoginComponent implements OnInit {
       });
     }
   }
-
-  /* getRole(value: any) {
-    let userData: any = this.admin_creds.find(
-      (element: any) =>
-        element.username == value.username && element.password == value.password
-    );
-    return userData.role;
-  } */
 
   fnLogin(data: any) {
     this.btn_loader = true;

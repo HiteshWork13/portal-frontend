@@ -11,7 +11,7 @@
     [listOfData]="listOfData"
     [Config]="adminTableJSON"
     [Data]="adminList"
-    (header_addClick)="openModal(temp, 'create', '')"
+    (header_addClick)="openModal(temp, 'add', '')"
     (header_deleteClick)="showDeleteConfirm(null)"
   ></app-table>
 </ng-container>
@@ -89,7 +89,7 @@
         />
       </nz-form-control>
     </nz-form-item>
-    <nz-form-item>
+    <nz-form-item *ngIf="mode == 'add'">
       <nz-form-label>Admin Email</nz-form-label>
       <nz-form-control nzErrorTip="Enter a valid admin email">
         <input
@@ -101,7 +101,7 @@
         />
       </nz-form-control>
     </nz-form-item>
-    <nz-form-item>
+    <nz-form-item *ngIf="mode == 'add'">
       <nz-form-label nzFor="newPassword" class="text-black"
         >Password
       </nz-form-label>

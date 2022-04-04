@@ -3,9 +3,7 @@ import {
   EventEmitter,
   Input,
   OnInit,
-  Output,
-  SimpleChanges,
-  TemplateRef,
+  Output, TemplateRef
 } from '@angular/core';
 import { Config } from './table.model';
 
@@ -55,7 +53,7 @@ export class TableComponent implements OnInit {
   @Output() header_uploadClick: EventEmitter<any> = new EventEmitter();
   @Output() header_deleteClick: EventEmitter<any> = new EventEmitter();
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     // console.log('TABLE COMPONENT', this.Config.Columns);
@@ -104,22 +102,22 @@ export class TableComponent implements OnInit {
       })
     );
   }
-  searchInput(searchQuery: any, index: any) {
-    console.log('event: ', searchQuery);
-    if (this.Config.SearchType == 'Dynamic') {
-      /* Emit searching event to the page to `get sorted  data from API` */
-      this.onSearchColumn.emit({
-        index,
-        column: this.Config.Columns[index],
-        query: searchQuery,
-      });
-    } else {
-      /* Handle Static Search */
-    }
-  }
+
+  // searchInput(searchQuery: any, index: any) {
+  //   console.log('event: ', searchQuery);
+  //   if (this.Config.SearchType == 'Dynamic') {
+  //     /* Emit searching event to the page to `get sorted  data from API` */
+  //     this.onSearchColumn.emit({
+  //       index,
+  //       column: this.Config.Columns[index],
+  //       query: searchQuery,
+  //     });
+  //   } else {
+  //     /* Handle Static Search */
+  //   }
+  // }
 
   sortColumnChanges(index: any) {
-    console.log('column index', this.Config.Columns[index]);
     if (this.Config.SortingType == 'Dynamic') {
       /* Emit sorting event to the page to `get sorted data from API` */
       this.onSortColumn.emit({ index, column: this.Config.Columns[index] });
@@ -128,27 +126,27 @@ export class TableComponent implements OnInit {
     }
   }
 
-  search() {
+  /* search() {
     this.header_searchClick.emit();
-  }
+  } */
 
-  add() {
+  /* add() {
     this.header_addClick.emit();
-  }
+  } */
 
-  reset() {
+  /* reset() {
     this.header_resetClick.emit();
-  }
+  } */
 
-  close() {
+  /* close() {
     this.header_closeClick.emit();
-  }
+  } */
 
-  upload() {
+  /* upload() {
     this.header_uploadClick.emit();
-  }
+  } */
 
-  download() {
+  /* download() {
     if (this.Config.rowSelectable == true) {
       const records = this.Data.filter((item) => {
         return item.selected;
@@ -157,13 +155,13 @@ export class TableComponent implements OnInit {
     } else {
       this.header_downloadClick.emit({ Data: this.Data, Selected: [] });
     }
-  }
+  } */
 
-  delete() {
+  /* delete() {
     this.header_deleteClick.emit();
-  }
+  } */
 
-  addAdmin() {
+  addBtn() {
     this.header_addClick.emit();
   }
 
@@ -194,10 +192,4 @@ export class TableComponent implements OnInit {
       currentEl.style.width = childWidth + 'px';
     }
   } */
-
-  ngOnChanges(changes: SimpleChanges): void {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
-    // console.log('this.Config: ', this.Config);
-  }
 }

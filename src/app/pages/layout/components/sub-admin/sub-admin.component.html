@@ -10,7 +10,7 @@
     [listOfData]="listOfData"
     [Config]="subAdminTableJSON"
     [Data]="subadminList"
-    (header_addClick)="openModal(temp, 'create', '')"
+    (header_addClick)="openModal(temp, 'add', '')"
     (header_deleteClick)="showDeleteConfirm(null)"
   ></app-table>
 </ng-container>
@@ -43,8 +43,8 @@
         />
       </nz-form-control>
     </nz-form-item>
-    <nz-form-item>
-      <nz-form-label>Email</nz-form-label>
+    <nz-form-item *ngIf="mode == 'add'">
+      <nz-form-label>Sub Admin Email</nz-form-label>
       <nz-form-control nzErrorTip="Enter a valid sub admin email">
         <input
           nz-input
@@ -56,7 +56,7 @@
         />
       </nz-form-control>
     </nz-form-item>
-    <nz-form-item>
+    <nz-form-item *ngIf="mode == 'add'">
       <nz-form-label nzFor="newPassword" class="text-black"
         >Password
       </nz-form-label>
@@ -130,12 +130,12 @@
           <a class="dropdown-item" (click)="showUsers(row)">{{ "Users" }}</a>
         </li>
         <li nz-menu-item role="menuitem">
-          <a class="dropdown-item" (click)="openModal(temp, 'create', '')">{{
+          <a class="dropdown-item" (click)="openModal(temp, 'edit', row)">{{
             "Edit"
           }}</a>
         </li>
         <li nz-menu-item role="menuitem">
-          <a class="dropdown-item" (click)="showDeleteConfirm(row)">{{
+          <a class="dropdown-item" (click)="showDeleteConfirm(row.id)">{{
             "Delete"
           }}</a>
         </li>

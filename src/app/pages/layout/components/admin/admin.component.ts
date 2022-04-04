@@ -3,7 +3,7 @@ import {
   ElementRef,
   OnInit,
   TemplateRef,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -28,12 +28,13 @@ export class AdminComponent implements OnInit {
   adminForm: FormGroup;
   matchPasswordErr: boolean = false;
   currentUserDetails: any;
+  mode: string = 'add';
 
   constructor(
     private modalService: NzModalService,
     private adminService: AdminService,
     private notification: NotificationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getDefaults();
@@ -94,6 +95,7 @@ export class AdminComponent implements OnInit {
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
+    this.mode = state;
     setTimeout(() => {
       this.adminName.nativeElement.focus();
     });
@@ -137,9 +139,7 @@ export class AdminComponent implements OnInit {
 
   editAdmin(item) {
     this.adminForm.patchValue({
-      username: item.username,
-      email: item.email,
-      status: item.status,
+      username: item.username
     });
   }
 
@@ -198,38 +198,34 @@ export class AdminComponent implements OnInit {
   }
 
   updateAdmin(item) {
-    for (const i in this.adminForm.controls) {
-      this.adminForm.controls[i].markAsDirty();
-      this.adminForm.controls[i].updateValueAndValidity();
+    const formObj = {
+      username: this.adminForm.controls['username'].value
     }
-    if (this.adminForm.valid && !this.matchPasswordErr) {
-      const formObj = this.adminForm.value;
-      this.adminService.updateAdminApi(item.id, formObj).subscribe(
-        (response) => {
-          let updatedList: any = this.listOfData.map((element) => {
-            if (element['id'] == item.id) {
-              element = response['data'];
-            }
-            return element;
-          });
-          this.listOfData = updatedList;
-          this.adminList = this.listOfData;
-          this.notification.success(response['message']);
-          this.modalService.closeAll();
-        },
-        (error) => {
-          this.notification.error(error['message']);
-          this.modalService.closeAll();
-        }
-      );
-    }
+    this.adminService.updateAdminApi(item.id, formObj).subscribe(
+      (response) => {
+        let updatedList: any = this.listOfData.map((element) => {
+          if (element['id'] == item.id) {
+            element = response['data'];
+          }
+          return element;
+        });
+        this.listOfData = updatedList;
+        this.adminList = this.listOfData;
+        this.notification.success(response['message']);
+        this.modalService.closeAll();
+      },
+      (error) => {
+        this.notification.error(error['message']);
+        this.modalService.closeAll();
+      }
+    );
   }
 
   matchPassword() {
     this.matchPasswordErr = false;
     if (
       this.adminForm.controls['newPassword'].value !==
-        this.adminForm.controls['newPasswordRepeat'].value &&
+      this.adminForm.controls['newPasswordRepeat'].value &&
       this.adminForm.controls['newPasswordRepeat'].value !== ''
     ) {
       this.matchPasswordErr = true;

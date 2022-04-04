@@ -5,7 +5,7 @@ import {
   OnInit,
   Output,
   TemplateRef,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -35,12 +35,13 @@ export class SubAdminComponent implements OnInit {
   subAdminForm: FormGroup;
   matchPasswordErr: boolean = false;
   currentUserDetails: any;
+  mode: string = 'add';
 
   constructor(
     private modalService: NzModalService,
     private subAdminService: SubAdminService,
     private notification: NotificationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getDefaults();
@@ -95,10 +96,11 @@ export class SubAdminComponent implements OnInit {
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
+    this.mode = state;
     setTimeout(() => {
       this.username.nativeElement.focus();
     });
-    if (state == 'create') {
+    if (state == 'add') {
       this.modalService.create({
         nzTitle: 'Add New Sub admin',
         nzContent: temp,
@@ -112,33 +114,44 @@ export class SubAdminComponent implements OnInit {
         ],
         nzWidth: 500,
         nzMaskClosable: false,
-        nzOnCancel: () => this.editClose(),
+        nzOnCancel: () => this.onClose(),
         nzAutofocus: null,
       });
     } else {
-      //
+      this.editSubadmin(item);
+      this.modalService.create({
+        nzTitle: 'Update Sub Admin',
+        nzContent: temp,
+        nzFooter: [
+          {
+            label: 'Update Sub Admin',
+            type: 'primary',
+
+            onClick: () => this.updateSubadmin(item),
+          },
+        ],
+        nzWidth: 500,
+        nzMaskClosable: false,
+        nzOnCancel: () => this.onClose(),
+        nzAutofocus: null,
+      });
     }
   }
 
-  showDeleteConfirm(row: any) {
+  showDeleteConfirm(row_id: any) {
     this.modalService.confirm({
       nzTitle: 'Are you sure you want to delete this sub admin?',
       nzOkText: 'Yes',
       nzOkType: 'primary',
       nzOkDanger: true,
-      nzOnOk: () => console.log('OK'),
+      nzOnOk: () => this.deleteSubadmin(row_id),
       nzCancelText: 'No',
-      nzOnCancel: () => console.log('Cancel'),
+      nzOnCancel: () => this.onClose(),
     });
-    // nzContent: '<b style="color: red;">Sub admin will be permenently deleted</b>',
   }
 
   showUsers(row: any) {
     this.usersVisible = true;
-  }
-
-  deleteRow(row: any) {
-    //
   }
 
   createSubAdmin() {
@@ -167,14 +180,59 @@ export class SubAdminComponent implements OnInit {
     this.matchPasswordErr = false;
     if (
       this.subAdminForm.controls['newPassword'].value !==
-        this.subAdminForm.controls['newPasswordRepeat'].value &&
+      this.subAdminForm.controls['newPasswordRepeat'].value &&
       this.subAdminForm.controls['newPasswordRepeat'].value !== ''
     ) {
       this.matchPasswordErr = true;
     }
   }
 
-  editClose() {
+  onClose() {
     this.modalService.closeAll();
+  }
+
+  editSubadmin(item) {
+    this.subAdminForm.patchValue({
+      username: item.username
+    });
+  }
+
+  updateSubadmin(item) {
+    const formObj = {
+      username: this.subAdminForm.controls['username'].value
+    }
+    this.subAdminService.updateSubAdminApi(item.id, formObj).subscribe(
+      (response) => {
+        let updatedList: any = this.listOfData.map((element) => {
+          if (element['id'] == item.id) {
+            element = response['data'];
+          }
+          return element;
+        });
+        this.listOfData = updatedList;
+        this.subadminList = this.listOfData;
+        this.notification.success(response['message']);
+        this.modalService.closeAll();
+      },
+      (error) => {
+        this.notification.error(error['message']);
+        this.modalService.closeAll();
+      }
+    );
+  }
+
+  deleteSubadmin(subadmin_id) {
+    this.subAdminService.deleteAdminApi(subadmin_id).subscribe(
+      (response) => {
+        this.listOfData = this.listOfData.filter(
+          (element) => element['id'] !== subadmin_id
+        );
+        this.subadminList = this.listOfData;
+        this.notification.success(response['message']);
+      },
+      (error) => {
+        this.notification.error(error['message']);
+      }
+    );
   }
 }

@@ -8,7 +8,7 @@
         nz-button
         nzType="primary"
         style="float: right; margin: 0 15px 15px"
-        (click)="addAdmin()"
+        (click)="addBtn()"
       >
         {{ Config.Header.addTooltipText }}
       </button>
@@ -119,16 +119,10 @@
                 : null
             "
           >
-            <span *ngIf="column.property == 'status'">
+            <!-- <span *ngIf="column.property == 'status'">
               <nz-tag [nzColor]="'#87d068'">Active</nz-tag>
-            </span>
-            <span
-              *ngIf="
-                column.property != 'actions' &&
-                !column.isHtml &&
-                column.property !== 'status'
-              "
-            >
+            </span> -->
+            <span *ngIf="column.property != 'actions' && !column.isHtml">
               <ng-container *ngIf="!column.actionTemplate">
                 <!--  <ng-container
                     *ngIf="
@@ -185,11 +179,7 @@
               </ng-container>
             </span>
             <div
-              *ngIf="
-                column.property != 'actions' &&
-                column.property !== 'status' &&
-                column.isHtml
-              "
+              *ngIf="column.property != 'actions' && column.isHtml"
               [innerHtml]="getData(row, column)"
             ></div>
             <span *ngIf="column.property == 'actions'">
@@ -240,11 +230,11 @@
         </tr>
       </ng-container>
     </ng-container>
-    <ng-container *ngIf="Data.length <= 0">
+    <!-- <ng-container *ngIf="Data.length <= 0">
       <tr>
         <td class="text-center flex-1">{{ Config.noDataLabel }}</td>
       </tr>
-    </ng-container>
+    </ng-container> -->
   </tbody>
 </nz-table>
 <!-- </nz-card> -->

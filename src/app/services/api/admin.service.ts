@@ -30,8 +30,8 @@ export class AdminService {
     return this.http.post(this.createAdmin, data, this.body);
   }
 
-  deleteAdminApi(data) {
-    return this.http.delete(this.deleteAdmin + '/' + data, this.body);
+  deleteAdminApi(id) {
+    return this.http.delete(this.deleteAdmin + '/' + id, this.body);
   }
 
   updateAdminApi(id, data) {

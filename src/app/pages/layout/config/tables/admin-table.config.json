@@ -58,27 +58,6 @@
       }
     },
     {
-      "name": "STATUS",
-      "dataType": "number",
-      "property": "status",
-      "visible": true,
-      "searchable": true,
-      "searchValue": null,
-      "sortable": true,
-      "sortOrder": "",
-      "columnWidth": "150px",
-      "SearchFormTemplate": null,
-      "advanceFilter": {
-        "dataType": "dropdown",
-        "dropdownItems": [],
-        "dpConfig": null,
-        "dprConfig": null,
-        "textMask": null,
-        "placeholder": "",
-        "searchQuery": null
-      }
-    },
-    {
       "name": "ACTIONS",
       "property": "actions",
       "visible": true,
