@@ -99,7 +99,7 @@ export class AdminComponent implements OnInit {
     setTimeout(() => {
       this.adminName.nativeElement.focus();
     });
-    if (state == 'create') {
+    if (state == 'add') {
       this.modalService.create({
         nzTitle: 'Add New Admin',
         nzContent: temp,

@@ -26,7 +26,6 @@
       "searchValue": null,
       "sortable": true,
       "sortOrder": "",
-      "columnWidth": "150px",
       "SearchFormTemplate": null,
       "advanceFilter": {
         "dataType": "text",
@@ -46,7 +45,6 @@
       "searchValue": null,
       "sortable": true,
       "sortOrder": "",
-      "columnWidth": "250px",
       "SearchFormTemplate": null,
       "advanceFilter": {
         "dataType": "text",
@@ -66,7 +64,6 @@
       "searchValue": null,
       "sortable": true,
       "sortOrder": "",
-      "columnWidth": "280px",
       "SearchFormTemplate": null,
       "advanceFilter": {
         "dataType": "date_range",
@@ -86,7 +83,6 @@
       "searchValue": null,
       "sortable": true,
       "sortOrder": "",
-      "columnWidth": "150px",
       "SearchFormTemplate": null,
       "advanceFilter": {
         "dataType": "dropdown",
@@ -104,7 +100,6 @@
       "visible": true,
       "searchable": false,
       "sortable": false,
-      "columnWidth": "150px",
       "actionTemplate": null
     }
   ]
