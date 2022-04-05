@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './auth.guard';
 import { LayoutComponent } from './pages/layout/layout.component';
 
 const routes: Routes = [
@@ -13,7 +14,7 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'dashboard',
@@ -29,13 +30,13 @@ const routes: Routes = [
             (m) => m.AdminModule
           ),
       },
-      /*  {
+      {
         path: 'sub-admin',
         loadChildren: () =>
           import('./pages/layout/components/sub-admin/sub-admin.module').then(
             (m) => m.SubAdminModule
           ),
-      }, */
+      },
       {
         path: 'user',
         loadChildren: () =>
@@ -56,4 +57,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
