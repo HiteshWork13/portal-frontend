@@ -12,7 +12,7 @@ export class SidebarComponent implements OnInit {
   menuItems: any;
   currentUserDetails: any;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     let current_user_details: any = localStorage.getItem(
@@ -20,20 +20,5 @@ export class SidebarComponent implements OnInit {
     );
     this.currentUserDetails = JSON.parse(current_user_details);
     this.menuItems = MENUITEMS;
-    this.roleWiseSidebar();
-  }
-
-  roleWiseSidebar() {
-    this.menuItems.map((element) => {
-      if (
-        element.id == 'admin' &&
-        (this.currentUserDetails.role == 2 || this.currentUserDetails.role == 3)
-      ) {
-        element.enabled = false;
-      } else if (element.id == 'user' && this.currentUserDetails.role == 3) {
-        element.enabled = false;
-      }
-      return element;
-    });
   }
 }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/services/api/login.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { APP_CONST } from 'src/app/shared/constants/app.constant';
 
 @Component({
   selector: 'app-login',
@@ -65,7 +66,16 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('access_token', login_response.access_token);
           this.btn_loader = false;
           this.notification.success(response.message);
-          this.router.navigate(['/dashboard']);
+
+
+          if (login_response.role == APP_CONST.Role.SuperAdmin) {
+            this.router.navigate(['/admin']);
+          } else if (login_response.role == APP_CONST.Role.Admin) {
+            this.router.navigate(['/sub-admin']);
+          } else if (login_response.role == APP_CONST.Role.SubAdmin) {
+            this.router.navigate(['/user']);
+          }
+
         }
       },
       (error) => {

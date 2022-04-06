@@ -5,10 +5,9 @@
   </a>
 </div>
 <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-  <!-- <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard"> -->
   <ul>
     <ng-container *ngFor="let item of menuItems">
-      <li nz-menu-item [nzMatchRouter]="true" *ngIf="item.enabled">
+      <li nz-menu-item [nzMatchRouter]="true" *ngIf="item.enablesIn.indexOf(currentUserDetails.role) > -1">
         <a [routerLink]="item.path">{{ item.title }}</a>
       </li>
     </ng-container>
