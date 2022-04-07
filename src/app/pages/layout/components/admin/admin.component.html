@@ -1,54 +1,22 @@
-<!-- <nz-card> -->
-<div class="page-header p-t-0 m-t-0 minus-m-b-25">
-  <!-- <div class="row align-items-md-center">
-      <div class="col-md-6">hi</div>
-      <div class="col-md-4">hi</div>
-      <div class="col-md-2">hi</div>
-    </div> -->
-</div>
 <ng-container *ngIf="adminTableJSON">
-  <app-table
-    [listOfData]="listOfData"
-    [Config]="adminTableJSON"
-    [Data]="adminList"
-    (header_addClick)="openModal(temp, 'add', '')"
-    (header_deleteClick)="showDeleteConfirm(null)"
-  ></app-table>
+  <app-table [listOfData]="listOfData" [Config]="adminTableJSON" [Data]="adminList"
+    (header_addClick)="openModal(temp, 'add', '')" (header_deleteClick)="showDeleteConfirm(null)"></app-table>
 </ng-container>
-<div *ngIf="isUserVisible" style="margin: 25px 0 0 0">
-  <!-- <app-sub-admin (close)="isUserVisible = false"></app-sub-admin> -->
+<div *ngIf="isSubAdminVisible" style="margin: 25px 0 0 0">
+  <!-- <app-sub-admin (close)="isSubAdminVisible = false"></app-sub-admin> -->
 </div>
 <div *ngIf="isInstallmentVisible" style="margin: 25px 0 0 0">
-  <!-- <app-installments
-      [Data]="installmentData"
-      (close)="isInstallmentVisible = false"
-      ></app-installments> -->
   <app-user></app-user>
 </div>
 <!-- </nz-card> -->
 
-<ng-template
-  #adminActionTemplate
-  let-column="column"
-  let-row="row"
-  let-rowIndex="rowIndex"
-  let-columnIndex="columnIndex"
->
+<ng-template #adminActionTemplate let-column="column" let-row="row" let-rowIndex="rowIndex"
+  let-columnIndex="columnIndex">
   <div style="position: relative" class="text-center" dropdown>
-    <a
-      dropdownToggle
-      class="btn btn-light px-2 py-1 font-size-xl dropdown-toggle"
-      (click)="$event.stopPropagation()"
-    >
+    <a dropdownToggle class="btn btn-light px-2 py-1 font-size-xl dropdown-toggle" (click)="$event.stopPropagation()">
     </a>
     <nz-button-group>
-      <span
-        nz-button
-        nz-dropdown
-        [nzDropdownMenu]="menu1"
-        nzPlacement="bottomRight"
-        style="cursor: pointer"
-      >
+      <span nz-button nz-dropdown [nzDropdownMenu]="menu1" nzPlacement="bottomRight" style="cursor: pointer">
         <i nz-icon nzType="ellipsis"></i>
       </span>
     </nz-button-group>
@@ -57,17 +25,17 @@
         <li nz-menu-item role="menuitem">
           <a class="dropdown-item" (click)="showAssociates(row)">{{
             "Sub admins"
-          }}</a>
+            }}</a>
         </li>
         <li nz-menu-item role="menuitem">
           <a class="dropdown-item" (click)="openModal(temp, 'edit', row)">{{
             "Edit"
-          }}</a>
+            }}</a>
         </li>
         <li nz-menu-item role="menuitem">
           <a class="dropdown-item" (click)="showDeleteConfirm(row.id)">{{
             "Delete"
-          }}</a>
+            }}</a>
         </li>
       </ul>
     </nz-dropdown-menu>
@@ -79,53 +47,28 @@
     <nz-form-item>
       <nz-form-label>Admin Name</nz-form-label>
       <nz-form-control nzErrorTip="Enter a valid admin name">
-        <input
-          nz-input
-          trim="blur"
-          formControlName="username"
-          maxlength="80"
-          #adminName
-          placeholder="Enter admin name"
-        />
+        <input nz-input trim="blur" formControlName="username" maxlength="80" #adminName
+          placeholder="Enter admin name" />
       </nz-form-control>
     </nz-form-item>
     <nz-form-item *ngIf="mode == 'add'">
       <nz-form-label>Admin Email</nz-form-label>
       <nz-form-control nzErrorTip="Enter a valid admin email">
-        <input
-          nz-input
-          trim="blur"
-          formControlName="email"
-          maxlength="80"
-          placeholder="Enter email address"
-        />
+        <input nz-input trim="blur" formControlName="email" maxlength="80" placeholder="Enter email address" />
       </nz-form-control>
     </nz-form-item>
     <nz-form-item *ngIf="mode == 'add'">
-      <nz-form-label nzFor="newPassword" class="text-black"
-        >Password
+      <nz-form-label nzFor="newPassword" class="text-black">Password
       </nz-form-label>
       <nz-form-control [nzErrorTip]="newPasswordRef">
         <nz-input-group [nzPrefix]="prefixLock">
-          <input
-            id="myinputbox"
-            type="password"
-            nz-input
-            formControlName="password"
-            placeholder="Enter new password"
-            autofocus
-          />
+          <input id="myinputbox" type="password" nz-input formControlName="password" placeholder="Enter new password"
+            autofocus />
         </nz-input-group>
         <ng-template #newPasswordRef>
           Password is not valid
-          <i
-            class="fa fa-info-circle float-right pt-1"
-            nzPopoverPlacement="bottom"
-            nz-popover
-            nzType="primary"
-            nzPopoverTitle="Password Criteria"
-            [nzPopoverContent]="popoverContent"
-          ></i>
+          <i class="fa fa-info-circle float-right pt-1" nzPopoverPlacement="bottom" nz-popover nzType="primary"
+            nzPopoverTitle="Password Criteria" [nzPopoverContent]="popoverContent"></i>
         </ng-template>
       </nz-form-control>
     </nz-form-item>

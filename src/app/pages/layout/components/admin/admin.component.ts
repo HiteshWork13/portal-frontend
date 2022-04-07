@@ -23,7 +23,7 @@ export class AdminComponent implements OnInit {
   listOfData: Array<{ name: string; age: number; address: string }> = [];
   adminTableJSON: any = JSON.parse(JSON.stringify((adminJSON as any).default));
   adminList: Array<any> = [...(adminData as any).default.admins];
-  isUserVisible: boolean = false;
+  isSubAdminVisible: boolean = false;
   isInstallmentVisible: boolean = false;
   adminForm: FormGroup;
   matchPasswordErr: boolean = false;
@@ -90,7 +90,7 @@ export class AdminComponent implements OnInit {
   }
 
   showAssociates(row: any) {
-    this.isUserVisible = true;
+    this.isSubAdminVisible = true;
     this.isInstallmentVisible = false;
   }
 
