@@ -12,7 +12,7 @@ export const MENUITEMS = [
     id: 'sub_admin',
     path: '/sub-admin',
     title: 'Sub Admin',
-    enablesIn: [APP_CONST.Role.SuperAdmin, APP_CONST.Role.Admin]
+    enablesIn: [APP_CONST.Role.Admin]
   },
   {
     id: 'user',

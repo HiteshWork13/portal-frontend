@@ -1,0 +1,78 @@
+{
+  "Caption": "Admins",
+  "Header": {
+    "showColumnToggle": true,
+    "showSearch": false,
+    "showAdd": true,
+    "addTooltipText": "Add Admin",
+    "showReset": false,
+    "showDownload": false,
+    "showClose": false
+  },
+  "Pagination": false,
+  "PageSizeChanger": false,
+  "PaginationType": "static",
+  "SortingType": "static",
+  "SearchType": "static",
+  "selectedRowClassName": "selected-row",
+  "noDataLabel": "No Data Found",
+  "Columns": [
+    {
+      "name": "ADMIN NAME",
+      "dataType": "text",
+      "property": "username",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "EMAIL",
+      "dataType": "text",
+      "property": "email",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "date_range",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "STATUS",
+      "dataType": "text",
+      "property": "status",
+      "visible": true,
+      "searchable": false,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null
+    },
+    {
+      "name": "ACTIONS",
+      "property": "actions",
+      "visible": true,
+      "searchable": false,
+      "sortable": false,
+      "actionTemplate": null
+    }
+  ]
+}

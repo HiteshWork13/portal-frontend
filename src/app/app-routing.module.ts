@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth.guard';
 import { LayoutComponent } from './pages/layout/layout.component';
+import { CanActivateGuard } from './shared/guards/can-activate.guard';
 
 const routes: Routes = [
   {
@@ -18,22 +19,18 @@ const routes: Routes = [
     children: [
       {
         path: 'admin',
-        loadChildren: () =>
-          import('./pages/layout/components/admin/admin.module').then(
-            (m) => m.AdminModule
-          ),
+        canActivate: [CanActivateGuard],
+        loadChildren: () => import('./pages/admin/admin.module').then((m) => m.AdminModule),
       },
       {
         path: 'sub-admin',
-        loadChildren: () =>
-          import('./pages/layout/components/sub-admin/sub-admin.module').then(
-            (m) => m.SubAdminModule
-          ),
+        canActivate: [CanActivateGuard],
+        loadChildren: () => import('./pages/sub-admin/sub-admin.module').then((m) => m.SubAdminModule),
       },
       {
         path: 'user',
         loadChildren: () =>
-          import('./pages/layout/components/users/users.module').then(
+          import('./pages/users/users.module').then(
             (m) => m.UsersModule
           ),
       },

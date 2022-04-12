@@ -16,10 +16,27 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "es2020",
-    "lib": ["es2018", "dom"],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "paths": {
+      "@services": [
+        "src/app/shared/services"
+      ],
+      "@configJson": [
+        "src/app/shared/config-json"
+      ],
+      "@models": [
+        "src/app/shared/models"
+      ],
+      "@constants": [
+        "src/app/shared/constants"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

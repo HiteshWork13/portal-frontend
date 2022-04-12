@@ -16,5 +16,8 @@
   },
   "[javascript]": {
     "editor.defaultFormatter": "HookyQR.beautify"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
   }
 }
