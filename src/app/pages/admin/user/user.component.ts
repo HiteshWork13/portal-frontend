@@ -1,15 +1,16 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { userTableConfigJSON } from '@configJson';
 import { AccountService } from '@services';
 import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
+
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss'],
+  selector: 'app-user',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class UserComponent implements OnInit {
 
   @ViewChild('actionTemplate') actionTemplate: TemplateRef<any>;
   accountTableJSON: any = JSON.parse(JSON.stringify((userTableConfigJSON as any)));
@@ -37,23 +38,14 @@ export class UsersComponent implements OnInit {
   isInstallmentVisible: boolean = false;
   userForm: FormGroup;
   matchPasswordErr: boolean = false;
+  @Output() close: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: NzModalService, private accountService: AccountService) { }
 
   ngOnInit(): void {
+    this.getDefaultS();
     this.createForm();
     this.getAccountData();
-    this.accountTableJSON.Header.showClose = false;
-    setTimeout(() => {
-      this.accountTableJSON.Columns = this.accountTableJSON.Columns.map(
-        (column: any) => {
-          if (column.property == 'actions') {
-            column.actionTemplate = this.actionTemplate;
-          }
-          return column;
-        }
-      );
-    }, 0);
   }
 
   createForm() {
@@ -202,5 +194,20 @@ export class UsersComponent implements OnInit {
     ) {
       this.matchPasswordErr = true;
     }
+  }
+
+  getDefaultS() {
+    this.accountTableJSON.Header.showClose = true;
+    this.accountTableJSON.Header.showAdd = false;
+    setTimeout(() => {
+      this.accountTableJSON.Columns = this.accountTableJSON.Columns.map(
+        (column: any) => {
+          if (column.property == 'actions') {
+            column.actionTemplate = this.actionTemplate;
+          }
+          return column;
+        }
+      );
+    }, 0);
   }
 }

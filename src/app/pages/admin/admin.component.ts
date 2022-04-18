@@ -42,7 +42,6 @@ export class AdminComponent implements OnInit {
   getDefaults() {
     let current_user_details: any = localStorage.getItem('current_user_details');
     this.currentUserDetails = JSON.parse(current_user_details);
-
     setTimeout(() => {
       this.adminTableJSON.Columns.map((column: any) => {
         if (column.property == 'actions') {
@@ -74,7 +73,6 @@ export class AdminComponent implements OnInit {
   }
 
   handleAdminRowClick({ data, index }) {
-    console.log("row", data, index);
     this.handleSubAdmin(data);
   }
 

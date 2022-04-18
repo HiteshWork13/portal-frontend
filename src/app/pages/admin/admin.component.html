@@ -4,19 +4,19 @@
 </ng-container>
 
 <div *ngIf="isSubAdminVisible" style="margin: 25px 0 0 0">
-  <app-sub-admin [selectedAdminId]="selectedAdminId" (close)="isSubAdminVisible = false"></app-sub-admin>
+  <app-sub-admin [selectedAdminId]="selectedAdminId" (close)="isSubAdminVisible = false"
+    (SubAdminData)="isInstallmentVisible = $event;"></app-sub-admin>
 </div>
 
-<!-- <div *ngIf="isInstallmentVisible" style="margin: 25px 0 0 0">
-  <app-user></app-user>
-</div> -->
-<!-- </nz-card> -->
+<div *ngIf="isInstallmentVisible" style="margin: 25px 0 0 0">
+  <app-user (close)="isInstallmentVisible = false"></app-user>
+</div>
 
 <ng-template #actionTemplate let-column="column" let-row="row" let-rowIndex="rowIndex" let-columnIndex="columnIndex">
   <div style="position: relative" class="text-center">
 
     <button type="button" nz-button nz-dropdown nzTrigger="click" [nzDropdownMenu]="actionMenu"
-      nzPlacement="bottomRight" style="cursor: pointer">
+      nzPlacement="bottomRight" style="cursor: pointer" (click)="$event.stopPropagation()">
       <i nz-icon nzType="ellipsis"></i>
     </button>
 

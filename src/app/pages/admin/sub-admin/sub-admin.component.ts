@@ -17,6 +17,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
   @Input() selectedAdminId: string = null;
 
   @Output() close: EventEmitter<any> = new EventEmitter();
+  @Output() SubAdminData: EventEmitter<any> = new EventEmitter();
 
   subAdminTableJSON: any = JSON.parse(JSON.stringify((subAdminTableConfigJSON as any)));
 
@@ -75,6 +76,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
   getSubAdminData() {
     this.subAdminService.getAllSubAdmin({ role: 3, created_by: this.selectedAdminId || this.currentUserDetails.id }).then((response: any) => {
       this.subAdminList = response.data;
+      this.SubAdminData.emit(this.subAdminList.length > 0 ? true : false);
     }, (error) => {
       this.notification.error(error.message);
     });
@@ -204,5 +206,33 @@ export class SubAdminComponent implements OnInit, OnChanges {
     }, (error) => {
       this.notification.error(error['message']);
     });
+  }
+
+  showPermissionModal(temp: TemplateRef<{}>) {
+    console.log('subAdminList', this.subAdminList);
+    this.modalService.create({
+      nzTitle: 'Permissions',
+      nzContent: temp,
+      nzFooter: [
+        {
+          label: 'Save Permissions',
+          type: 'primary',
+
+          onClick: () => this.savePermissions(),
+        },
+      ],
+      nzWidth: 500,
+      nzMaskClosable: false,
+      nzOnCancel: () => this.onClose(),
+      nzAutofocus: null,
+    });
+  }
+
+  savePermissions() {
+    // 
+  }
+
+  fnSwitch(row_data) {
+    console.log('row_data: ', row_data);
   }
 }

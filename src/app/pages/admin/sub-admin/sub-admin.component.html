@@ -39,6 +39,29 @@
   </form>
 </ng-template>
 
+<ng-template #permission>
+  <nz-table #fixedTable [nzData]="subAdminList" id="permissionTab" [nzShowPagination]="false">
+    <thead>
+      <tr class="header_row">
+        <th>ID#</th>
+        <th>Name</th>
+        <th style="text-align: center;">Permission</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let row of subAdminList; let ri = index">
+        <tr>
+          <td><span class="truncate">{{ri + 1}}</span></td>
+          <td><span class="truncate">{{row.username}}</span></td>
+          <td style="text-align: center;">
+            <nz-switch nzSize="small" [ngModel]="true" (ngModelChange)="fnSwitch(row)"></nz-switch>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</ng-template>
+
 <ng-template #prefixLock><i nz-icon nzType="lock"></i></ng-template>
 
 <ng-template #popoverContent>
@@ -61,6 +84,9 @@
     <ul nz-menu class="wi-action-menu">
       <li nz-menu-item>
         <a class="dropdown-item" (click)="showUsers(row)">Users</a>
+      </li>
+      <li nz-menu-item>
+        <a class="dropdown-item" (click)="showPermissionModal(permission)">Permissions</a>
       </li>
       <li nz-menu-item>
         <a class="dropdown-item" (click)="openModal(addForm, 'edit', row)">Edit</a>
