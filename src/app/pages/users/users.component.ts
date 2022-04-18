@@ -1,9 +1,9 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { userTableConfigJSON } from '@configJson';
-import { UserService } from '@services';
+import { AccountService } from '@services';
+import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
-
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -12,23 +12,40 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 export class UsersComponent implements OnInit {
 
   @ViewChild('actionTemplate') actionTemplate: TemplateRef<any>;
-  @ViewChild('userName', { static: false }) userName: ElementRef;
-  userTableJSON: any = JSON.parse(JSON.stringify((userTableConfigJSON as any)));
-  userList: Array<any>;
+  accountTableJSON: any = JSON.parse(JSON.stringify((userTableConfigJSON as any)));
+  accountList: Array<any>;
+  modalRef: any;
+  packageList: Array<any> = [
+    {
+      id: 1,
+      label: "Pack 1",
+      credit: 10000
+    },
+    {
+      id: 2,
+      label: "Pack 2",
+      credit: 20000
+    },
+    {
+      id: 3,
+      label: "Pack 3",
+      credit: 30000
+    }
+  ]
 
   isAssociatesVisible: boolean = false;
   isInstallmentVisible: boolean = false;
   userForm: FormGroup;
   matchPasswordErr: boolean = false;
 
-  constructor(private modalService: NzModalService, private userService: UserService) { }
+  constructor(private modalService: NzModalService, private accountService: AccountService) { }
 
   ngOnInit(): void {
     this.createForm();
-    this.getTableData();
-    this.userTableJSON.Header.showClose = false;
+    this.getAccountData();
+    this.accountTableJSON.Header.showClose = false;
     setTimeout(() => {
-      this.userTableJSON.Columns = this.userTableJSON.Columns.map(
+      this.accountTableJSON.Columns = this.accountTableJSON.Columns.map(
         (column: any) => {
           if (column.property == 'actions') {
             column.actionTemplate = this.actionTemplate;
@@ -40,69 +57,93 @@ export class UsersComponent implements OnInit {
   }
 
   createForm() {
+    const email = `${Date.now()}@facitdatasystems.com`;
     this.userForm = new FormGroup({
-      id: new FormControl(null, Validators.required),
-      code: new FormControl(null, Validators.required),
-      firstname: new FormControl(null, Validators.required),
-      lastname: new FormControl(null, Validators.required),
-      companyname: new FormControl(null, Validators.required),
-      phone: new FormControl(null, Validators.required),
-      address: new FormControl(null, Validators.required),
-      postcode: new FormControl(null, Validators.required),
-      country: new FormControl(null, Validators.required),
-      billingemail: new FormControl(null, Validators.required),
-      customerid: new FormControl(null, Validators.required),
-      vat: new FormControl(null, Validators.required),
-      created: new FormControl(null, Validators.required),
-      packageid: new FormControl(null, Validators.required),
-      accounttype: new FormControl(null, Validators.required),
-      credits: new FormControl(null, Validators.required),
-      purchased: new FormControl(null, Validators.required),
-      password: new FormControl(null, Validators.required),
-      email: new FormControl(null, Validators.required),
-      emailverified: new FormControl(null, Validators.required),
-      verificationtoken: new FormControl(null, Validators.required),
-      city: new FormControl(null, Validators.required),
-      triallimit: new FormControl(null, Validators.required),
-      role: new FormControl(null, Validators.required),
-      twofactor: new FormControl(null, Validators.required),
-      totaldevices: new FormControl(null, Validators.required),
-      registrationtype: new FormControl(null, Validators.required),
-      expirydate: new FormControl(null, Validators.required),
-      analyticsstatus: new FormControl(null, Validators.required),
-      packageid_dr: new FormControl(null, Validators.required),
-      size_dr: new FormControl(null, Validators.required),
-      totaldevices_dr: new FormControl(null, Validators.required),
-      expirydate_dr: new FormControl(null, Validators.required),
-      purchasedate: new FormControl(null, Validators.required),
-      payasgo: new FormControl(null, Validators.required),
-      payid: new FormControl(null, Validators.required),
-      communicationstatus: new FormControl(null, Validators.required),
+      code: new FormControl(null),
+      // End User
+      firstname: new FormControl('hitesh'),
+      lastname: new FormControl('kachhadiya'),
+      companyname: new FormControl('hk'),
+      enduser_street: new FormControl('kranti'),
+      enduser_state: new FormControl('gujarat'),
+      postcode: new FormControl('123456'),
+      enduser_email: new FormControl(email),
+      enduser_classification: new FormControl("super"),
+      country: new FormControl('USA'),
+      packageid: new FormControl(null),
+
+      // Reseller
+      reseller_firstname: new FormControl('mark'),
+      reseller_lastname: new FormControl('Oliver'),
+      reseller_company: new FormControl('MK'),
+      reseller_street: new FormControl('bajarang'),
+      reseller_state: new FormControl('gujarat'),
+      reseller_code: new FormControl('456789'),
+      reseller_email: new FormControl(email),
+
+      // Hard Core Values
+      triallimit: new FormControl(7),
+      password: new FormControl(`${Date.now()}${Math.random()}`),
+      totaldevices: new FormControl(1),
+      twofactor: new FormControl(false),
+      expirydate: new FormControl(moment().add(7, 'd').format('YYYY-MM-DD')),
+      payasgo: new FormControl(false),
+      payid: new FormControl(1),
+      billingemail: new FormControl(email),
+      credits: new FormControl(60000),
+      accounttype: new FormControl(1),
+      email: new FormControl(email),
+      purchased: new FormControl(true),
+      role: new FormControl(4),
+      registrationtype: new FormControl(0),
+      analyticsstatus: new FormControl(true),
+      communicationstatus: new FormControl(true),
+      phone: new FormControl(null),
+      customerid: new FormControl(null),
+      address: new FormControl(null),
+      vat: new FormControl(null),
+      city: new FormControl(null),
+      verificationtoken: new FormControl(null),
+
+      // packageid_dr: new FormControl(null),
+      // size_dr: new FormControl(null),
+      // totaldevices_dr: new FormControl(null),
+      // expirydate_dr: new FormControl(null),
     });
   }
 
-  getTableData() {
-    // this.userService.getSingleSubAdmin()
-    console.log("Get Users");
+  handleCredit(e) {
+    const selectedPack = this.packageList.find(pack => pack.id == e)
+    if (selectedPack) {
+      this.userForm.controls.credits.setValue(selectedPack['credit'])
+    }
+  }
+
+  async getAccountData() {
+    console.log("Get account");
+    this.accountService.getAllAccountsOfCurrentUser({}).then((account: any) => {
+      console.log("account", account);
+      if (account.success) {
+        this.accountList = account.data;
+      }
+    }, error => {
+      console.log("Error", error);
+    });
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
-    setTimeout(() => {
-      this.userName.nativeElement.focus();
-    });
     if (state == 'create') {
-      this.modalService.create({
-        nzTitle: 'Add New User',
+      this.modalRef = this.modalService.create({
+        nzTitle: 'Add New Account',
         nzContent: temp,
         nzFooter: [
           {
-            label: 'Save User',
+            label: 'Save',
             type: 'primary',
-
             onClick: () => this.onSubmit(),
           },
         ],
-        nzWidth: 500,
+        nzWidth: '80%',
         nzMaskClosable: false,
         nzOnCancel: () => this.editClose(),
         nzAutofocus: null,
@@ -127,39 +168,28 @@ export class UsersComponent implements OnInit {
     // nzContent: '<b style="color: red;">User will be permenently deleted</b>',
   }
 
-  showAssociates(row: any) {
-    /* Fire after click on `Reminders` option from menu of action column */
-    // this.isInstallmentVisible = false;
-    this.isAssociatesVisible = true;
-    this.isInstallmentVisible = false;
-  }
-
-  deleteRow(row: any) {
-    /* Fire after click on `Delete`  option from menu of action column */
-    // const Config = {
-    //   initialState: {
-    //     title: 'Delete confirmation',
-    //     body_message: 'Are you sure you want perform this operation ?',
-    //     cancel_button_text: 'Cancel',
-    //     ok_button_text: 'Yes',
-    //   },
-    // };
-    // this.deleteConfirmRef = this.modalService.openModalFromComponent(
-    //   ConfirmDialogComponent,
-    //   Config
-    // );
-    // this.deleteConfirmRef.content.close.subscribe((isPressYes: boolean) => {
-    //   /* Fire this event after confirm from dialog */
-    // });
-  }
-
   onSubmit() {
     for (const i in this.userForm.controls) {
       this.userForm.controls[i].markAsDirty();
       this.userForm.controls[i].updateValueAndValidity();
     }
     if (this.userForm.valid && !this.matchPasswordErr) {
-      //
+      console.log('this.userForm.value: ', this.userForm.value);
+      const currentUser = JSON.parse(localStorage.getItem("current_user_details"));
+      this.userForm.value['created_by'] = currentUser.id;
+      this.userForm.value['packageid_dr'] = this.userForm.value['packageid'];
+      this.userForm.value['totaldevices_dr'] = this.userForm.value['totaldevices'];
+      this.userForm.value['expirydate_dr'] = this.userForm.value['expirydate'];
+      this.userForm.value['size_dr'] = 0;
+      this.accountService.createAccount(this.userForm.value).then((result: any) => {
+        console.log("result", result);
+        if (result.success) {
+          this.accountList.push(result.data)
+        }
+        this.modalRef.destroy();
+      }, error => {
+        console.log("error", error);
+      })
     }
   }
 

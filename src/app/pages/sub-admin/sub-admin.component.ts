@@ -74,7 +74,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
   }
 
   getSubAdminData() {
-    this.subAdminService.getSubAdminsApi({ role: 3, created_by: this.currentUserDetails.id }).subscribe((response: any) => {
+    this.subAdminService.getAllSubAdmin({ role: 3, created_by: this.currentUserDetails.id }).then((response: any) => {
       this.subAdminList = response.data;
     }, (error) => {
       this.notification.error(error.message);
@@ -147,7 +147,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
     }
     if (this.subAdminForm.valid && !this.matchPasswordErr) {
       const formObj = this.subAdminForm.value;
-      this.subAdminService.createSubAdminApi(formObj).subscribe((response) => {
+      this.subAdminService.createSubAdmin(formObj).then((response) => {
         this.subAdminList = [...this.subAdminList, response['data']];
         this.modalService.closeAll();
         this.notification.success(response['message']);
@@ -183,26 +183,23 @@ export class SubAdminComponent implements OnInit, OnChanges {
     const formObj = {
       username: this.subAdminForm.controls['username'].value
     }
-    this.subAdminService.updateSubAdminApi(item.id, formObj).subscribe(
-      (response) => {
-        this.subAdminList = this.subAdminList.map((element) => {
-          if (element['id'] == item.id) {
-            element = response['data'];
-          }
-          return element;
-        });
-        this.notification.success(response['message']);
-        this.modalService.closeAll();
-      },
-      (error) => {
-        this.notification.error(error['message']);
-        this.modalService.closeAll();
-      }
-    );
+    this.subAdminService.updateSubAdmin(item.id, formObj).then((response) => {
+      this.subAdminList = this.subAdminList.map((element) => {
+        if (element['id'] == item.id) {
+          element = response['data'];
+        }
+        return element;
+      });
+      this.notification.success(response['message']);
+      this.modalService.closeAll();
+    }, (error) => {
+      this.notification.error(error['message']);
+      this.modalService.closeAll();
+    });
   }
 
   deleteSubadmin(subadmin_id) {
-    this.subAdminService.deleteAdminApi(subadmin_id).subscribe((response) => {
+    this.subAdminService.deleteSubAdmin(subadmin_id).then((response) => {
       this.subAdminList = this.subAdminList.filter((element) => element['id'] !== subadmin_id);
       this.notification.success(response['message']);
     }, (error) => {

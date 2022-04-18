@@ -1,16 +1,14 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { config } from '../../app.config';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  superAdminLogin = config() + 'auth/adminLogin';
 
-  constructor(private http: HttpClient) { }
+  constructor(private dataService: DataService) { }
 
   LogIn(data: any) {
-    return this.http.post(this.superAdminLogin, data);
+    return this.dataService.POST('/auth/adminLogin', data);
   }
 }

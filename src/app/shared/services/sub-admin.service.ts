@@ -1,40 +1,26 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { config } from '../../app.config';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SubAdminService {
-  body: any;
-  getAllSubAdmins = config() + 'admin/getAllAdminByRoleIdAndCreatedId';
-  createSubAdmin = config() + 'admin/createAdminUser';
-  deleteSubAdmin = config() + 'admin/deleteAdminById';
-  updateSubAdmin = config() + 'admin/updateAdminById';
 
-  constructor(private http: HttpClient) {
-    let headers = new HttpHeaders({
-      Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-    });
-    this.body = {
-      headers: headers,
-      responseType: 'json',
-    };
+  constructor(private dataService: DataService) { }
+
+  getAllSubAdmin(data: any) {
+    return this.dataService.POST('/admin/getAllAdminByRoleIdAndCreatedId', data);
   }
 
-  createSubAdminApi(data) {
-    return this.http.post(this.createSubAdmin, data, this.body);
+  createSubAdmin(data: any) {
+    return this.dataService.POST('/admin/createAdminUser', data);
   }
 
-  getSubAdminsApi(data) {
-    return this.http.post(this.getAllSubAdmins, data, this.body);
+  deleteSubAdmin(id) {
+    return this.dataService.DELETE(`/admin/deleteAdminById/${id}`);
   }
 
-  updateSubAdminApi(id, data) {
-    return this.http.put(this.updateSubAdmin + '/' + id, data, this.body);
-  }
-
-  deleteAdminApi(id) {
-    return this.http.delete(this.deleteSubAdmin + '/' + id, this.body);
+  updateSubAdmin(id, data) {
+    return this.dataService.PUT(`/admin/updateAdminById/${id}`, data);
   }
 }

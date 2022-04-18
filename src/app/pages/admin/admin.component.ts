@@ -66,7 +66,7 @@ export class AdminComponent implements OnInit {
   }
 
   getAdminData() {
-    this.adminService.getAdminsApi({ role: 2, created_by: this.currentUserDetails.id }).subscribe((response: any) => {
+    this.adminService.getAllAdmin({ role: 2, created_by: this.currentUserDetails.id }).then((response: any) => {
       this.adminList = response.data;
     }, (error) => {
       this.notification.error(error.message);
@@ -150,7 +150,7 @@ export class AdminComponent implements OnInit {
   }
 
   deleteAdmin(admin_id) {
-    this.adminService.deleteAdminApi(admin_id).subscribe(
+    this.adminService.deleteAdmin(admin_id).then(
       (response) => {
         this.adminList = this.adminList.filter((element) => element['id'] !== admin_id);
         this.notification.success(response['message']);
@@ -166,7 +166,7 @@ export class AdminComponent implements OnInit {
     }
     if (this.adminForm.valid && !this.matchPasswordErr) {
       const formObj = this.adminForm.value;
-      this.adminService.createAdminapi(formObj).subscribe(
+      this.adminService.createAdmin(formObj).then(
         (response) => {
           this.adminList = [...this.adminList, response['data']];
           this.modalService.closeAll();
@@ -184,22 +184,19 @@ export class AdminComponent implements OnInit {
     const formObj = {
       username: this.adminForm.controls['username'].value
     }
-    this.adminService.updateAdminApi(item.id, formObj).subscribe(
-      (response) => {
-        this.adminList = this.adminList.map((element) => {
-          if (element['id'] == item.id) {
-            element = response['data'];
-          }
-          return element;
-        });
-        this.notification.success(response['message']);
-        this.modalService.closeAll();
-      },
-      (error) => {
-        this.notification.error(error['message']);
-        this.modalService.closeAll();
-      }
-    );
+    this.adminService.updateAdmin(item.id, formObj).then((response) => {
+      this.adminList = this.adminList.map((element) => {
+        if (element['id'] == item.id) {
+          element = response['data'];
+        }
+        return element;
+      });
+      this.notification.success(response['message']);
+      this.modalService.closeAll();
+    }, (error) => {
+      this.notification.error(error['message']);
+      this.modalService.closeAll();
+    });
   }
 
   matchPassword() {

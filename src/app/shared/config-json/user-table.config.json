@@ -18,9 +18,9 @@
   "noDataLabel": "No Data Found",
   "Columns": [
     {
-      "name": "USER NAME",
+      "name": "Name",
       "dataType": "text",
-      "property": "user_name",
+      "property": "firstname",
       "visible": true,
       "searchable": true,
       "searchValue": null,
@@ -37,9 +37,9 @@
       }
     },
     {
-      "name": "CREATED AT",
+      "name": "Company Name",
       "dataType": "text",
-      "property": "created_at",
+      "property": "companyname",
       "visible": true,
       "searchable": true,
       "searchValue": null,
@@ -56,9 +56,9 @@
       }
     },
     {
-      "name": "STATUS",
+      "name": "Country",
       "dataType": "text",
-      "property": "status",
+      "property": "country",
       "visible": true,
       "searchable": true,
       "searchValue": null,
@@ -66,7 +66,45 @@
       "sortOrder": "",
       "SearchFormTemplate": null,
       "advanceFilter": {
-        "dataType": "dropdown",
+        "dataType": "date_range",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "Email",
+      "dataType": "text",
+      "property": "enduser_email",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "Created By",
+      "dataType": "text",
+      "property": "created_by",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
         "dropdownItems": [],
         "dpConfig": null,
         "dprConfig": null,

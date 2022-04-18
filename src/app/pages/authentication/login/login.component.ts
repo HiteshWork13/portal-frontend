@@ -47,40 +47,35 @@ export class LoginComponent implements OnInit {
 
   fnLogin(data: any) {
     this.btn_loader = true;
-    this.loginservice.LogIn(data).subscribe(
-      (response: any) => {
-        if (response?.success) {
-          let login_response: any = response.data;
-          let current_user_details: any = {
-            id: login_response.id,
-            username: login_response.username,
-            email: login_response.email,
-            role: login_response.role,
-            status: login_response.status,
-          };
-          localStorage.setItem(
-            'current_user_details',
-            JSON.stringify(current_user_details)
-          );
-          localStorage.setItem('access_token', login_response.access_token);
-          this.btn_loader = false;
-          this.notification.success(response.message);
-
-
-          if (login_response.role == APP_CONST.Role.SuperAdmin) {
-            this.router.navigate(['/admin']);
-          } else if (login_response.role == APP_CONST.Role.Admin) {
-            this.router.navigate(['/sub-admin']);
-          } else if (login_response.role == APP_CONST.Role.SubAdmin) {
-            this.router.navigate(['/user']);
-          }
-
-        }
-      },
-      (error) => {
+    this.loginservice.LogIn(data).then((response: any) => {
+      if (response?.success) {
+        let login_response: any = response.data;
+        let current_user_details: any = {
+          id: login_response.id,
+          username: login_response.username,
+          email: login_response.email,
+          role: login_response.role,
+          status: login_response.status,
+        };
+        localStorage.setItem('current_user_details', JSON.stringify(current_user_details));
+        localStorage.setItem('current_user_id', current_user_details.id);
+        localStorage.setItem('access_token', login_response.access_token);
         this.btn_loader = false;
-        this.notification.error(error.message);
+        this.notification.success(response.message);
+
+
+        if (login_response.role == APP_CONST.Role.SuperAdmin) {
+          this.router.navigate(['/admin']);
+        } else if (login_response.role == APP_CONST.Role.Admin) {
+          this.router.navigate(['/sub-admin']);
+        } else if (login_response.role == APP_CONST.Role.SubAdmin) {
+          this.router.navigate(['/user']);
+        }
+
       }
-    );
+    }, (error) => {
+      this.btn_loader = false;
+      this.notification.error(error.message);
+    });
   }
 }
