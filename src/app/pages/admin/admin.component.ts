@@ -18,14 +18,15 @@ export class AdminComponent implements OnInit {
   // listOfData: Array<{ name: string; age: number; address: string }> = [];
   adminList: Array<any>;
   isSubAdminVisible: boolean = false;
-  isInstallmentVisible: boolean = false;
+  isAccountsVisible: boolean = false;
   adminForm: FormGroup;
   matchPasswordErr: boolean = false;
   currentUserDetails: any;
   mode: string = 'add';
 
   // When click on particular admin
-  selectedAdminId: string = null;
+  selectedAdminIdForSubAdmin: string = null;
+  selectedAdminIdForAccounts: string = null;
 
   constructor(
     private modalService: NzModalService,
@@ -60,12 +61,12 @@ export class AdminComponent implements OnInit {
       password: new FormControl(null, Validators.required),
       status: new FormControl(1),
       role: new FormControl(2),
-      created_by: new FormControl(String(this.currentUserDetails.id)),
+      // created_by: new FormControl(String(this.currentUserDetails.id)),
     });
   }
 
   getAdminData() {
-    this.adminService.getAllAdmin({ role: 2, created_by: this.currentUserDetails.id }).then((response: any) => {
+    this.adminService.getAllAdmin({ role: 2, created_by_id: this.currentUserDetails.id }).then((response: any) => {
       this.adminList = response.data;
     }, (error) => {
       this.notification.error(error.message);
@@ -74,11 +75,17 @@ export class AdminComponent implements OnInit {
 
   handleAdminRowClick({ data, index }) {
     this.handleSubAdmin(data);
+    this.handleAccounts(data);
   }
 
   handleSubAdmin(data) {
-    this.selectedAdminId = data.id;
+    this.selectedAdminIdForSubAdmin = data.id;
     this.isSubAdminVisible = true;
+  }
+
+  handleAccounts(data) {
+    this.selectedAdminIdForAccounts = data.id;
+    this.isAccountsVisible = true;
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {

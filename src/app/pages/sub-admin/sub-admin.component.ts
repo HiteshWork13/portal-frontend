@@ -20,12 +20,13 @@ export class SubAdminComponent implements OnInit, OnChanges {
 
   subAdminList: Array<any>;
 
-  isAssociatesVisible: boolean = false;
-  usersVisible: boolean = false;
+  isAccountsVisible: boolean = false;
   subAdminForm: FormGroup;
   matchPasswordErr: boolean = false;
   currentUserDetails: any;
   mode: string = 'add';
+
+  selectedSubAdminId: string;
 
   constructor(
     private modalService: NzModalService,
@@ -69,12 +70,12 @@ export class SubAdminComponent implements OnInit, OnChanges {
       password: new FormControl(null, Validators.required),
       status: new FormControl(1),
       role: new FormControl(3),
-      created_by: new FormControl(this.currentUserDetails.id),
+      // created_by: new FormControl(this.currentUserDetails.id),
     });
   }
 
   getSubAdminData() {
-    this.subAdminService.getAllSubAdmin({ role: 3, created_by: this.currentUserDetails.id }).then((response: any) => {
+    this.subAdminService.getAllSubAdmin({ role: 3, created_by_id: this.currentUserDetails.id }).then((response: any) => {
       this.subAdminList = response.data;
     }, (error) => {
       this.notification.error(error.message);
@@ -136,8 +137,9 @@ export class SubAdminComponent implements OnInit, OnChanges {
     });
   }
 
-  showUsers(row: any) {
-    this.usersVisible = true;
+  showAccounts(row: any) {
+    this.selectedSubAdminId = row['id'];
+    this.isAccountsVisible = true;
   }
 
   createSubAdmin() {

@@ -12,6 +12,8 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 export class UsersComponent implements OnInit {
 
   @ViewChild('actionTemplate') actionTemplate: TemplateRef<any>;
+  @ViewChild('created_by_template') created_by_template: TemplateRef<any>;
+
   accountTableJSON: any = JSON.parse(JSON.stringify((userTableConfigJSON as any)));
   accountList: Array<any>;
   modalRef: any;
@@ -41,19 +43,9 @@ export class UsersComponent implements OnInit {
   constructor(private modalService: NzModalService, private accountService: AccountService) { }
 
   ngOnInit(): void {
+    this.getDefaults();
     this.createForm();
     this.getAccountData();
-    this.accountTableJSON.Header.showClose = false;
-    setTimeout(() => {
-      this.accountTableJSON.Columns = this.accountTableJSON.Columns.map(
-        (column: any) => {
-          if (column.property == 'actions') {
-            column.actionTemplate = this.actionTemplate;
-          }
-          return column;
-        }
-      );
-    }, 0);
   }
 
   createForm() {
@@ -61,24 +53,24 @@ export class UsersComponent implements OnInit {
     this.userForm = new FormGroup({
       code: new FormControl(null),
       // End User
-      firstname: new FormControl(null),
-      lastname: new FormControl(null),
-      companyname: new FormControl(null),
-      enduser_street: new FormControl(null),
-      enduser_state: new FormControl(null),
-      postcode: new FormControl(null),
+      firstname: new FormControl("Hitesh"),
+      lastname: new FormControl("kakchhadiya"),
+      companyname: new FormControl("HK"),
+      enduser_street: new FormControl("kranti"),
+      enduser_state: new FormControl("Gujarat"),
+      postcode: new FormControl("123456"),
       enduser_email: new FormControl(email),
-      enduser_classification: new FormControl(null),
-      country: new FormControl(null),
-      packageid: new FormControl(null),
+      enduser_classification: new FormControl("Super"),
+      country: new FormControl("USA"),
+      packageid: new FormControl(1),
 
       // Reseller
-      reseller_firstname: new FormControl(null),
-      reseller_lastname: new FormControl(null),
-      reseller_company: new FormControl(null),
-      reseller_street: new FormControl(null),
-      reseller_state: new FormControl(null),
-      reseller_code: new FormControl(null),
+      reseller_firstname: new FormControl("Mark"),
+      reseller_lastname: new FormControl("Oliver"),
+      reseller_company: new FormControl("Mark Company"),
+      reseller_street: new FormControl("bajarang"),
+      reseller_state: new FormControl("Surat"),
+      reseller_code: new FormControl('1'),
       reseller_email: new FormControl(email),
 
       // Hard Core Values
@@ -175,8 +167,8 @@ export class UsersComponent implements OnInit {
     }
     if (this.userForm.valid && !this.matchPasswordErr) {
       console.log('this.userForm.value: ', this.userForm.value);
-      const currentUser = JSON.parse(localStorage.getItem("current_user_details"));
-      this.userForm.value['created_by'] = currentUser.id;
+      // const currentUser = JSON.parse(localStorage.getItem("current_user_details"));
+      // this.userForm.value['created_by_id'] = currentUser.id;
       this.userForm.value['packageid_dr'] = this.userForm.value['packageid'];
       this.userForm.value['totaldevices_dr'] = this.userForm.value['totaldevices'];
       this.userForm.value['expirydate_dr'] = this.userForm.value['expirydate'];
@@ -202,5 +194,21 @@ export class UsersComponent implements OnInit {
     ) {
       this.matchPasswordErr = true;
     }
+  }
+
+  getDefaults() {
+    this.accountTableJSON.Header.showClose = false;
+    setTimeout(() => {
+      this.accountTableJSON.Columns = this.accountTableJSON.Columns.map(
+        (column: any) => {
+          if (column.property == 'actions') {
+            column.actionTemplate = this.actionTemplate;
+          } else if (column.property == 'created_by') {
+            column.actionTemplate = this.created_by_template;
+          }
+          return column;
+        }
+      );
+    }, 0);
   }
 }

@@ -17,14 +17,13 @@ export class SubAdminComponent implements OnInit, OnChanges {
   @Input() selectedAdminId: string = null;
 
   @Output() close: EventEmitter<any> = new EventEmitter();
-  @Output() SubAdminData: EventEmitter<any> = new EventEmitter();
+  @Output() onViewAccountOption: EventEmitter<any> = new EventEmitter();
 
   subAdminTableJSON: any = JSON.parse(JSON.stringify((subAdminTableConfigJSON as any)));
 
   subAdminList: Array<any>;
 
   isAssociatesVisible: boolean = false;
-  usersVisible: boolean = false;
   subAdminForm: FormGroup;
   matchPasswordErr: boolean = false;
   currentUserDetails: any;
@@ -69,14 +68,13 @@ export class SubAdminComponent implements OnInit, OnChanges {
       password: new FormControl(null, Validators.required),
       status: new FormControl(1),
       role: new FormControl(3),
-      created_by: new FormControl(this.currentUserDetails.id),
+      // created_by: new FormControl(this.currentUserDetails.id),
     });
   }
 
   getSubAdminData() {
-    this.subAdminService.getAllSubAdmin({ role: 3, created_by: this.selectedAdminId || this.currentUserDetails.id }).then((response: any) => {
+    this.subAdminService.getAllSubAdmin({ role: 3, created_by_id: this.selectedAdminId || this.currentUserDetails.id }).then((response: any) => {
       this.subAdminList = response.data;
-      this.SubAdminData.emit(this.subAdminList.length > 0 ? true : false);
     }, (error) => {
       this.notification.error(error.message);
     });
@@ -137,8 +135,8 @@ export class SubAdminComponent implements OnInit, OnChanges {
     });
   }
 
-  showUsers(row: any) {
-    this.usersVisible = true;
+  showAccounts(row: any) {
+    this.onViewAccountOption.emit(row);
   }
 
   createSubAdmin() {

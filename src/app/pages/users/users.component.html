@@ -33,6 +33,10 @@
     </div>
 </ng-template>
 
+<ng-template #created_by_template let-row="row" let-column="column">
+    {{row[column.property]['username']}}
+</ng-template>
+
 <ng-template #formTemplate>
     <form nz-form nzLayout="vertical" id="addUserForm" [formGroup]="userForm" (ngSubmit)="onSubmit()">
         <div nz-row>

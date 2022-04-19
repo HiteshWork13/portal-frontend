@@ -5,6 +5,11 @@
     (header_closeClick)="close.emit()"></app-table>
 </ng-container>
 
+<div *ngIf="isAccountsVisible" style="margin: 25px 0 0 0">
+  <app-user [selectedAdminId]="selectedSubAdminId" (close)="isAccountsVisible = false;"></app-user>
+</div>
+
+
 <ng-template #addForm>
   <form nz-form nzLayout="vertical" id="addSubAdminForm" [formGroup]="subAdminForm">
     <nz-form-item>
@@ -60,7 +65,7 @@
   <nz-dropdown-menu #actionMenu="nzDropdownMenu">
     <ul nz-menu class="wi-action-menu">
       <li nz-menu-item>
-        <a class="dropdown-item" (click)="showUsers(row)">Users</a>
+        <a class="dropdown-item" (click)="showAccounts(row)">Users</a>
       </li>
       <li nz-menu-item>
         <a class="dropdown-item" (click)="openModal(addForm, 'edit', row)">Edit</a>

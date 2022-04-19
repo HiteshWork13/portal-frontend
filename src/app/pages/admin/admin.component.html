@@ -4,12 +4,12 @@
 </ng-container>
 
 <div *ngIf="isSubAdminVisible" style="margin: 25px 0 0 0">
-  <app-sub-admin [selectedAdminId]="selectedAdminId" (close)="isSubAdminVisible = false"
-    (SubAdminData)="isInstallmentVisible = $event;"></app-sub-admin>
+  <app-sub-admin [selectedAdminId]="selectedAdminIdForSubAdmin"
+    (onViewAccountOption)="handleAccounts({ id: $event['id'] })" (close)="isSubAdminVisible = false"></app-sub-admin>
 </div>
 
-<div *ngIf="isInstallmentVisible" style="margin: 25px 0 0 0">
-  <app-user (close)="isInstallmentVisible = false"></app-user>
+<div *ngIf="isAccountsVisible" style="margin: 25px 0 0 0">
+  <app-user [selectedAdminId]="selectedAdminIdForAccounts" (close)="isAccountsVisible = false"></app-user>
 </div>
 
 <ng-template #actionTemplate let-column="column" let-row="row" let-rowIndex="rowIndex" let-columnIndex="columnIndex">
