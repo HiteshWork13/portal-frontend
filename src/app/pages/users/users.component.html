@@ -34,7 +34,7 @@
 </ng-template>
 
 <ng-template #created_by_template let-row="row" let-column="column">
-    {{row[column.property]['username']}}
+    <span *ngIf="row[column.property]">{{row[column.property]['username']}}</span>
 </ng-template>
 
 <ng-template #formTemplate>
