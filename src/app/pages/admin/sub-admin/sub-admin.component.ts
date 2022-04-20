@@ -86,6 +86,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
       this.username.nativeElement.focus();
     });
     if (state == 'add') {
+      this.createForm();
       this.modalService.create({
         nzTitle: 'Add New Sub admin',
         nzContent: temp,

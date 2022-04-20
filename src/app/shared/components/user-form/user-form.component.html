@@ -1,0 +1,304 @@
+<form nz-form nzLayout="vertical" id="addUserForm" [formGroup]="userForm">
+    <div nz-row>
+        <div nz-col nzSpan="24">
+            <h3>End User Details</h3>
+        </div>
+    </div>
+    <!-- <nz-form-item>
+            <nz-form-label>Code</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid code">
+                <input nz-input trim="blur" formControlName="code" maxlength="80" #code
+                    placeholder="Enter account code" />
+            </nz-form-control>
+        </nz-form-item> -->
+    <div nz-row [nzGutter]="32">
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid first name">
+                    <input nz-input trim="blur" formControlName="firstname" maxlength="80" #firstName
+                        placeholder="First Name" tabindex="1" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid company name">
+                    <input nz-input trim="blur" formControlName="companyname" maxlength="80" #companyName
+                        placeholder="Company Name" tabindex="3" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid state">
+                    <input nz-input trim="blur" formControlName="enduser_state" maxlength="80" #enduserstate
+                        placeholder="State" tabindex="5" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid email">
+                    <input nz-input trim="blur" formControlName="email" maxlength="80" #email
+                        placeholder="Email Address" tabindex="7" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid country">
+                    <nz-select formControlName="country" nzPlaceHolder="Select Country" tabindex="9">
+                        <nz-option nzValue="1" nzLabel="India"></nz-option>
+                        <nz-option nzValue="2" nzLabel="USA"></nz-option>
+                        <nz-option nzValue="3" nzLabel="UK"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid last name">
+                    <input nz-input trim="blur" formControlName="lastname" maxlength="80" #lastName
+                        placeholder="Last Name" tabindex="2" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid street">
+                    <input nz-input trim="blur" formControlName="enduser_street" maxlength="80" #enduserstreet
+                        placeholder="Street" tabindex="4" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid postcode">
+                    <input nz-input trim="blur" formControlName="postcode" maxlength="80" #postcode
+                        placeholder="Postcode" tabindex="6" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid Classification">
+                    <input nz-input trim="blur" formControlName="enduser_classification" maxlength="80"
+                        #enduserclassification placeholder="Classification" tabindex="8" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid package">
+                    <nz-select formControlName="packageid" nzPlaceHolder="Select Package" tabindex="10"
+                        (ngModelChange)="handleCredit($event)">
+                        <nz-option *ngFor="let pack of packageList" [nzValue]="pack.id" [nzLabel]="pack.label">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+
+    <div nz-row>
+        <div nz-col nzSpan="24">
+            <h3>Reseller Details</h3>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="32">
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid Firstname">
+                    <input nz-input trim="blur" formControlName="reseller_firstname" maxlength="80" #resellerfirstname
+                        placeholder="Firstname" tabindex="11" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid Company">
+                    <input nz-input trim="blur" formControlName="reseller_company" maxlength="80" #resellercompany
+                        placeholder="Company Name" tabindex="13" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid State">
+                    <input nz-input trim="blur" formControlName="reseller_state" maxlength="80" #resellerstate
+                        placeholder="State" tabindex="15" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid Email">
+                    <input nz-input trim="blur" formControlName="reseller_email" maxlength="80" #reselleremail
+                        placeholder="Email Address" tabindex="17" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid Lastname">
+                    <input nz-input trim="blur" formControlName="reseller_lastname" maxlength="80" #resellerlastname
+                        placeholder="Lastname" tabindex="12" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid Street">
+                    <input nz-input trim="blur" formControlName="reseller_street" maxlength="80" #resellerstreet
+                        placeholder="Street" tabindex="14" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Enter a valid Postcode">
+                    <input nz-input trim="blur" formControlName="reseller_code" maxlength="80" #resellercode
+                        placeholder="Postcode" tabindex="16" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <!-- <nz-form-item>
+            <nz-form-label>#Customer ID</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid customerid">
+                <input nz-input trim="blur" formControlName="customerid" maxlength="80" #customerid
+                    placeholder="Enter customerid" />
+            </nz-form-control>
+        </nz-form-item> -->
+    <!-- <nz-form-item>
+            <nz-form-label>VAT</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid vat">
+                <input nz-input trim="blur" formControlName="vat" maxlength="80" #vat placeholder="Enter vat" />
+            </nz-form-control>
+        </nz-form-item> -->
+
+    <!--  <nz-form-item>
+            <nz-form-label>Account Type</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid accounttype">
+                <input nz-input trim="blur" formControlName="accounttype" maxlength="80" #accounttype
+                    placeholder="Enter accounttype" />
+            </nz-form-control>
+        </nz-form-item> -->
+    <!--  <nz-form-item>
+            <nz-form-label>Credits</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid credits">
+                <input name="credits" nz-input type="number" trim="blur" formControlName="credits" maxlength="80"
+                    #credits placeholder="Enter credits" />
+            </nz-form-control>
+        </nz-form-item> -->
+    <!--  <nz-form-item>
+            <nz-form-label>Purchased</nz-form-label>
+            <nz-form-control>
+                <nz-switch #purchased formControlName="purchased"></nz-switch>
+            </nz-form-control>
+        </nz-form-item> -->
+    <!--  <nz-form-item>
+            <nz-form-label nzFor="password" class="text-black">Password
+            </nz-form-label>
+            <nz-form-control nzErrorTip="Password is not valid">
+                <nz-input-group>
+                    <input #name type="password" nz-input formControlName="password" placeholder="Enter new password" />
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item> -->
+    <!-- <nz-form-item>
+            <nz-form-label>Email</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid email">
+                <input nz-input trim="blur" formControlName="email" maxlength="80" #email
+                    placeholder="Enter email address" />
+            </nz-form-control>
+        </nz-form-item> -->
+    <!-- <nz-form-item>
+            <nz-form-label>City</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid city">
+                <input nz-input trim="blur" formControlName="city" maxlength="80" #city placeholder="Enter city" />
+            </nz-form-control>
+        </nz-form-item> -->
+    <!-- <nz-form-item>
+            <nz-form-label>Trial limit</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid trial limit">
+                <input nz-input trim="blur" formControlName="triallimit" maxlength="80" #triallimit
+                    placeholder="Enter triallimit" />
+            </nz-form-control>
+        </nz-form-item> -->
+    <!-- <nz-form-item>
+            <nz-form-label>Address</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid address">
+                <input nz-input trim="blur" formControlName="address" maxlength="80" #address placeholder="Enter address" />
+            </nz-form-control>
+        </nz-form-item> -->
+    <!-- <nz-form-item>
+            <nz-form-label>Two Factor</nz-form-label>
+            <nz-form-control>
+                <nz-switch #twofactor formControlName="twofactor"></nz-switch>
+            </nz-form-control>
+        </nz-form-item> -->
+    <!-- <nz-form-item>
+            <nz-form-label>Total Devices</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid totaldevices">
+                <input nz-input trim="blur" formControlName="totaldevices" maxlength="80" #totaldevices
+                    placeholder="Enter total devices" />
+            </nz-form-control>
+        </nz-form-item> -->
+    <!-- <nz-form-item>
+            <nz-form-label>Pay As Go</nz-form-label>
+            <nz-form-control>
+                <nz-switch #payasgo formControlName="payasgo"></nz-switch>
+            </nz-form-control>
+        </nz-form-item> -->
+    <!-- <nz-form-item>
+            <nz-form-label>Pay Id</nz-form-label>
+            <nz-form-control>
+                <input nz-input trim="blur" formControlName="payid" maxlength="80" #payid placeholder="Enter pay id" />
+            </nz-form-control>
+        </nz-form-item> -->
+    <!-- <nz-form-item>
+            <nz-form-label>Registration Type</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid registration type">
+                <input nz-input trim="blur" formControlName="registrationtype" maxlength="80" #registrationtype
+                    placeholder="Enter registration type" />
+            </nz-form-control>
+        </nz-form-item> -->
+
+    <!-- <nz-form-item>
+            <nz-form-label>EndUser Email</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid email">
+                <input nz-input trim="blur" formControlName="enduser_email" maxlength="80" #enduseremail
+                    placeholder="Enter EndUser Email" />
+            </nz-form-control>
+        </nz-form-item> -->
+
+
+
+
+
+
+
+
+
+    <!--  <nz-form-item>
+            <nz-form-label>Expiry Date</nz-form-label>
+            <nz-form-control nzErrorTip="Select Valid Expiry Date">
+                <nz-date-picker nzPlaceHolder="Expiry Date" formControlName="expirydate" #expirydate>
+                </nz-date-picker>
+            </nz-form-control>
+        </nz-form-item> -->
+    <!--  <nz-form-item>
+            <nz-form-label>Analytics Status</nz-form-label>
+            <nz-form-control>
+                <nz-switch formControlName="analyticsstatus"></nz-switch>
+            </nz-form-control>
+        </nz-form-item> -->
+    <!-- <nz-form-item>
+            <nz-form-label>packageid_dr</nz-form-label>
+            <nz-form-control>
+                <input nz-input trim="blur" formControlName="packageid_dr" maxlength="80" #packageid_dr
+                    placeholder="packageid_dr" />
+            </nz-form-control>
+        </nz-form-item> -->
+    <!-- <nz-form-item>
+            <nz-form-label>size_dr</nz-form-label>
+            <nz-form-control>
+                <input nz-input trim="blur" formControlName="size_dr" maxlength="80" #size_dr placeholder="size_dr" />
+            </nz-form-control>
+        </nz-form-item> -->
+    <!-- <nz-form-item>
+            <nz-form-label>totaldevices_dr</nz-form-label>
+            <nz-form-control>
+                <input nz-input trim="blur" formControlName="totaldevices_dr" maxlength="80" #totaldevices_dr
+                    placeholder="totaldevices_dr" />
+            </nz-form-control>
+        </nz-form-item> -->
+    <!--  <nz-form-item>
+            <nz-form-label>expirydate_dr</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker nzPlaceHolder="expirydate_dr" formControlName="expirydate_dr" #expirydate_dr>
+                </nz-date-picker>
+            </nz-form-control>
+        </nz-form-item> -->
+    <!-- <nz-form-item>
+            <nz-form-label>Communication Status</nz-form-label>
+            <nz-form-control>
+                <nz-switch #communicationstatus formControlName="communicationstatus"></nz-switch>
+            </nz-form-control>
+        </nz-form-item> -->
+</form>

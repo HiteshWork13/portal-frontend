@@ -135,7 +135,8 @@ export class UserComponent implements OnInit {
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
-    if (state == 'create') {
+    if (state == 'add') {
+      this.createForm();
       this.modalRef = this.modalService.create({
         nzTitle: 'Add New Account',
         nzContent: temp,
@@ -151,6 +152,8 @@ export class UserComponent implements OnInit {
         nzOnCancel: () => this.editClose(),
         nzAutofocus: null,
       });
+    } else {
+      // 
     }
   }
 

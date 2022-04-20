@@ -1,9 +1,10 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { userTableConfigJSON } from '@configJson';
-import { AccountService } from '@services';
+import { AccountService, NotificationService } from '@services';
 import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { UserFormComponent } from 'src/app/shared/components/user-form/user-form.component';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -39,8 +40,9 @@ export class UsersComponent implements OnInit {
   isInstallmentVisible: boolean = false;
   userForm: FormGroup;
   matchPasswordErr: boolean = false;
+  userformref: UserFormComponent;
 
-  constructor(private modalService: NzModalService, private accountService: AccountService) { }
+  constructor(private modalService: NzModalService, private accountService: AccountService, private notification: NotificationService) { }
 
   ngOnInit(): void {
     this.getDefaults();
@@ -112,19 +114,18 @@ export class UsersComponent implements OnInit {
   }
 
   async getAccountData() {
-    console.log("Get account");
     this.accountService.getAllAccountsOfCurrentUser({}).then((account: any) => {
-      console.log("account", account);
       if (account.success) {
         this.accountList = account.data;
       }
     }, error => {
-      console.log("Error", error);
+      this.notification.error(error.message);
     });
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
-    if (state == 'create') {
+    if (state == 'add') {
+      this.createForm();
       this.modalRef = this.modalService.create({
         nzTitle: 'Add New Account',
         nzContent: temp,
@@ -140,11 +141,81 @@ export class UsersComponent implements OnInit {
         nzOnCancel: () => this.editClose(),
         nzAutofocus: null,
       });
+    } else {
+      this.editUser(item);
+      this.modalRef = this.modalService.create({
+        nzTitle: 'Edit Account',
+        nzContent: temp,
+        nzFooter: [
+          {
+            label: 'Update',
+            type: 'primary',
+            onClick: () => this.updateUser(),
+          },
+        ],
+        nzWidth: '80%',
+        nzMaskClosable: false,
+        nzOnCancel: () => this.editClose(),
+        nzAutofocus: null,
+      });
     }
   }
 
+  editUser(item) {
+    this.userForm.patchValue({
+      code: item.code,
+      // End User
+      firstname: item.firstname,
+      lastname: item.lastname,
+      companyname: item.companyname,
+      enduser_street: item.enduser_street,
+      enduser_state: item.enduser_state,
+      postcode: item.postcode,
+      enduser_classification: item.enduser_classification,
+      country: item.country,
+      packageid: item.packageid,
+
+      // Reseller
+      reseller_firstname: item.reseller_firstname,
+      reseller_lastname: item.reseller_lastname,
+      reseller_company: item.reseller_company,
+      reseller_street: item.reseller_street,
+      reseller_state: item.reseller_state,
+      reseller_code: item.reseller_code,
+      reseller_email: item.reseller_email,
+
+      // Hard Core Values
+      triallimit: item.triallimit,
+      totaldevices: item.totaldevices,
+      twofactor: item.twofactor,
+      expirydate: item.expirydate,
+      payasgo: item.payasgo,
+      payid: item.payid,
+      billingemail: item.billingemail,
+      credits: item.credits,
+      accounttype: item.accounttype,
+      email: item.email,
+      purchased: item.purchased,
+      role: item.role,
+      registrationtype: item.registrationtype,
+      analyticsstatus: item.analyticsstatus,
+      communicationstatus: item.communicationstatus,
+      phone: item.phone,
+      customerid: item.customerid,
+      address: item.address,
+      vat: item.vat,
+      city: item.city,
+      verificationtoken: item.verificationtoken,
+    })
+  }
+
   editClose() {
-    // this.showAddAdminModal = false;
+    // this.userForm.markAsPristine();
+    // this.userForm.markAsUntouched();
+  }
+
+  updateUser() {
+    // 
   }
 
   showDeleteConfirm(row: any): void {
@@ -166,7 +237,6 @@ export class UsersComponent implements OnInit {
       this.userForm.controls[i].updateValueAndValidity();
     }
     if (this.userForm.valid && !this.matchPasswordErr) {
-      console.log('this.userForm.value: ', this.userForm.value);
       // const currentUser = JSON.parse(localStorage.getItem("current_user_details"));
       // this.userForm.value['created_by_id'] = currentUser.id;
       this.userForm.value['packageid_dr'] = this.userForm.value['packageid'];
@@ -174,14 +244,16 @@ export class UsersComponent implements OnInit {
       this.userForm.value['expirydate_dr'] = this.userForm.value['expirydate'];
       this.userForm.value['size_dr'] = 0;
       this.accountService.createAccount(this.userForm.value).then((result: any) => {
-        console.log("result", result);
         if (result.success) {
           this.accountList.push(result.data)
         }
         this.modalRef.destroy();
-      }, error => {
-        console.log("error", error);
+        this.notification.success(result['message']);
+      }, (error) => {
+        this.notification.error(error['message']);
       })
+    } else {
+      this.notification.error('Invalid Form');
     }
   }
 

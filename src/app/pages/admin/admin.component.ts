@@ -94,6 +94,7 @@ export class AdminComponent implements OnInit {
       this.adminName.nativeElement.focus();
     });
     if (state == 'add') {
+      this.createForm();
       this.modalService.create({
         nzTitle: 'Add New Admin',
         nzContent: temp,
@@ -151,7 +152,6 @@ export class AdminComponent implements OnInit {
       nzCancelText: 'No',
       nzOnCancel: () => this.onClose(),
     });
-    // nzContent: '<b style="color: red;">Admin will be permenently deleted</b>',
   }
 
   deleteAdmin(admin_id) {

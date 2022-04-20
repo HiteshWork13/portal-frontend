@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { userTableConfigJSON } from '@configJson';
-import { AccountService } from '@services';
+import { AccountService, NotificationService } from '@services';
 import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
@@ -46,7 +46,7 @@ export class UserComponent implements OnInit {
   matchPasswordErr: boolean = false;
 
 
-  constructor(private modalService: NzModalService, private accountService: AccountService) { }
+  constructor(private modalService: NzModalService, private accountService: AccountService, private notification: NotificationService) { }
 
   ngOnInit(): void {
     this.getDefaults();
@@ -124,18 +124,17 @@ export class UserComponent implements OnInit {
   }
 
   async getAccountData() {
-    console.log("Get account");
     this.accountService.getAllAccountsByAdminAndSubAdmin({ created_by_id: this.selectedAdminId }).then((account: any) => {
       if (account.success) {
         this.accountList = account.data;
       }
     }, error => {
-      console.log("Error", error);
+      this.notification.error(error.message);
     });
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
-    if (state == 'create') {
+    if (state == 'add') {
       this.modalRef = this.modalService.create({
         nzTitle: 'Add New Account',
         nzContent: temp,
@@ -168,7 +167,6 @@ export class UserComponent implements OnInit {
       nzCancelText: 'No',
       nzOnCancel: () => console.log('Cancel'),
     });
-    // nzContent: '<b style="color: red;">User will be permenently deleted</b>',
   }
 
   onSubmit() {
@@ -177,7 +175,6 @@ export class UserComponent implements OnInit {
       this.userForm.controls[i].updateValueAndValidity();
     }
     if (this.userForm.valid && !this.matchPasswordErr) {
-      console.log('this.userForm.value: ', this.userForm.value);
       // const currentUser = JSON.parse(localStorage.getItem("current_user_details"));
       // this.userForm.value['created_by_id'] = currentUser.id;
       this.userForm.value['packageid_dr'] = this.userForm.value['packageid'];
@@ -185,14 +182,17 @@ export class UserComponent implements OnInit {
       this.userForm.value['expirydate_dr'] = this.userForm.value['expirydate'];
       this.userForm.value['size_dr'] = 0;
       this.accountService.createAccount(this.userForm.value).then((result: any) => {
-        console.log("result", result);
         if (result.success) {
           this.accountList.push(result.data)
         }
         this.modalRef.destroy();
-      }, error => {
-        console.log("error", error);
+        this.notification.success(result['message']);
+      }, (error) => {
+        this.notification.error(error['message']);
+        this.modalRef.destroy();
       })
+    } else {
+      this.notification.error('Invalid Form');
     }
   }
 

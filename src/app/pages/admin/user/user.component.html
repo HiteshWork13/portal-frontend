@@ -1,8 +1,8 @@
 <div class="page-header p-t-0 m-t-0 minus-m-b-25">
 </div>
 <ng-container *ngIf="accountTableJSON">
-    <app-table [Config]="accountTableJSON" [Data]="accountList"
-        (header_addClick)="openModal(formTemplate, 'create', '')" (header_closeClick)="close.emit()">
+    <app-table [Config]="accountTableJSON" [Data]="accountList" (header_addClick)="openModal(formTemplate, 'add', '')"
+        (header_closeClick)="close.emit()">
     </app-table>
 </ng-container>
 
@@ -19,7 +19,7 @@
         <nz-dropdown-menu #menu1="nzDropdownMenu">
             <ul nz-menu>
                 <li nz-menu-item role="menuitem">
-                    <a class="dropdown-item" (click)="openModal(formTemplate, 'create', row)">{{
+                    <a class="dropdown-item" (click)="openModal(formTemplate, 'edit', row)">{{
                         "Edit"
                         }}</a>
                 </li>
