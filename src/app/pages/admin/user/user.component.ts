@@ -71,7 +71,7 @@ export class UserComponent implements OnInit {
       enduser_street: new FormControl(null),
       enduser_state: new FormControl(null),
       postcode: new FormControl(null),
-      enduser_email: new FormControl(email),
+      enduser_email: new FormControl(),
       enduser_classification: new FormControl(null),
       country: new FormControl(null),
       packageid: new FormControl(null),
@@ -83,7 +83,7 @@ export class UserComponent implements OnInit {
       reseller_street: new FormControl(null),
       reseller_state: new FormControl(null),
       reseller_code: new FormControl(null),
-      reseller_email: new FormControl(email),
+      reseller_email: new FormControl(),
 
       // Hard Core Values
       triallimit: new FormControl(7),

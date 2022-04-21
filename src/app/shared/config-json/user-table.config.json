@@ -18,9 +18,47 @@
   "noDataLabel": "No Data Found",
   "Columns": [
     {
+      "name": "License Key",
+      "dataType": "text",
+      "property": "id",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
       "name": "Name",
       "dataType": "text",
       "property": "firstname",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "Email",
+      "dataType": "text",
+      "property": "email",
       "visible": true,
       "searchable": true,
       "searchValue": null,
@@ -75,9 +113,9 @@
       }
     },
     {
-      "name": "Email",
+      "name": "Remaining Credits",
       "dataType": "text",
-      "property": "enduser_email",
+      "property": "credits",
       "visible": true,
       "searchable": true,
       "searchValue": null,
@@ -85,7 +123,26 @@
       "sortOrder": "",
       "SearchFormTemplate": null,
       "advanceFilter": {
-        "dataType": "text",
+        "dataType": "number",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "Created",
+      "dataType": "text",
+      "property": "created_at",
+      "visible": true,
+      "searchable": false,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "date_range",
         "dpConfig": null,
         "dprConfig": null,
         "textMask": null,
@@ -112,6 +169,17 @@
         "placeholder": "",
         "searchQuery": null
       }
+    },
+    {
+      "name": "Status",
+      "dataType": "text",
+      "property": "emailverified",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null
     },
     {
       "name": "Actions",
