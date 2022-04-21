@@ -1,8 +1,8 @@
 <div class="page-header p-t-0 m-t-0 minus-m-b-25">
 </div>
 <ng-container *ngIf="subAdminTableJSON">
-  <app-table [Config]="subAdminTableJSON" [Data]="subAdminList" (header_addClick)="openModal(addForm, 'add', '')"
-    (header_closeClick)="close.emit()"></app-table>
+  <app-table (onRowClick)="showAccounts($event.data)" [Config]="subAdminTableJSON" [Data]="subAdminList"
+    (header_addClick)="openModal(addForm, 'add', '')" (header_closeClick)="close.emit()"></app-table>
 </ng-container>
 
 <ng-template #addForm>
