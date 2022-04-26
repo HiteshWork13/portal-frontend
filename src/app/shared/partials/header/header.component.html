@@ -1,7 +1,4 @@
-<div
-  class="app-header"
-  style="display: flex; justify-content: space-between; align-items: center"
->
+<div class="app-header" style="display: flex; justify-content: space-between; align-items: center">
   <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
     <!--  <i
       class="trigger"
@@ -10,14 +7,10 @@
     ></i> -->
   </span>
   <nz-button-group style="padding: 0 25px">
-    <button
-      nz-button
-      nz-dropdown
-      [nzDropdownMenu]="menu2"
-      nzPlacement="bottomRight"
-    >
+    <button nz-button nz-dropdown [nzDropdownMenu]="menu2" nzPlacement="bottomRight">
       <!-- <i nz-icon nzType="user" nzTheme="outline"></i> -->
-      User Profile
+      {{currentUserDetails.username}}
+      <i nz-icon nzType="more" nzTheme="outline"></i>
     </button>
   </nz-button-group>
   <nz-dropdown-menu #menu2="nzDropdownMenu">

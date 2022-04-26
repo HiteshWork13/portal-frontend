@@ -7,10 +7,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  isCollapsed = false;
-  constructor(private router: Router) {}
 
-  ngOnInit(): void {}
+  isCollapsed = false;
+  currentUserDetails: any;
+
+  constructor(private router: Router) { }
+
+  ngOnInit(): void {
+    let current_user_details: any = localStorage.getItem('current_user_details');
+    this.currentUserDetails = JSON.parse(current_user_details);
+  }
 
   logout() {
     localStorage.clear();
