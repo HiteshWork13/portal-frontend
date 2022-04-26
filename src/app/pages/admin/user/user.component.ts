@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { userTableConfigJSON } from '@configJson';
-import { AccountService } from '@services';
+import { AccountService, NotificationService } from '@services';
 import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
-
+import { UserFormComponent } from 'src/app/shared/components/user-form/user-form.component';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -46,7 +46,7 @@ export class UserComponent implements OnInit {
   matchPasswordErr: boolean = false;
 
 
-  constructor(private modalService: NzModalService, private accountService: AccountService) { }
+  constructor(private modalService: NzModalService, private accountService: AccountService, private viewContainerRef: ViewContainerRef, private notification: NotificationService) { }
 
   ngOnInit(): void {
     this.getDefaults();
@@ -124,79 +124,96 @@ export class UserComponent implements OnInit {
   }
 
   async getAccountData() {
-    console.log("Get account");
     this.accountService.getAllAccountsByAdminAndSubAdmin({ created_by_id: this.selectedAdminId }).then((account: any) => {
       if (account.success) {
         this.accountList = account.data;
       }
-    }, error => {
-      console.log("Error", error);
+    }, (_error) => { });
+  }
+
+  openModal(state: any, item: any) {
+    this.modalService.create({
+      nzTitle: state == 'add' ? 'Add New' : 'Update' + ' Account',
+      nzContent: UserFormComponent,
+      nzViewContainerRef: this.viewContainerRef,
+      nzWidth: '80%',
+      nzComponentParams: {
+        item: item,
+        state: state
+      },
+      nzOnOk: (event) => {
+        let formValue = event.userForm.value;
+        state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
+      },
+      nzMaskClosable: false,
+      nzAutofocus: null,
+      nzOnCancel: () => this.onClose(),
     });
   }
 
-  openModal(temp: TemplateRef<{}>, state: any, item: any) {
-    if (state == 'add') {
-      this.createForm();
-      this.modalRef = this.modalService.create({
-        nzTitle: 'Add New Account',
-        nzContent: temp,
-        nzFooter: [
-          {
-            label: 'Save',
-            type: 'primary',
-            onClick: () => this.onSubmit(),
-          },
-        ],
-        nzWidth: '80%',
-        nzMaskClosable: false,
-        nzOnCancel: () => this.editClose(),
-        nzAutofocus: null,
-      });
-    } else {
-      // 
-    }
+  onClose() {
+    this.modalService.closeAll();
   }
 
-  editClose() {
-    // this.showAddAdminModal = false;
-  }
-
-  showDeleteConfirm(row: any): void {
+  showDeleteConfirm(row_id: any): void {
     this.modalService.confirm({
-      nzTitle: 'Are you sure you want to delete this user?',
+      nzTitle: 'Are you sure you want to delete this account?',
       nzOkText: 'Yes',
       nzOkType: 'primary',
       nzOkDanger: true,
-      nzOnOk: () => console.log('OK'),
+      nzOnOk: () => this.deleteAccount(row_id),
       nzCancelText: 'No',
-      nzOnCancel: () => console.log('Cancel'),
+      nzOnCancel: () => this.onClose(),
     });
-    // nzContent: '<b style="color: red;">User will be permenently deleted</b>',
   }
 
-  onSubmit() {
-    for (const i in this.userForm.controls) {
+  deleteAccount(id) {
+    this.accountService.deleteAccount(id).then(
+      (response) => {
+        this.accountList = this.accountList.filter((element) => element['id'] !== id);
+        this.notification.success(response['message']);
+      }, (error) => {
+        this.notification.error(error['message']);
+      });
+  }
+
+  onSubmit(event = this.userForm.value) {
+    /* for (const i in this.userForm.controls) {
       this.userForm.controls[i].markAsDirty();
       this.userForm.controls[i].updateValueAndValidity();
-    }
-    if (this.userForm.valid && !this.matchPasswordErr) {
-      console.log('this.userForm.value: ', this.userForm.value);
-      // const currentUser = JSON.parse(localStorage.getItem("current_user_details"));
-      // this.userForm.value['created_by_id'] = currentUser.id;
-      this.userForm.value['packageid_dr'] = this.userForm.value['packageid'];
-      this.userForm.value['totaldevices_dr'] = this.userForm.value['totaldevices'];
-      this.userForm.value['expirydate_dr'] = this.userForm.value['expirydate'];
-      this.userForm.value['size_dr'] = 0;
-      this.accountService.createAccount(this.userForm.value).then((result: any) => {
-        console.log("result", result);
-        if (result.success) {
-          this.accountList.push(result.data)
-        }
-        this.modalRef.destroy();
-      }, error => {
-        console.log("error", error);
+    } */
+    // if (this.userForm.valid && !this.matchPasswordErr) {
+    // const currentUser = JSON.parse(localStorage.getItem("current_user_details"));
+    // this.userForm.value['created_by_id'] = currentUser.id;
+    event['packageid_dr'] = event['packageid'];
+    event['totaldevices_dr'] = event['totaldevices'];
+    event['expirydate_dr'] = event['expirydate'];
+    event['size_dr'] = 0;
+    this.accountService.createAccount(event).then((result: any) => {
+      if (result.success) {
+        this.accountList.push(result.data)
+      }
+      // this.modalRef.destroy();
+      this.notification.success(result['message']);
+    }, error => {
+      this.notification.error(error['message']);
+    })
+  }
+
+
+  updateUser(id, event) {
+    this.accountService.updateAccount(id, event).then(
+      (response: any) => {
+        this.accountList = this.accountList.map((element) => {
+          if (element['id'] == id) {
+            element = response['data'];
+          }
+          return element;
+        });
+        this.notification.success(response['message']);
+      }, (error) => {
+        this.notification.error(error['message']);
       })
-    }
   }
 
   matchPassword() {
