@@ -49,6 +49,7 @@ export class UsersComponent implements OnInit {
   isInstallmentVisible: boolean = false;
   userForm: FormGroup;
   matchPasswordErr: boolean = false;
+  @ViewChild('statusTemplate') statusTemplate: TemplateRef<any>;
 
   constructor(
     private modalService: NzModalService,
@@ -128,12 +129,11 @@ export class UsersComponent implements OnInit {
   }
 
   async getAccountData() {
-    this.accountService.getAllAccountsOfCurrentUser({}).then(
-      (account: any) => {
-        if (account.success) {
-          this.accountList = account.data;
-        }
-      },
+    this.accountService.getAllAccountsOfCurrentUser({}).then((account: any) => {
+      if (account.success) {
+        this.accountList = account.data;
+      }
+    },
       (_error) => { }
     );
   }
@@ -244,6 +244,8 @@ export class UsersComponent implements OnInit {
             column.actionTemplate = this.actionTemplate;
           } else if (column.property == 'created_by') {
             column.actionTemplate = this.created_by_template;
+          } else if (column.property == 'communicationstatus') {
+            column.actionTemplate = this.statusTemplate
           }
           return column;
         }

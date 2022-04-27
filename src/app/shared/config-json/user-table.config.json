@@ -173,7 +173,7 @@
     {
       "name": "Status",
       "dataType": "text",
-      "property": "emailverified",
+      "property": "communicationstatus",
       "visible": true,
       "searchable": true,
       "searchValue": null,
