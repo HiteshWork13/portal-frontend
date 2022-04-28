@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { subAdminTableConfigJSON } from '@configJson';
 import { NotificationService, SubAdminService } from '@services';
 import { NzModalService } from 'ng-zorro-antd/modal';
-
 @Component({
   selector: 'app-sub-admin',
   templateUrl: './sub-admin.component.html',
@@ -28,6 +27,8 @@ export class SubAdminComponent implements OnInit, OnChanges {
   matchPasswordErr: boolean = false;
   currentUserDetails: any;
   mode: string = 'add';
+  viewPermissionArr: any = [];
+  permissionToBeUpdateRow: any;
 
   constructor(
     private modalService: NzModalService,
@@ -75,6 +76,15 @@ export class SubAdminComponent implements OnInit, OnChanges {
   getSubAdminData() {
     this.subAdminService.getAllSubAdmin({ role: 3, created_by_id: this.selectedAdminId || this.currentUserDetails.id }).then((response: any) => {
       this.subAdminList = response.data;
+      /* this.subAdminList.map((item) => {
+        if (!_.isEmpty(item.permissions)) {
+          let foundId = item.permissions.viewAccounts.indexOf(item.id) > -1;
+          item['hasViewPermission'] = foundId
+        } else {
+          item['hasViewPermission'] = false
+        }
+      }) */
+      console.log('this.subAdminList: ', this.subAdminList);
     }, (error) => {
       this.notification.error(error.message);
     });
@@ -207,8 +217,8 @@ export class SubAdminComponent implements OnInit, OnChanges {
     });
   }
 
-  showPermissionModal(temp: TemplateRef<{}>) {
-    console.log('subAdminList', this.subAdminList);
+  showPermissionModal(temp: TemplateRef<{}>, item) {
+    this.permissionToBeUpdateRow = item;
     this.modalService.create({
       nzTitle: 'Permissions',
       nzContent: temp,
@@ -217,21 +227,35 @@ export class SubAdminComponent implements OnInit, OnChanges {
           label: 'Save Permissions',
           type: 'primary',
 
-          onClick: () => this.savePermissions(),
+          onClick: () => this.savePermissions(item),
         },
       ],
       nzWidth: 500,
       nzMaskClosable: false,
-      nzOnCancel: () => this.onClose(),
+      nzOnCancel: () => { this.onClose(); this.permissionToBeUpdateRow = {}; },
       nzAutofocus: null,
     });
   }
 
-  savePermissions() {
-    // 
+  savePermissions(item) {
+    let permission_arr: any = { "viewAccountPermission": this.viewPermissionArr }
+    this.subAdminService.updatePermissions(item.id, permission_arr).then((response: any) => {
+      console.log('OOOOOOOOOOO response: ', response.permissions.viewAccounts);
+
+    })
   }
 
-  fnSwitch(row_data) {
-    console.log('row_data: ', row_data);
+  fnSwitch(event, row_data) {
+    if (event) {
+      // switch = true
+      this.viewPermissionArr.push(row_data.id);
+    } else {
+      // switch = false
+      let index = this.viewPermissionArr.indexOf(row_data.id);
+      if (index > -1) {
+        this.viewPermissionArr.splice(index, 1);
+      }
+    }
+    console.log('this.viewPermissionArr: ', this.viewPermissionArr);
   }
 }

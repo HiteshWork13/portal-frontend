@@ -50,11 +50,13 @@
     </thead>
     <tbody>
       <ng-container *ngFor="let row of subAdminList; let ri = index">
-        <tr>
+        <tr *ngIf="permissionToBeUpdateRow.id != row.id">
           <td><span class="truncate">{{ri + 1}}</span></td>
           <td><span class="truncate">{{row.username}}</span></td>
           <td style="text-align: center;">
-            <nz-switch nzSize="small" [ngModel]="true" (ngModelChange)="fnSwitch(row)"></nz-switch>
+            <nz-switch nzSize="small"
+              [ngModel]="permissionToBeUpdateRow?.permissions?.viewAccounts ? permissionToBeUpdateRow.permissions.viewAccounts.indexOf(row.id) > -1 : false"
+              (ngModelChange)="fnSwitch($event,row)"></nz-switch>
           </td>
         </tr>
       </ng-container>
@@ -86,7 +88,7 @@
         <a class="dropdown-item" (click)="showAccounts(row)">Users</a>
       </li>
       <li nz-menu-item>
-        <a class="dropdown-item" (click)="showPermissionModal(permission)">Permissions</a>
+        <a class="dropdown-item" (click)="showPermissionModal(permission,row)">Permissions</a>
       </li>
       <li nz-menu-item>
         <a class="dropdown-item" (click)="openModal(addForm, 'edit', row)">Edit</a>

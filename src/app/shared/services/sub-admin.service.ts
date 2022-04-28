@@ -23,4 +23,8 @@ export class SubAdminService {
   updateSubAdmin(id, data) {
     return this.dataService.PUT(`/admin/updateAdminById/${id}`, data);
   }
+
+  updatePermissions(id, data) {
+    return this.dataService.PUT(`/admin/updateViewAccountPermission/${id}`, data);
+  }
 }
