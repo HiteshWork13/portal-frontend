@@ -130,6 +130,20 @@
                             placeholder="Postcode" tabindex="16" />
                     </nz-form-control>
                 </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Enter a valid Postcode">
+                        <!--  <input nz-input trim="blur" formControlName="reseller_code" maxlength="80" #resellercode
+                            placeholder="Postcode" tabindex="16" /> -->
+                        <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                            [nzHeaders]="{ authorization: 'authorization-text' }" (nzChange)="handleChange($event)">
+                            <button nz-button>
+                                <i nz-icon nzType="upload"></i>
+                                Click to Upload PO File
+                            </button>
+                        </nz-upload>
+                    </nz-form-control>
+                </nz-form-item>
             </div>
         </div>
     </form>
