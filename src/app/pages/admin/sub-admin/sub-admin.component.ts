@@ -76,15 +76,6 @@ export class SubAdminComponent implements OnInit, OnChanges {
   getSubAdminData() {
     this.subAdminService.getAllSubAdmin({ role: 3, created_by_id: this.selectedAdminId || this.currentUserDetails.id }).then((response: any) => {
       this.subAdminList = response.data;
-      /* this.subAdminList.map((item) => {
-        if (!_.isEmpty(item.permissions)) {
-          let foundId = item.permissions.viewAccounts.indexOf(item.id) > -1;
-          item['hasViewPermission'] = foundId
-        } else {
-          item['hasViewPermission'] = false
-        }
-      }) */
-      console.log('this.subAdminList: ', this.subAdminList);
     }, (error) => {
       this.notification.error(error.message);
     });
@@ -218,6 +209,9 @@ export class SubAdminComponent implements OnInit, OnChanges {
   }
 
   showPermissionModal(temp: TemplateRef<{}>, item) {
+    item.permissions.viewAccounts.forEach(element => {
+      this.viewPermissionArr.push(element)
+    });
     this.permissionToBeUpdateRow = item;
     this.modalService.create({
       nzTitle: 'Permissions',
@@ -240,8 +234,13 @@ export class SubAdminComponent implements OnInit, OnChanges {
   savePermissions(item) {
     let permission_arr: any = { "viewAccountPermission": this.viewPermissionArr }
     this.subAdminService.updatePermissions(item.id, permission_arr).then((response: any) => {
-      console.log('OOOOOOOOOOO response: ', response.permissions.viewAccounts);
-
+      if (response?.success) {
+        this.modalService.closeAll();
+        this.notification.success(response['message']);
+      }
+    }, (error) => {
+      this.modalService.closeAll();
+      this.notification.error(error['message']);
     })
   }
 
@@ -256,6 +255,5 @@ export class SubAdminComponent implements OnInit, OnChanges {
         this.viewPermissionArr.splice(index, 1);
       }
     }
-    console.log('this.viewPermissionArr: ', this.viewPermissionArr);
   }
 }
