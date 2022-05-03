@@ -209,9 +209,12 @@ export class SubAdminComponent implements OnInit, OnChanges {
   }
 
   showPermissionModal(temp: TemplateRef<{}>, item) {
-    item?.permissions?.viewAccounts.forEach(element => {
-      this.viewPermissionArr.push(element)
-    });
+    this.viewPermissionArr = [];
+    if (item?.permissions?.viewAccounts) {
+      item?.permissions?.viewAccounts.forEach(element => {
+        this.viewPermissionArr.push(element)
+      });
+    }
     this.permissionToBeUpdateRow = item;
     this.modalService.create({
       nzTitle: 'Permissions',
@@ -235,6 +238,15 @@ export class SubAdminComponent implements OnInit, OnChanges {
     let permission_arr: any = { "viewAccountPermission": this.viewPermissionArr }
     this.subAdminService.updatePermissions(item.id, permission_arr).then((response: any) => {
       if (response?.success) {
+        if (response.data) {
+          this.subAdminList = this.subAdminList.map(item => {
+            if (item.id == response.data.id) {
+              return response.data;
+            } else {
+              return item;
+            }
+          })
+        }
         this.modalService.closeAll();
         this.notification.success(response['message']);
       }
