@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
@@ -32,6 +32,7 @@ export class UserFormComponent implements OnInit {
       credit: 30000,
     },
   ];
+  @Input() btnName: any = 'Save';
 
   constructor(private modalService: NzModalService) { }
 
@@ -47,25 +48,25 @@ export class UserFormComponent implements OnInit {
     this.userForm = new FormGroup({
       code: new FormControl(null),
       // End User
-      firstname: new FormControl(null),
-      lastname: new FormControl(null),
-      companyname: new FormControl(null),
-      enduser_street: new FormControl(null),
-      enduser_state: new FormControl(null),
-      postcode: new FormControl(null),
-      enduser_email: new FormControl(email),
-      enduser_classification: new FormControl(null),
-      country: new FormControl(null),
-      packageid: new FormControl(null),
+      firstname: new FormControl(null, [Validators.required]),
+      lastname: new FormControl(null, [Validators.required]),
+      companyname: new FormControl(null, [Validators.required]),
+      enduser_street: new FormControl(null, [Validators.required]),
+      enduser_state: new FormControl(null, [Validators.required]),
+      postcode: new FormControl(null, [Validators.required]),
+      enduser_email: new FormControl(null, [Validators.required]),
+      enduser_classification: new FormControl(null, [Validators.required]),
+      country: new FormControl(null, [Validators.required]),
+      packageid: new FormControl(null, [Validators.required]),
 
       // Reseller
-      reseller_firstname: new FormControl(null),
-      reseller_lastname: new FormControl(null),
-      reseller_company: new FormControl(null),
-      reseller_street: new FormControl(null),
-      reseller_state: new FormControl(null),
-      reseller_code: new FormControl(null),
-      reseller_email: new FormControl(email),
+      reseller_firstname: new FormControl(null, [Validators.required]),
+      reseller_lastname: new FormControl(null, [Validators.required]),
+      reseller_company: new FormControl(null, [Validators.required]),
+      reseller_street: new FormControl(null, [Validators.required]),
+      reseller_state: new FormControl(null, [Validators.required]),
+      reseller_code: new FormControl(null, [Validators.required]),
+      reseller_email: new FormControl(null, [Validators.required]),
 
       // Hard Core Values
       triallimit: new FormControl(7),
@@ -91,10 +92,10 @@ export class UserFormComponent implements OnInit {
       city: new FormControl(null),
       verificationtoken: new FormControl(null),
 
-      // packageid_dr: new FormControl(null),
-      // size_dr: new FormControl(null),
-      // totaldevices_dr: new FormControl(null),
-      // expirydate_dr: new FormControl(null),
+      // packageid_dr: new FormControl(null,[Validators.required]),
+      // size_dr: new FormControl(null,[Validators.required]),
+      // totaldevices_dr: new FormControl(null,[Validators.required]),
+      // expirydate_dr: new FormControl(null,[Validators.required]),
     });
   }
 
@@ -112,13 +113,8 @@ export class UserFormComponent implements OnInit {
     }
     if (this.userForm.valid) {
       const formObj = this.userForm.value();
-      console.log('formObj: ', formObj);
       this.formValue.emit(formObj);
     } */
-  }
-
-  editClose() {
-    // destroy modal / close modal
   }
 
   editAccount(item) {
@@ -135,6 +131,7 @@ export class UserFormComponent implements OnInit {
       enduser_classification: item.enduser_classification,
       country: item.country,
       packageid: item.packageid,
+      enduser_email: item.enduser_email,
 
       // Reseller
       reseller_firstname: item.reseller_firstname,

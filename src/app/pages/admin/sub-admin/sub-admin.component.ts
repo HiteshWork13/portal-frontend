@@ -209,7 +209,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
   }
 
   showPermissionModal(temp: TemplateRef<{}>, item) {
-    item.permissions.viewAccounts.forEach(element => {
+    item?.permissions?.viewAccounts.forEach(element => {
       this.viewPermissionArr.push(element)
     });
     this.permissionToBeUpdateRow = item;

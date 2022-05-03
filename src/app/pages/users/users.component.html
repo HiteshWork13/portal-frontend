@@ -40,5 +40,6 @@
 <ng-template #statusTemplate let-column="column" let-row="row" let-rowIndex="rowIndex" let-columnIndex="columnIndex">
     <!-- <nz-tag *ngIf="row[column.property] == false" [nzColor]="'#E23E31'">Inactive</nz-tag>
     <nz-tag *ngIf="row[column.property] == true" [nzColor]="'#4AAC4E'">Active</nz-tag> -->
-    <nz-switch nzSize="small" [ngModel]="row[column.property]"></nz-switch>
+    <nz-switch nzSize="small" [ngModel]="row[column.property]" (ngModelChange)="updateUser(row.id,userForm.value)">
+    </nz-switch>
 </ng-template>

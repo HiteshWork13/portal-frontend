@@ -49,6 +49,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
   getDefaults() {
     let current_user_details: any = localStorage.getItem('current_user_details');
     this.currentUserDetails = JSON.parse(current_user_details);
+    console.log('this.currentUserDetails: ', this.currentUserDetails);
     this.subAdminTableJSON.Header.showClose = false;
     this.subAdminTableJSON.Header.showAdd = true;
 
