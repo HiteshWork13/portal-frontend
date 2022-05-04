@@ -19,6 +19,11 @@
         <nz-dropdown-menu #menu1="nzDropdownMenu">
             <ul nz-menu>
                 <li nz-menu-item role="menuitem">
+                    <a class="dropdown-item" (click)="accountDetailsModel(row)">{{
+                        "View"
+                        }}</a>
+                </li>
+                <li nz-menu-item role="menuitem">
                     <a class="dropdown-item" (click)="openModal('create', row)">{{
                         "Edit"
                         }}</a>

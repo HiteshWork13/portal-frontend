@@ -4,10 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserFormComponent } from './components/user-form/user-form.component';
 // import { IconsProviderModule } from './icons-provider.module';
 import { NgZorroAntdModule } from './ng-zorro-antd.module';
+import { UserDetailsComponent } from './user-details/user-details.component';
 import { WidgetModule } from './widgets/widget.module';
 
 @NgModule({
-  declarations: [UserFormComponent],
+  declarations: [UserFormComponent, UserDetailsComponent],
   imports: [
     CommonModule,
     NgZorroAntdModule,
@@ -20,7 +21,8 @@ import { WidgetModule } from './widgets/widget.module';
     ReactiveFormsModule,
     FormsModule,
     WidgetModule,
-    UserFormComponent
+    UserFormComponent,
+    UserDetailsComponent
   ],
 })
 export class SharedModule { }

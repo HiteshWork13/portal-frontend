@@ -5,6 +5,7 @@ import { AccountService, NotificationService } from '@services';
 import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { UserFormComponent } from 'src/app/shared/components/user-form/user-form.component';
+import { UserDetailsComponent } from 'src/app/shared/user-details/user-details.component';
 
 @Component({
   selector: 'app-user',
@@ -262,5 +263,27 @@ export class UserComponent implements OnInit {
       }, (error) => {
         this.notification.error(error['message']);
       })
+  }
+
+  accountDetailsModel(row) {
+    this.modalService.create({
+      nzTitle: 'Account Details',
+      nzContent: UserDetailsComponent,
+      nzViewContainerRef: this.viewContainerRef,
+      nzComponentParams: {
+        row_data: row
+      },
+      nzWidth: '50%',
+      nzMaskClosable: false,
+      nzAutofocus: null,
+      nzFooter: [
+        {
+          label: 'Close',
+          type: 'default',
+          onClick: () => this.onClose(),
+        },
+      ],
+      nzOnCancel: () => this.onClose(),
+    });
   }
 }

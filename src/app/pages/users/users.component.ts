@@ -14,6 +14,7 @@ import { AccountService, NotificationService } from '@services';
 import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { UserFormComponent } from 'src/app/shared/components/user-form/user-form.component';
+import { UserDetailsComponent } from 'src/app/shared/user-details/user-details.component';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -50,6 +51,8 @@ export class UsersComponent implements OnInit {
   userForm: FormGroup;
   matchPasswordErr: boolean = false;
   @ViewChild('statusTemplate') statusTemplate: TemplateRef<any>;
+  Data: any = [];
+  row_data: any = {};
 
   constructor(
     private modalService: NzModalService,
@@ -170,11 +173,10 @@ export class UsersComponent implements OnInit {
 
   onClose() {
     this.modalService.closeAll();
+    this.row_data = []
   }
 
   updateUser(id, event) {
-
-
     this.accountService.updateAccount(id, event).then(
       (response: any) => {
         this.accountList = this.accountList.map((element) => {
@@ -263,5 +265,27 @@ export class UsersComponent implements OnInit {
         }
       );
     }, 0);
+  }
+
+  accountDetailsModel(row) {
+    this.modalService.create({
+      nzTitle: 'Account Details',
+      nzContent: UserDetailsComponent,
+      nzViewContainerRef: this.viewContainerRef,
+      nzComponentParams: {
+        row_data: row
+      },
+      nzWidth: '50%',
+      nzMaskClosable: false,
+      nzAutofocus: null,
+      nzFooter: [
+        {
+          label: 'Close',
+          type: 'default',
+          onClick: () => this.onClose(),
+        },
+      ],
+      nzOnCancel: () => this.onClose(),
+    });
   }
 }

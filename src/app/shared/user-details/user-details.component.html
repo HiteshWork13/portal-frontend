@@ -1,0 +1,18 @@
+<nz-table #fixedTable [nzTemplateMode]="true" id="accountsTable" [nzShowPagination]="false" [nzScroll]="{ x: 'auto' }">
+    <tbody>
+        <tr>
+            <td>Created By:</td>
+            <td>{{row_data['created_by']}}</td>
+        </tr>
+        <h3 style="margin-top: 1rem;">End User Details</h3>
+        <tr *ngFor="let endUserData of row_data['end_user']">
+            <td>{{endUserData.field}}</td>
+            <td>{{endUserData.value}}</td>
+        </tr>
+        <h3 style="margin-top: 1rem;">Reseller Details</h3>
+        <tr *ngFor="let resellerData of row_data['reseller']">
+            <td>{{resellerData.field}}</td>
+            <td>{{resellerData.value}}</td>
+        </tr>
+    </tbody>
+</nz-table>
