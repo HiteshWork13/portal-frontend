@@ -9,7 +9,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { userTableConfigJSON } from '@configJson';
+import { superAdminUserTableConfigJson, userTableConfigJSON } from '@configJson';
 import { AccountService, NotificationService } from '@services';
 import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -23,9 +23,7 @@ import { UserDetailsComponent } from 'src/app/shared/user-details/user-details.c
 export class UsersComponent implements OnInit {
   @ViewChild('actionTemplate') actionTemplate: TemplateRef<any>;
   @ViewChild('created_by_template') created_by_template: TemplateRef<any>;
-  accountTableJSON: any = JSON.parse(
-    JSON.stringify(userTableConfigJSON as any)
-  );
+  accountTableJSON: any = [];
   accountList: Array<any>;
   modalRef: any;
   packageList: Array<any> = [
@@ -53,6 +51,7 @@ export class UsersComponent implements OnInit {
   @ViewChild('statusTemplate') statusTemplate: TemplateRef<any>;
   Data: any = [];
   row_data: any = {};
+  currentUserDetails: any;
 
   constructor(
     private modalService: NzModalService,
@@ -63,6 +62,9 @@ export class UsersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    let current_user_details: any = localStorage.getItem('current_user_details');
+    this.currentUserDetails = JSON.parse(current_user_details);
+    this.accountTableJSON = this.currentUserDetails.role == 1 ? JSON.parse(JSON.stringify(superAdminUserTableConfigJson as any)) : JSON.parse(JSON.stringify(userTableConfigJSON as any));
     this.getDefaults();
     this.createForm();
     this.getAccountData();
@@ -135,6 +137,7 @@ export class UsersComponent implements OnInit {
     this.accountService.getAllAccountsOfCurrentUser({}).then((account: any) => {
       if (account.success) {
         this.accountList = account.data;
+        console.log('xxxxxxxxxxxxxxxx: ', this.accountList);
       }
     },
       (_error) => { }
@@ -177,6 +180,7 @@ export class UsersComponent implements OnInit {
   }
 
   updateUser(id, event) {
+    console.log('xxxxxxxxxxxxxxxx event: ', event);
     this.accountService.updateAccount(id, event).then(
       (response: any) => {
         this.accountList = this.accountList.map((element) => {
@@ -258,7 +262,7 @@ export class UsersComponent implements OnInit {
             column.actionTemplate = this.actionTemplate;
           } else if (column.property == 'created_by') {
             column.actionTemplate = this.created_by_template;
-          } else if (column.property == 'communicationstatus') {
+          } else if (column.property == 'emailverified') {
             column.actionTemplate = this.statusTemplate
           }
           return column;

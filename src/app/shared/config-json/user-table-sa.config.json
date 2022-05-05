@@ -39,7 +39,7 @@
     {
       "name": "First Name",
       "dataType": "text",
-      "property": "firstname",
+      "property": "reseller_firstname",
       "visible": true,
       "searchable": true,
       "searchValue": null,
@@ -56,9 +56,9 @@
       }
     },
     {
-      "name": "Last Name",
+      "name": "Email Address",
       "dataType": "text",
-      "property": "lastname",
+      "property": "email",
       "visible": true,
       "searchable": true,
       "searchValue": null,
@@ -113,25 +113,6 @@
       }
     },
     {
-      "name": "Package",
-      "dataType": "text",
-      "property": "packageid",
-      "visible": true,
-      "searchable": true,
-      "searchValue": null,
-      "sortable": true,
-      "sortOrder": "",
-      "SearchFormTemplate": null,
-      "advanceFilter": {
-        "dataType": "number",
-        "dpConfig": null,
-        "dprConfig": null,
-        "textMask": null,
-        "placeholder": "",
-        "searchQuery": null
-      }
-    },
-    {
       "name": "Remaining Credits",
       "dataType": "text",
       "property": "credits",
@@ -149,17 +130,6 @@
         "placeholder": "",
         "searchQuery": null
       }
-    },
-    {
-      "name": "Status",
-      "dataType": "text",
-      "property": "emailverified",
-      "visible": true,
-      "searchable": true,
-      "searchValue": null,
-      "sortable": true,
-      "sortOrder": "",
-      "SearchFormTemplate": null
     },
     {
       "name": "Created",
@@ -201,7 +171,18 @@
       }
     },
     {
-      "name": "Action",
+      "name": "Status",
+      "dataType": "text",
+      "property": "emailverified",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null
+    },
+    {
+      "name": "Actions",
       "property": "actions",
       "visible": true,
       "searchable": false,
