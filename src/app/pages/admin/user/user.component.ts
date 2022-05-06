@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { userTableConfigJSON } from '@configJson';
+import { superAdminUserTableConfigJson, userTableConfigJSON } from '@configJson';
 import { AccountService, NotificationService } from '@services';
 import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -45,11 +45,16 @@ export class UserComponent implements OnInit {
   isInstallmentVisible: boolean = false;
   userForm: FormGroup;
   matchPasswordErr: boolean = false;
+  currentUserDetails: any;
+  @ViewChild('statusTemplate') statusTemplate: TemplateRef<any>;
 
 
   constructor(private modalService: NzModalService, private accountService: AccountService, private viewContainerRef: ViewContainerRef, private notification: NotificationService) { }
 
   ngOnInit(): void {
+    let current_user_details: any = localStorage.getItem('current_user_details');
+    this.currentUserDetails = JSON.parse(current_user_details);
+    this.accountTableJSON = this.currentUserDetails.role == 1 ? JSON.parse(JSON.stringify(superAdminUserTableConfigJson as any)) : JSON.parse(JSON.stringify(userTableConfigJSON as any));
     this.getDefaults();
     this.createForm();
     this.getAccountData();
@@ -238,6 +243,8 @@ export class UserComponent implements OnInit {
             column.actionTemplate = this.actionTemplate;
           } else if (column.property == 'created_by') {
             column.actionTemplate = this.created_by_template;
+          } else if (column.property == 'emailverified') {
+            column.actionTemplate = this.statusTemplate
           }
           return column;
         }
@@ -265,5 +272,10 @@ export class UserComponent implements OnInit {
       ],
       nzOnCancel: () => this.onClose(),
     });
+  }
+
+  statusChanged(event, row_data, key) {
+    row_data[key] = event;
+    this.updateUser(row_data.id, row_data)
   }
 }

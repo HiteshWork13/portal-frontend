@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { userTableConfigJSON } from '@configJson';
+import { superAdminUserTableConfigJson, userTableConfigJSON } from '@configJson';
 import { AccountService, NotificationService } from '@services';
 import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -46,11 +46,16 @@ export class UserComponent implements OnInit {
   isInstallmentVisible: boolean = false;
   userForm: FormGroup;
   matchPasswordErr: boolean = false;
+  currentUserDetails: any;
+  @ViewChild('statusTemplate') statusTemplate: TemplateRef<any>;
 
 
   constructor(private modalService: NzModalService, private accountService: AccountService, private notification: NotificationService, private viewContainerRef: ViewContainerRef) { }
 
   ngOnInit(): void {
+    let current_user_details: any = localStorage.getItem('current_user_details');
+    this.currentUserDetails = JSON.parse(current_user_details);
+    this.accountTableJSON = this.currentUserDetails.role == 1 ? JSON.parse(JSON.stringify(superAdminUserTableConfigJson as any)) : JSON.parse(JSON.stringify(userTableConfigJSON as any));
     this.getDefaults();
     this.createForm();
     this.getAccountData();
@@ -136,23 +141,6 @@ export class UserComponent implements OnInit {
   }
 
   openModal(state: any, item: any) {
-    /* if (state == 'add') {
-    this.modalRef = this.modalService.create({
-      nzTitle: 'Add New Account',
-      nzContent: temp,
-      nzFooter: [
-        {
-          label: 'Save',
-          type: 'primary',
-          onClick: () => this.onSubmit(),
-        },
-      ],
-      nzWidth: '80%',
-      nzMaskClosable: false,
-      nzOnCancel: () => this.onClose(),
-      nzAutofocus: null,
-    });
-  } */
     this.modalService.create({
       nzTitle: state == 'add' ? 'Add New' : 'Update' + ' Account',
       nzContent: UserFormComponent,
@@ -199,27 +187,22 @@ export class UserComponent implements OnInit {
   }
 
   onSubmit(event = this.userForm.value) {
-    /* for (const i in this.userForm.controls) {
-      this.userForm.controls[i].markAsDirty();
-      this.userForm.controls[i].updateValueAndValidity();
-    } */
-    // if (this.userForm.valid && !this.matchPasswordErr) {
-    // const currentUser = JSON.parse(localStorage.getItem("current_user_details"));
-    // this.userForm.value['created_by_id'] = currentUser.id;
-    event['packageid_dr'] = event['packageid'];
-    event['totaldevices_dr'] = event['totaldevices'];
-    event['expirydate_dr'] = event['expirydate'];
-    event['size_dr'] = 0;
-    this.accountService.createAccount(event).then((result: any) => {
+    console.log('xxxxxxxxxx event: ', event);
+    let formData = new FormData();
+    formData.set('packageid_dr', event['packageid'])
+    formData.set('totaldevices_dr', event['totaldevices'])
+    formData.set('expirydate_dr', event['expirydate'])
+    formData.set('packageid_dr', event['packageid'])
+    formData.set('size_dr', '0')
+    /* this.accountService.createAccount(formData).then((result: any) => {
       if (result.success) {
         this.accountList.push(result.data)
       }
-      // this.modalRef.destroy();
       this.notification.success(result['message']);
     }, (error) => {
       this.notification.error(error['message']);
       this.modalRef.destroy();
-    })
+    }) */
   }
 
   matchPassword() {
@@ -243,6 +226,8 @@ export class UserComponent implements OnInit {
             column.actionTemplate = this.actionTemplate;
           } else if (column.property == 'created_by') {
             column.actionTemplate = this.created_by_template;
+          } else if (column.property == 'emailverified') {
+            column.actionTemplate = this.statusTemplate
           }
           return column;
         }
@@ -285,5 +270,10 @@ export class UserComponent implements OnInit {
       ],
       nzOnCancel: () => this.onClose(),
     });
+  }
+
+  statusChanged(event, row_data, key) {
+    row_data[key] = event;
+    this.updateUser(row_data.id, row_data)
   }
 }

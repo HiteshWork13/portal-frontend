@@ -137,7 +137,6 @@ export class UsersComponent implements OnInit {
     this.accountService.getAllAccountsOfCurrentUser({}).then((account: any) => {
       if (account.success) {
         this.accountList = account.data;
-        console.log('xxxxxxxxxxxxxxxx: ', this.accountList);
       }
     },
       (_error) => { }
@@ -180,7 +179,6 @@ export class UsersComponent implements OnInit {
   }
 
   updateUser(id, event) {
-    console.log('xxxxxxxxxxxxxxxx event: ', event);
     this.accountService.updateAccount(id, event).then(
       (response: any) => {
         this.accountList = this.accountList.map((element) => {
@@ -218,22 +216,14 @@ export class UsersComponent implements OnInit {
   }
 
   onSubmit(event = this.userForm.value) {
-    /* for (const i in this.userForm.controls) {
-      this.userForm.controls[i].markAsDirty();
-      this.userForm.controls[i].updateValueAndValidity();
-    } */
-    // if (this.userForm.valid && !this.matchPasswordErr) {
-    event['packageid_dr'] = event['packageid'];
-    event['totaldevices_dr'] =
-      event['totaldevices'];
-    event['expirydate_dr'] = event['expirydate'];
-    event['size_dr'] = 0;
-    this.accountService.createAccount(event).then(
+    const input = new FormData()
+    input.append("file", event['file']);
+    input.append("data", JSON.stringify(event))
+    this.accountService.createAccount(input).then(
       (result: any) => {
         if (result.success) {
           this.accountList.push(result.data);
         }
-        // this.modalRef.destroy();
         this.notification.success(result['message']);
       },
       (error) => {
@@ -291,5 +281,10 @@ export class UsersComponent implements OnInit {
       ],
       nzOnCancel: () => this.onClose(),
     });
+  }
+
+  statusChanged(event, row_data, key) {
+    row_data[key] = event;
+    this.updateUser(row_data.id, row_data)
   }
 }
