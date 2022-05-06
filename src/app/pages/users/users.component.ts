@@ -135,6 +135,7 @@ export class UsersComponent implements OnInit {
 
   async getAccountData() {
     this.accountService.getAllAccountsOfCurrentUser({}).then((account: any) => {
+      console.log('account list:', account);
       if (account.success) {
         this.accountList = account.data;
       }
@@ -156,16 +157,16 @@ export class UsersComponent implements OnInit {
       nzOnOk: (event) => {
         let formValue = event.userForm.value;
         let valid: boolean = event.userForm.valid;
-        if (valid == true) {
-          state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
-          return true;
-        } else {
-          for (const i in event.userForm.controls) {
-            event.userForm.controls[i].markAsDirty();
-            event.userForm.controls[i].updateValueAndValidity();
-          }
-          return false
-        }
+        // if (valid == true) {
+        state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
+        return true;
+        // } else {
+        // for (const i in event.userForm.controls) {
+        //   event.userForm.controls[i].markAsDirty();
+        //   event.userForm.controls[i].updateValueAndValidity();
+        // }
+        // return false
+        // }
       },
       nzMaskClosable: false,
       nzAutofocus: null,
@@ -179,7 +180,11 @@ export class UsersComponent implements OnInit {
   }
 
   updateUser(id, event) {
-    this.accountService.updateAccount(id, event).then(
+    const input = new FormData();
+    if (event['file'] !== null) input.append("file", event['file']);
+    delete event['file'];
+    input.append("data", JSON.stringify(event));
+    this.accountService.updateAccount(id, input).then(
       (response: any) => {
         this.accountList = this.accountList.map((element) => {
           if (element['id'] == id) {
@@ -218,6 +223,7 @@ export class UsersComponent implements OnInit {
   onSubmit(event = this.userForm.value) {
     const input = new FormData()
     input.append("file", event['file']);
+    delete event['file'];
     input.append("data", JSON.stringify(event))
     this.accountService.createAccount(input).then(
       (result: any) => {

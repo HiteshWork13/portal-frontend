@@ -212,7 +212,11 @@ export class UserComponent implements OnInit {
 
 
   updateUser(id, event) {
-    this.accountService.updateAccount(id, event).then(
+    const input = new FormData();
+    if (event['file'] !== null) input.append("file", event['file']);
+    delete event['file'];
+    input.append("data", JSON.stringify(event));
+    this.accountService.updateAccount(id, input).then(
       (response: any) => {
         this.accountList = this.accountList.map((element) => {
           if (element['id'] == id) {

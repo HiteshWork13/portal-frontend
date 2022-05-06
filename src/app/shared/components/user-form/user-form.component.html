@@ -151,13 +151,18 @@
                 <nz-form-item>
                     <nz-form-label>PO File</nz-form-label>
                     <nz-form-control nzErrorTip="Select a valid PO file">
-                        <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                            [nzHeaders]="{ authorization: 'authorization-text' }" (nzChange)="handleChange($event)">
+                        <nz-upload [nzHeaders]="{ authorization: 'authorization-text' }"
+                            (nzChange)="handleChange($event)" (onError)="fileError($event)">
                             <button nz-button>
                                 <i nz-icon nzType="upload"></i>
                                 Click to Upload PO File
                             </button>
                         </nz-upload>
+                        <ng-container *ngIf="userForm.get('file').dirty && userForm.get('file').errors">
+                            <div class="w-100 validationColor float-left">
+                                Choose a valid PO File
+                            </div>
+                        </ng-container>
                     </nz-form-control>
                 </nz-form-item>
             </div>

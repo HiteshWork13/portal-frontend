@@ -34,10 +34,14 @@ export class UserFormComponent implements OnInit {
     },
   ];
   @Input() btnName: any = 'Save';
+  currentUserDetails: any;
 
   constructor(private modalService: NzModalService) { }
 
   ngOnInit(): void {
+    let current_user_details: any = localStorage.getItem('current_user_details');
+    this.currentUserDetails = JSON.parse(current_user_details);
+    // this.currentUserDetails.role == 1;
     this.createForm();
     if (this.state == 'edit') {
       this.editAccount(this.item);
@@ -93,7 +97,7 @@ export class UserFormComponent implements OnInit {
       city: new FormControl(null),
       verificationtoken: new FormControl(null),
 
-      file: new FormControl(null, Validators.required),
+      file: new FormControl(null, (this.currentUserDetails.role !== 1 ? Validators.required : null)),
 
       // packageid_dr: new FormControl(null,[Validators.required]),
       // size_dr: new FormControl(null,[Validators.required]),
@@ -171,8 +175,8 @@ export class UserFormComponent implements OnInit {
   }
 
   handleChange(info: { file: NzUploadFile }) {
-    console.log('xxx info: ', info);
-    let file = info.file!.originFileObj!
+    console.log('info: ', info);
+    let file = info.file!.originFileObj!;
     this.userForm.patchValue({
       file: file
     })
@@ -189,4 +193,8 @@ export class UserFormComponent implements OnInit {
       this.loading = false;
     } */
   };
+
+  fileError(event) {
+    console.log('upload error: ', event);
+  }
 }

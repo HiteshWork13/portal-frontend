@@ -70,7 +70,7 @@
       <li nz-menu-item>
         <a class="dropdown-item" (click)="openModal(addForm, 'edit', row)">Edit</a>
       </li>
-      <li nz-menu-item>
+      <li nz-menu-item *ngIf="currentUserDetails.role == 1">
         <a class="dropdown-item" (click)="showDeleteConfirm(row.id)">Delete</a>
       </li>
     </ul>

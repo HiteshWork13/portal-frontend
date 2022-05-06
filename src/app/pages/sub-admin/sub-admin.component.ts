@@ -35,6 +35,8 @@ export class SubAdminComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
+    let current_user_details: any = localStorage.getItem('current_user_details');
+    this.currentUserDetails = JSON.parse(current_user_details);
     this.getDefaults();
     this.createForm();
     this.getSubAdminData();
@@ -47,9 +49,6 @@ export class SubAdminComponent implements OnInit, OnChanges {
   }
 
   getDefaults() {
-    let current_user_details: any = localStorage.getItem('current_user_details');
-    this.currentUserDetails = JSON.parse(current_user_details);
-    console.log('this.currentUserDetails: ', this.currentUserDetails);
     this.subAdminTableJSON.Header.showClose = false;
     this.subAdminTableJSON.Header.showAdd = true;
 
