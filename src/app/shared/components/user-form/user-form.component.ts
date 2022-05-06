@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzUploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'app-user-form',
@@ -92,6 +93,8 @@ export class UserFormComponent implements OnInit {
       city: new FormControl(null),
       verificationtoken: new FormControl(null),
 
+      file: new FormControl(null, Validators.required),
+
       // packageid_dr: new FormControl(null,[Validators.required]),
       // size_dr: new FormControl(null,[Validators.required]),
       // totaldevices_dr: new FormControl(null,[Validators.required]),
@@ -167,7 +170,23 @@ export class UserFormComponent implements OnInit {
     });
   }
 
-  handleChange(event) {
-    // 
+  handleChange(info: { file: NzUploadFile }) {
+    console.log('xxx info: ', info);
+    let file = info.file!.originFileObj!
+    this.userForm.patchValue({
+      file: file
+    })
   }
+
+  customRequest = async (item: any, image) => {
+    /* try {
+      const url: any = await this.uploadFileService.upload(item, image);
+      this.imageUrl = url.toString();
+      this.productForm.patchValue({
+        image_url: url.toString()
+      });
+    } catch (err) {
+      this.loading = false;
+    } */
+  };
 }

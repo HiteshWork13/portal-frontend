@@ -151,8 +151,6 @@
                 <nz-form-item>
                     <nz-form-label>PO File</nz-form-label>
                     <nz-form-control nzErrorTip="Select a valid PO file">
-                        <!--  <input nz-input trim="blur" formControlName="reseller_code" maxlength="80" #resellercode
-                            placeholder="Postcode" tabindex="16" /> -->
                         <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                             [nzHeaders]="{ authorization: 'authorization-text' }" (nzChange)="handleChange($event)">
                             <button nz-button>

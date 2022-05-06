@@ -152,7 +152,17 @@ export class UserComponent implements OnInit {
       },
       nzOnOk: (event) => {
         let formValue = event.userForm.value;
-        state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
+        let valid: boolean = event.userForm.valid;
+        if (valid == true) {
+          state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
+          return true;
+        } else {
+          for (const i in event.userForm.controls) {
+            event.userForm.controls[i].markAsDirty();
+            event.userForm.controls[i].updateValueAndValidity();
+          }
+          return false
+        }
       },
       nzMaskClosable: false,
       nzAutofocus: null,
@@ -187,22 +197,20 @@ export class UserComponent implements OnInit {
   }
 
   onSubmit(event = this.userForm.value) {
-    console.log('xxxxxxxxxx event: ', event);
-    let formData = new FormData();
-    formData.set('packageid_dr', event['packageid'])
-    formData.set('totaldevices_dr', event['totaldevices'])
-    formData.set('expirydate_dr', event['expirydate'])
-    formData.set('packageid_dr', event['packageid'])
-    formData.set('size_dr', '0')
-    /* this.accountService.createAccount(formData).then((result: any) => {
-      if (result.success) {
-        this.accountList.push(result.data)
+    const input = new FormData()
+    input.append("file", event['file']);
+    input.append("data", JSON.stringify(event))
+    this.accountService.createAccount(input).then(
+      (result: any) => {
+        if (result.success) {
+          this.accountList.push(result.data);
+        }
+        this.notification.success(result['message']);
+      },
+      (error) => {
+        this.notification.error(error['message']);
       }
-      this.notification.success(result['message']);
-    }, (error) => {
-      this.notification.error(error['message']);
-      this.modalRef.destroy();
-    }) */
+    );
   }
 
   matchPassword() {

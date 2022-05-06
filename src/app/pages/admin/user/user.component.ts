@@ -149,7 +149,17 @@ export class UserComponent implements OnInit {
       },
       nzOnOk: (event) => {
         let formValue = event.userForm.value;
-        state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
+        let valid: boolean = event.userForm.valid;
+        if (valid == true) {
+          state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
+          return true;
+        } else {
+          for (const i in event.userForm.controls) {
+            event.userForm.controls[i].markAsDirty();
+            event.userForm.controls[i].updateValueAndValidity();
+          }
+          return false
+        }
       },
       nzMaskClosable: false,
       nzAutofocus: null,
@@ -184,26 +194,20 @@ export class UserComponent implements OnInit {
   }
 
   onSubmit(event = this.userForm.value) {
-    /* for (const i in this.userForm.controls) {
-      this.userForm.controls[i].markAsDirty();
-      this.userForm.controls[i].updateValueAndValidity();
-    } */
-    // if (this.userForm.valid && !this.matchPasswordErr) {
-    // const currentUser = JSON.parse(localStorage.getItem("current_user_details"));
-    // this.userForm.value['created_by_id'] = currentUser.id;
-    event['packageid_dr'] = event['packageid'];
-    event['totaldevices_dr'] = event['totaldevices'];
-    event['expirydate_dr'] = event['expirydate'];
-    event['size_dr'] = 0;
-    this.accountService.createAccount(event).then((result: any) => {
-      if (result.success) {
-        this.accountList.push(result.data)
+    const input = new FormData()
+    input.append("file", event['file']);
+    input.append("data", JSON.stringify(event))
+    this.accountService.createAccount(input).then(
+      (result: any) => {
+        if (result.success) {
+          this.accountList.push(result.data);
+        }
+        this.notification.success(result['message']);
+      },
+      (error) => {
+        this.notification.error(error['message']);
       }
-      // this.modalRef.destroy();
-      this.notification.success(result['message']);
-    }, error => {
-      this.notification.error(error['message']);
-    })
+    );
   }
 
 
