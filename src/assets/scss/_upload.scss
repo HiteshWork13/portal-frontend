@@ -1,3 +1,23 @@
+$upload-theme-color: #3f87f5 !default;
+$upload-picture-size: 110px !default;
+$upload-thumbnial-size: 48px !default;
+$upload-picture-bg: #fafafa !default;
+$upload-picture-gutter: 10px !default;
+$body-color: #53535f !default;
+$font-size-base: .875rem !default;
+$font-family-base: 'Poppins' !default;
+$border-color: #edf2f9 !default;
+$border-radius: .25rem !default;
+$upload-picture-bg: #fafafa !default;
+$upload-picture-gutter: 10px !default;
+$gray-dark: #2a2a2a !default;
+$gray-light: #72849a !default;
+$line-height-base: 1.5 !default;
+$gray-lightest: #f1f2f3 !default;
+$upload-list-hover: $gray-lightest  !default;
+$red: #de4436 !default;
+$brand-danger: $red  !default;
+
 .ant-upload {
     color: $body-color;
     font-size: $font-size-base;
@@ -153,5 +173,5 @@
 
 .drag-file-uploader {
     width: 100% !important;
-    height: 120px;
+    height: 130px;
 }

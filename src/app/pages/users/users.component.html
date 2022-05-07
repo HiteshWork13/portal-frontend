@@ -12,7 +12,8 @@
             (click)="$event.stopPropagation()">
         </a>
         <nz-button-group>
-            <span nz-button nz-dropdown [nzDropdownMenu]="menu1" nzPlacement="bottomRight" style="cursor: pointer">
+            <span nz-button nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu1" nzPlacement="bottomRight"
+                style="cursor: pointer">
                 <i nz-icon nzType="ellipsis"></i>
             </span>
         </nz-button-group>

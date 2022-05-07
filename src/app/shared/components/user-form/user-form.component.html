@@ -153,7 +153,8 @@
                 <nz-form-item>
                     <nz-form-label>PO File</nz-form-label>
                     <nz-form-control nzErrorTip="Select a valid PO file">
-                        <div class="custom-file-uploader drag-file-uploader" (click)="openFileBrowser('POSelector')">
+                        <div class="ant-upload ant-upload-drag custom-file-uploader drag-file-uploader"
+                            (click)="openFileBrowser('POSelector')">
                             <input type="file" style="display: none;" (change)="handleChange($event)" id="POSelector">
                             <p class="ant-upload-drag-icon font-size-30 m-b-10 lh-1">
                                 <i nz-icon nzType="inbox"></i>

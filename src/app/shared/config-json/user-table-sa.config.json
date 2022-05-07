@@ -27,6 +27,7 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
+      "Width": "300px",
       "advanceFilter": {
         "dataType": "text",
         "dpConfig": null,
@@ -46,6 +47,7 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
+      "Width": "150px",
       "advanceFilter": {
         "dataType": "text",
         "dpConfig": null,
@@ -122,6 +124,7 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
+      "Width": "150px",
       "advanceFilter": {
         "dataType": "number",
         "dpConfig": null,
@@ -141,6 +144,7 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
+      "Width": "200px",
       "advanceFilter": {
         "dataType": "date_range",
         "dpConfig": null,

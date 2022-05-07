@@ -15,7 +15,8 @@
         <th>#ID</th>
         <ng-container *ngFor="let column of Config.Columns;trackBy: trackBy;let i = index;let last = last">
           <ng-container *ngIf="column.visible">
-            <th [ngClass]="{ 'bg-white': Mode == 'Normal', 'flex-1': last }"
+            <th [ngStyle]="{'min-width': column['Width'] || 'auto' }"
+              [ngClass]="{ 'bg-white': Mode == 'Normal', 'flex-1': last }"
               class="text-left header_column header_column_{{ tableId }}_{{i}}" mwlResizable>
               <!-- [ngStyle]="{ width: column.columnWidth }" -->
               <!-- nzLeft -->
@@ -48,7 +49,8 @@
           <td>
             <span>{{ ri + 1 }}</span>
           </td>
-          <td *ngFor="let column of Config.Columns;trackBy: trackBy; let i = index; let last = last"
+          <td [ngStyle]="{'min-width': column['Width'] || 'auto' }"
+            *ngFor="let column of Config.Columns;trackBy: trackBy; let i = index; let last = last"
             [ngClass]="{ 'flex-1': last }"
             class="data_column_{{ tableId }}_{{ i }} data_row_{{ tableId }}_{{ri}} {{ column?.clickableCell == true ? 'cp' : '' }}"
             [hidden]="!column.visible"

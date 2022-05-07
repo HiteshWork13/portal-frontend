@@ -29,7 +29,7 @@
 .custom-file-uploader {
     width: 100px;
     height: 100px;
-    background: #EDF2F9;
+    background: #fff5ec;
     border-radius: 5px;
     border: 2px dashed #C7CED7;
     display: flex;
@@ -41,6 +41,6 @@
     transition: border-color .3s;
 
     &:hover {
-        border-color: #1890ff;
+        border-color: #FF9842;
     }
 }
