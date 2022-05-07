@@ -1,8 +1,9 @@
 <div class="page-header p-t-0 m-t-0 minus-m-b-25">
 </div>
 <ng-container *ngIf="accountTableJSON">
-    <app-table [Config]="accountTableJSON" [Data]="accountList" (header_addClick)="openModal('add', '')"
-        (header_deleteClick)="showDeleteConfirm(null)">
+    <!-- [ScrollConfig]="scrollConfig" -->
+    <app-table class="height-max" [Config]="accountTableJSON" [Data]="accountList"
+        (header_addClick)="openModal('add', '')" (header_deleteClick)="showDeleteConfirm(null)">
     </app-table>
 </ng-container>
 

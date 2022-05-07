@@ -11,9 +11,9 @@
   },
   "Pagination": false,
   "PageSizeChanger": false,
-  "PaginationType": "static",
-  "SortingType": "static",
-  "SearchType": "static",
+  "PaginationType": "Static",
+  "SortingType": "Static",
+  "SearchType": "Static",
   "selectedRowClassName": "selected-row",
   "noDataLabel": "No Data Found",
   "Columns": [

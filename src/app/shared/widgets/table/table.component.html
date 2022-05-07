@@ -7,7 +7,10 @@
     </wic-table-header>
   </div>
 </div>
-<nz-table #fixedTable [nzData]="Data" [id]="tableId" [nzShowPagination]="false" [nzScroll]="{ x: 'auto' }">
+<nz-table class="core-table" #fixedTable [nzTotal]="TotalItems" [nzPageSize]="PageSize" [nzPageIndex]="PageIndex"
+  [nzData]="Data" [id]="tableId" nzFrontPagination="{{ Config.PaginationType != 'Dynamic' ? true : false }}"
+  nzShowPagination="{{Config.Pagination || false}}" nzShowSizeChanger="{{Config.PageSizeChanger || false}}"
+  [nzScroll]="ScrollConfig">
   <!-- [nzScroll]="{ x: '100px', y: '400px' }" -->
   <thead>
     <tr class="header_row" [ngClass]="{ 'table-view-header': Mode == 'View' }">

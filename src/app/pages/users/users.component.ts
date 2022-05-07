@@ -55,6 +55,7 @@ export class UsersComponent implements OnInit {
   Data: any = [];
   row_data: any = {};
   currentUserDetails: any;
+  scrollConfig: any = { x: 'auto', y: '100%' };
 
   constructor(
     private modalService: NzModalService,

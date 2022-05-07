@@ -18,6 +18,10 @@ export class TableComponent implements OnInit {
   @Input() Data: Array<any> = [];
   @Input() Mode: 'View' | 'Normal' = 'Normal';
   @Input() ExtraHeaderButtons: TemplateRef<any>;
+  @Input() TotalItems: number = 500;
+  @Input() PageIndex: number = 1;
+  @Input() PageSize: number = 5;
+  @Input() ScrollConfig: any = { x: 'auto' };
 
   @Output() onCellClick: EventEmitter<any> = new EventEmitter();
   @Output() onRowClick: EventEmitter<any> = new EventEmitter();
