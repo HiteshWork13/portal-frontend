@@ -285,7 +285,18 @@ export class UserComponent implements OnInit {
   }
 
   statusChanged(event, row_data, key) {
-    row_data[key] = event;
-    this.updateUser(row_data.id, row_data)
+    const body = {
+      [key]: event
+    }
+    this.accountService.updateAccountStatus(row_data.id, body).then((response: any) => {
+      this.accountList.map((element) => {
+        if (element['id'] == row_data.id) {
+          element = response['data'];
+        }
+      });
+      this.notification.success(response['message']);
+    }, (error) => {
+      this.notification.error(error['message']);
+    })
   }
 }

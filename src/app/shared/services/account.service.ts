@@ -27,6 +27,10 @@ export class AccountService {
     return await this.dataService.PUT(`/account/updateAccount/${id}`, formData)
   }
 
+  async updateAccountStatus(id, data) {
+    return await this.dataService.PUT(`/account/updateAccountStatus/${id}`, data)
+  }
+
   async deleteAccount(id) {
     return await this.dataService.DELETE(`/account/deleteAccount/${id}`)
   }
