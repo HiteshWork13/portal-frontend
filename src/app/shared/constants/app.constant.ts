@@ -6,5 +6,6 @@ export const APP_CONST = {
         SuperAdmin: 1,
         Admin: 2,
         SubAdmin: 3
-    }
+    },
+    MaxFileSizeInMB: 10
 }

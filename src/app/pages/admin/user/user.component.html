@@ -19,19 +19,14 @@
         <nz-dropdown-menu #menu1="nzDropdownMenu">
             <ul nz-menu>
                 <li nz-menu-item role="menuitem">
-                    <a class="dropdown-item" (click)="accountDetailsModel(row)">{{
-                        "View"
-                        }}</a>
+                    <a class="dropdown-item" (click)="accountDetailsModel(row)">View</a>
                 </li>
                 <li nz-menu-item role="menuitem">
-                    <a class="dropdown-item" (click)="openModal('edit', row)">{{
-                        "Edit"
-                        }}</a>
+                    <a class="dropdown-item" (click)="openModal('edit', row)">Edit</a>
                 </li>
                 <li nz-menu-item role="menuitem">
-                    <a class="dropdown-item" (click)="showDeleteConfirm(row)">{{
-                        "Delete"
-                        }}</a>
+                    <a class="dropdown-item" (click)="showDeleteConfirm(row)"
+                        *ngIf="currentUserDetails.role == superAdminRole">Delete</a>
                 </li>
             </ul>
         </nz-dropdown-menu>

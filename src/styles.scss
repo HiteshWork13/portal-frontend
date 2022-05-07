@@ -1,3 +1,6 @@
+@import url(assets/scss/_upload.scss);
+@import url(assets/scss/_utilities-enlink.scss);
+
 .wi-action-menu {
     min-width: 130px;
 
@@ -21,4 +24,23 @@
 
 .validationColor {
     color: #de4436 !important;
+}
+
+.custom-file-uploader {
+    width: 100px;
+    height: 100px;
+    background: #EDF2F9;
+    border-radius: 5px;
+    border: 2px dashed #C7CED7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+    user-select: none;
+    transition: border-color .3s;
+
+    &:hover {
+        border-color: #1890ff;
+    }
 }

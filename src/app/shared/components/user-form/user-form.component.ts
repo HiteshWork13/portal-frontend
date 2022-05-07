@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import * as countries from 'country-list';
 import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { NzUploadFile } from 'ng-zorro-antd/upload';
-
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { Observable, Observer } from 'rxjs';
+import { APP_CONST } from '../../constants/app.constant';
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
@@ -35,8 +37,10 @@ export class UserFormComponent implements OnInit {
   ];
   @Input() btnName: any = 'Save';
   currentUserDetails: any;
+  countryList: Array<string> = countries.getNames();
+  superAdminRole: any = APP_CONST.Role.SuperAdmin;
 
-  constructor(private modalService: NzModalService) { }
+  constructor(private modalService: NzModalService, private notification: NzNotificationService) { }
 
   ngOnInit(): void {
     let current_user_details: any = localStorage.getItem('current_user_details');
@@ -97,7 +101,7 @@ export class UserFormComponent implements OnInit {
       city: new FormControl(null),
       verificationtoken: new FormControl(null),
 
-      file: new FormControl(null, (this.currentUserDetails.role !== 1 ? Validators.required : null)),
+      file: new FormControl(null, (this.currentUserDetails.role !== this.superAdminRole ? Validators.required : null)),
 
       // packageid_dr: new FormControl(null,[Validators.required]),
       // size_dr: new FormControl(null,[Validators.required]),
@@ -114,14 +118,6 @@ export class UserFormComponent implements OnInit {
   }
 
   onSubmit() {
-    /* for (const i in this.userForm.controls) {
-      this.userForm.controls[i].markAsDirty();
-      this.userForm.controls[i].updateValueAndValidity();
-    }
-    if (this.userForm.valid) {
-      const formObj = this.userForm.value();
-      this.formValue.emit(formObj);
-    } */
   }
 
   editAccount(item) {
@@ -174,27 +170,48 @@ export class UserFormComponent implements OnInit {
     });
   }
 
-  handleChange(info: { file: NzUploadFile }) {
-    console.log('info: ', info);
-    let file = info.file!.originFileObj!;
-    this.userForm.patchValue({
-      file: file
+  handleChange(event) {
+    let rules = {
+      accept: ['application/pdf'],
+      size: APP_CONST.MaxFileSizeInMB
+    }
+
+    const files = event.target.files;
+    this.validateSizeBeforeUpload(files[0], rules).subscribe(isValid => {
+      if (isValid) {
+        this.userForm.patchValue({
+          file: files[0]
+        })
+        console.log(this.userForm.get('file').value);
+      }
     })
   }
 
-  customRequest = async (item: any, image) => {
-    /* try {
-      const url: any = await this.uploadFileService.upload(item, image);
-      this.imageUrl = url.toString();
-      this.productForm.patchValue({
-        image_url: url.toString()
-      });
-    } catch (err) {
-      this.loading = false;
-    } */
+  validateSizeBeforeUpload = (file, rules) => {
+    return new Observable((observer: Observer<boolean>) => {
+      if (file) {
+        let isAcceptable = false, isValidSize = false;
+        if (rules.accept) {
+          isAcceptable = rules.accept.indexOf(file.type) != -1 ? true : false
+        }
+        if (rules.size) {
+          isValidSize = file.size / 1024 / 1024 < rules.size ? true : false
+        }
+        if (!isAcceptable) {
+          this.notification.create('error', 'File Type Error', `File ${file.name} is not valid for upload.`, { nzDuration: 6000, nzPauseOnHover: true });
+        }
+        if (!isValidSize) {
+          this.notification.create('error', 'File Size Error', `File ${file.name} is larger then ${APP_CONST.MaxFileSizeInMB}MB.`, { nzDuration: 6000, nzPauseOnHover: true });
+        }
+        observer.next(isAcceptable && isValidSize);
+        observer.complete();
+      }
+    });
   };
 
-  fileError(event) {
-    console.log('upload error: ', event);
+  openFileBrowser(id) {
+    if (document.getElementById(id)) {
+      document.getElementById(id).click();
+    }
   }
 }

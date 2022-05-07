@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { superAdminUserTableConfigJson, userTableConfigJSON } from '@configJson';
+import { APP_CONST } from '@constants';
 import { AccountService, NotificationService } from '@services';
 import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -46,6 +47,8 @@ export class UserComponent implements OnInit {
   userForm: FormGroup;
   matchPasswordErr: boolean = false;
   currentUserDetails: any;
+  superAdminRole: any = APP_CONST.Role.SuperAdmin;
+
   @ViewChild('statusTemplate') statusTemplate: TemplateRef<any>;
 
 
@@ -54,7 +57,7 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     let current_user_details: any = localStorage.getItem('current_user_details');
     this.currentUserDetails = JSON.parse(current_user_details);
-    this.accountTableJSON = this.currentUserDetails.role == 1 ? JSON.parse(JSON.stringify(superAdminUserTableConfigJson as any)) : JSON.parse(JSON.stringify(userTableConfigJSON as any));
+    this.accountTableJSON = this.currentUserDetails.role == this.superAdminRole ? JSON.parse(JSON.stringify(superAdminUserTableConfigJson as any)) : JSON.parse(JSON.stringify(userTableConfigJSON as any));
     this.getDefaults();
     this.createForm();
     this.getAccountData();
