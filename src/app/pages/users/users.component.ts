@@ -161,16 +161,16 @@ export class UsersComponent implements OnInit {
       nzOnOk: (event) => {
         let formValue = event.userForm.value;
         let valid: boolean = event.userForm.valid;
-        // if (valid == true) {
-        state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
-        return true;
-        // } else {
-        // for (const i in event.userForm.controls) {
-        //   event.userForm.controls[i].markAsDirty();
-        //   event.userForm.controls[i].updateValueAndValidity();
-        // }
-        // return false
-        // }
+        if (valid == true) {
+          state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
+          return true;
+        } else {
+          for (const i in event.userForm.controls) {
+            event.userForm.controls[i].markAsDirty();
+            event.userForm.controls[i].updateValueAndValidity();
+          }
+          return false
+        }
       },
       nzMaskClosable: false,
       nzAutofocus: null,
