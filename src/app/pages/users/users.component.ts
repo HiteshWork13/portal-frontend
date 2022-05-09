@@ -249,8 +249,8 @@ export class UsersComponent implements OnInit {
       (result: any) => {
         if (result.success) {
           this.accountList.push(result.data);
+          this.notification.success(result['message']);
         }
-        this.notification.success(result['message']);
       },
       (error) => {
         this.notification.error(error['message']);

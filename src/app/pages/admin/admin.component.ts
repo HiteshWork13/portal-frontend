@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { adminTableConfigJSON } from "@configJson";
 import { AdminService, NotificationService } from '@services';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { ADMIN_CONST } from 'src/app/shared/constants/notifications.constant';
 
 @Component({
   selector: 'app-admin',
@@ -156,11 +157,13 @@ export class AdminComponent implements OnInit {
 
   deleteAdmin(admin_id) {
     this.adminService.deleteAdmin(admin_id).then(
-      (response) => {
-        this.adminList = this.adminList.filter((element) => element['id'] !== admin_id);
-        this.notification.success(response['message']);
-      }, (error) => {
-        this.notification.error(error['message']);
+      (response: any) => {
+        if (response.success) {
+          this.adminList = this.adminList.filter((element) => element['id'] !== admin_id);
+          this.notification.success(ADMIN_CONST.delete_admin_success);
+        }
+      }, (_error) => {
+        this.notification.error(ADMIN_CONST.delete_admin_error);
       });
   }
 
@@ -172,13 +175,15 @@ export class AdminComponent implements OnInit {
     if (this.adminForm.valid && !this.matchPasswordErr) {
       const formObj = this.adminForm.value;
       this.adminService.createAdmin(formObj).then(
-        (response) => {
-          this.adminList = [...this.adminList, response['data']];
-          this.modalService.closeAll();
-          this.notification.success(response['message']);
+        (response: any) => {
+          if (response.success) {
+            this.adminList = [...this.adminList, response['data']];
+            this.modalService.closeAll();
+            this.notification.success(ADMIN_CONST.create_admin_success);
+          }
         },
-        (error) => {
-          this.notification.error(error['message']);
+        (_error) => {
+          this.notification.error(ADMIN_CONST.create_admin_error);
           this.modalService.closeAll();
         }
       );
@@ -189,17 +194,19 @@ export class AdminComponent implements OnInit {
     const formObj = {
       username: this.adminForm.controls['username'].value
     }
-    this.adminService.updateAdmin(item.id, formObj).then((response) => {
-      this.adminList = this.adminList.map((element) => {
-        if (element['id'] == item.id) {
-          element = response['data'];
-        }
-        return element;
-      });
-      this.notification.success(response['message']);
-      this.modalService.closeAll();
-    }, (error) => {
-      this.notification.error(error['message']);
+    this.adminService.updateAdmin(item.id, formObj).then((response: any) => {
+      if (response.success == true) {
+        this.adminList = this.adminList.map((element) => {
+          if (element['id'] == item.id) {
+            element = response['data'];
+          }
+          return element;
+        });
+        this.notification.success(ADMIN_CONST.update_admin_success);
+        this.modalService.closeAll();
+      }
+    }, (_error) => {
+      this.notification.error(ADMIN_CONST.update_admin_error);
       this.modalService.closeAll();
     });
   }
