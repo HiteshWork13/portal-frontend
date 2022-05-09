@@ -22,6 +22,7 @@ export class TableComponent implements OnInit {
   @Input() PageIndex: number = 1;
   @Input() PageSize: number = 5;
   @Input() ScrollConfig: any = { x: 'auto' };
+  @Input() loading: boolean = false;
 
   @Output() onCellClick: EventEmitter<any> = new EventEmitter();
   @Output() onRowClick: EventEmitter<any> = new EventEmitter();
@@ -34,6 +35,7 @@ export class TableComponent implements OnInit {
   @Output() header_closeClick: EventEmitter<any> = new EventEmitter();
   @Output() header_downloadClick: EventEmitter<any> = new EventEmitter();
   @Output() header_uploadClick: EventEmitter<any> = new EventEmitter();
+  @Output() pageIndex: EventEmitter<any> = new EventEmitter();
 
   clickedRowIndex: number;
   selectAll: Boolean = false;
@@ -44,9 +46,7 @@ export class TableComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-    console.log("Data", this.Data);
-  }
+  ngOnInit(): void { }
 
   trackBy(index: number): number {
     return index;
@@ -166,4 +166,8 @@ export class TableComponent implements OnInit {
       currentEl.style.width = childWidth + 'px';
     }
   } */
+
+  pageIndexChanged(event) {
+    this.pageIndex.emit(event);
+  }
 }

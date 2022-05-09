@@ -2,7 +2,8 @@
 </div>
 <ng-container *ngIf="accountTableJSON">
     <app-table [Config]="accountTableJSON" [Data]="accountList" (header_addClick)="openModal('add', '')"
-        (header_closeClick)="close.emit()">
+        (header_closeClick)="close.emit()" (pageIndex)="getAccountData($event)" [loading]="loading"
+        [TotalItems]="totalData" [PageSize]="PageSize">
     </app-table>
 </ng-container>
 

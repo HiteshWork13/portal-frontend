@@ -51,6 +51,10 @@ export class UserComponent implements OnInit {
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
 
   @ViewChild('statusTemplate') statusTemplate: TemplateRef<any>;
+  loading: boolean = true;
+  pag_params: any = { pageIndex: 1, pageSize: 5 }
+  totalData: number = 10;
+  PageSize: number = 5;
 
 
   constructor(private modalService: NzModalService, private accountService: AccountService, private notification: NotificationService, private viewContainerRef: ViewContainerRef) { }
@@ -133,14 +137,26 @@ export class UserComponent implements OnInit {
     }
   }
 
-  async getAccountData() {
-    this.accountService.getAllAccountsByAdminAndSubAdmin({ created_by_id: this.selectedAdminId }).then((account: any) => {
+  async getAccountData(paginationParams = this.pag_params) {
+    let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
+    let api_body = {
+      offset: offset,
+      limit: paginationParams.pageSize,
+      created_by_id: this.selectedAdminId,
+      order: { "username": "ASC" },
+    }
+    this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
       if (account.success) {
         this.accountList = account.data;
+        this.loading = false;
+        this.totalData = account.counts;
+        this.PageSize = account.limit;
       }
-    }, error => {
-      this.notification.error(error.message);
-    });
+    },
+      (_error) => {
+        this.loading = false;
+      }
+    );
   }
 
   openModal(state: any, item: any) {

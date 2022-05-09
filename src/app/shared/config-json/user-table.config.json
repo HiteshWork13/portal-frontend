@@ -9,9 +9,9 @@
     "showDownload": false,
     "showClose": true
   },
-  "Pagination": false,
+  "Pagination": true,
   "PageSizeChanger": false,
-  "PaginationType": "Static",
+  "PaginationType": "Dynamic",
   "SortingType": "Static",
   "SearchType": "Static",
   "selectedRowClassName": "selected-row",

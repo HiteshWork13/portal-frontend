@@ -56,6 +56,10 @@ export class UsersComponent implements OnInit {
   row_data: any = {};
   currentUserDetails: any;
   scrollConfig: any = { x: 'auto', y: '100%' };
+  loading: boolean = true;
+  pag_params: any = { pageIndex: 1, pageSize: 5 }
+  totalData: number = 10;
+  PageSize: number = 5;
 
   constructor(
     private modalService: NzModalService,
@@ -137,14 +141,26 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  async getAccountData() {
-    this.accountService.getAllAccountsOfCurrentUser({}).then((account: any) => {
-      console.log('account list:', account);
+  async getAccountData(paginationParams = this.pag_params) {
+    const currentUserId = localStorage.getItem('current_user_id');
+    let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
+    let api_body = {
+      offset: offset,
+      limit: paginationParams.pageSize,
+      created_by_id: currentUserId,
+      order: { "username": "ASC" },
+    }
+    this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
       if (account.success) {
         this.accountList = account.data;
+        this.loading = false;
+        this.totalData = account.counts;
+        this.PageSize = account.limit;
       }
     },
-      (_error) => { }
+      (_error) => {
+        this.loading = false;
+      }
     );
   }
 

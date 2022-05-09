@@ -13,8 +13,6 @@ export class AccountService {
   }
 
   async getAllAccountsOfCurrentUser(body) {
-    const currentUserId = localStorage.getItem('current_user_id');
-    body['created_by_id'] = currentUserId;
     // return await this.dataService.POST("/account/getAllAccountsByCreatedId", body)
     return await this.dataService.POST("/account/getAccountsByAdminAndSubAdmin", body)
   }
