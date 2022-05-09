@@ -217,7 +217,7 @@ export class UserComponent implements OnInit {
 
   onSubmit(event = this.userForm.value) {
     const input = new FormData()
-    input.append("file", event['file']);
+    if (event['file'] !== null) input.append("file", event['file']);
     input.append("data", JSON.stringify(event))
     this.accountService.createAccount(input).then(
       (result: any) => {
