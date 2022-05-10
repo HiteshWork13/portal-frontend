@@ -17,7 +17,7 @@ export class UserFormComponent implements OnInit {
   @Input() item: any;
   @Output() formValue: EventEmitter<any> = new EventEmitter();
   @Input() state: string = 'add';
-  userForm: FormGroup;
+  accountForm: FormGroup;
   packageList: Array<any> = [
     {
       id: 1,
@@ -54,7 +54,7 @@ export class UserFormComponent implements OnInit {
 
   createForm() {
     const email = `${Date.now()}@facitdatasystems.com`;
-    this.userForm = new FormGroup({
+    this.accountForm = new FormGroup({
       code: new FormControl(null),
       // End User
       firstname: new FormControl(null, [Validators.required]),
@@ -113,7 +113,7 @@ export class UserFormComponent implements OnInit {
   handleCredit(e) {
     const selectedPack = this.packageList.find((pack) => pack.id == e);
     if (selectedPack) {
-      this.userForm.controls.credits.setValue(selectedPack['credit']);
+      this.accountForm.controls.credits.setValue(selectedPack['credit']);
     }
   }
 
@@ -121,7 +121,7 @@ export class UserFormComponent implements OnInit {
   }
 
   editAccount(item) {
-    this.userForm.patchValue({
+    this.accountForm.patchValue({
       id: item.id,
       code: item.code,
       // End User
@@ -179,10 +179,10 @@ export class UserFormComponent implements OnInit {
     const files = event.target.files;
     this.validateSizeBeforeUpload(files[0], rules).subscribe(isValid => {
       if (isValid) {
-        this.userForm.patchValue({
+        this.accountForm.patchValue({
           file: files[0]
         })
-        console.log(this.userForm.get('file').value);
+        console.log(this.accountForm.get('file').value);
       }
     })
   }

@@ -1,6 +1,6 @@
 <div>
     <h2>{{ title }}</h2>
-    <form nz-form nzLayout="vertical" id="addUserForm" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <form nz-form nzLayout="vertical" id="addUserForm" [formGroup]="accountForm" (ngSubmit)="onSubmit()">
         <div nz-row style="margin-bottom: 0.50rem;">
             <div nz-col nzSpan="24">
                 <h3>End User Details</h3>
@@ -160,15 +160,15 @@
                                 <i nz-icon nzType="inbox"></i>
                             </p>
                             <p class="ant-upload-text m-b-0">Click to this area to upload</p>
-                            <p class="ant-upload-hint m-b-0" *ngIf="!userForm.get('file').value">
+                            <p class="ant-upload-hint m-b-0" *ngIf="!accountForm.get('file').value">
                                 Support for a single PDF file
                             </p>
                             <p class="ant-upload-hint m-b-0 text-truncate w-100 p-l-10 p-r-10 text-center"
-                                *ngIf="userForm.get('file').value && userForm.get('file').value['name']">
-                                {{userForm.get('file').value['name']}}
+                                *ngIf="accountForm.get('file').value && accountForm.get('file').value['name']">
+                                {{accountForm.get('file').value['name']}}
                             </p>
                         </div>
-                        <ng-container *ngIf="userForm.get('file').dirty && userForm.get('file').errors">
+                        <ng-container *ngIf="accountForm.get('file').dirty && accountForm.get('file').errors">
                             <div class="w-100 validationColor float-left">
                                 Choose a valid PO File
                             </div>

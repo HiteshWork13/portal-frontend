@@ -1,18 +1,7 @@
-/* declarations: NzModalCustomComponent */
-
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { superAdminUserTableConfigJson, userTableConfigJSON } from '@configJson';
 import { APP_CONST } from '@constants';
 import { AccountService, NotificationService } from '@services';
-import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { UserFormComponent } from 'src/app/shared/components/user-form/user-form.component';
 import { ACCOUNT_CONST } from 'src/app/shared/constants/notifications.constant';
@@ -25,40 +14,16 @@ import { UserDetailsComponent } from 'src/app/shared/user-details/user-details.c
 export class UsersComponent implements OnInit {
   @ViewChild('actionTemplate') actionTemplate: TemplateRef<any>;
   @ViewChild('created_by_template') created_by_template: TemplateRef<any>;
-  accountTableJSON: any = [];
-  accountList: Array<any>;
-  modalRef: any;
-  packageList: Array<any> = [
-    {
-      id: 1,
-      label: 'Pack 1',
-      credit: 10000,
-    },
-    {
-      id: 2,
-      label: 'Pack 2',
-      credit: 20000,
-    },
-    {
-      id: 3,
-      label: 'Pack 3',
-      credit: 30000,
-    },
-  ];
-
-  isAssociatesVisible: boolean = false;
-  isInstallmentVisible: boolean = false;
-  userForm: FormGroup;
-  matchPasswordErr: boolean = false;
-  superAdminRole: any = APP_CONST.Role.SuperAdmin;
-
   @ViewChild('statusTemplate') statusTemplate: TemplateRef<any>;
+  accountList: Array<any>;
+  accountTableJSON: any = [];
+  superAdminRole: any = APP_CONST.Role.SuperAdmin;
   Data: any = [];
   row_data: any = {};
   currentUserDetails: any;
   scrollConfig: any = { x: 'auto', y: '100%' };
+  pag_params: any = { pageIndex: 1, pageSize: 5 };
   loading: boolean = true;
-  pag_params: any = { pageIndex: 1, pageSize: 5 }
   totalData: number = 10;
   PageSize: number = 5;
 
@@ -66,7 +31,6 @@ export class UsersComponent implements OnInit {
     private modalService: NzModalService,
     private accountService: AccountService,
     private notification: NotificationService,
-    private changeDetector: ChangeDetectorRef,
     private viewContainerRef: ViewContainerRef
   ) { }
 
@@ -75,71 +39,7 @@ export class UsersComponent implements OnInit {
     this.currentUserDetails = JSON.parse(current_user_details);
     this.accountTableJSON = this.currentUserDetails.role == this.superAdminRole ? JSON.parse(JSON.stringify(superAdminUserTableConfigJson as any)) : JSON.parse(JSON.stringify(userTableConfigJSON as any));
     this.getDefaults();
-    this.createForm();
     this.getAccountData();
-  }
-
-  createForm() {
-    const email = `${Date.now()}@facitdatasystems.com`;
-    this.userForm = new FormGroup({
-      code: new FormControl(null),
-      // End User
-      firstname: new FormControl(null),
-      lastname: new FormControl(null),
-      companyname: new FormControl(null),
-      enduser_street: new FormControl(null),
-      enduser_state: new FormControl(null),
-      postcode: new FormControl(null),
-      enduser_email: new FormControl(email),
-      enduser_classification: new FormControl(null),
-      country: new FormControl(null),
-      packageid: new FormControl(null),
-
-      // Reseller
-      reseller_firstname: new FormControl(null),
-      reseller_lastname: new FormControl(null),
-      reseller_company: new FormControl(null),
-      reseller_street: new FormControl(null),
-      reseller_state: new FormControl(null),
-      reseller_code: new FormControl(null),
-      reseller_email: new FormControl(email),
-
-      // Hard Core Values
-      triallimit: new FormControl(7),
-      password: new FormControl(`${Date.now()}${Math.random()}`),
-      totaldevices: new FormControl(1),
-      twofactor: new FormControl(false),
-      expirydate: new FormControl(moment().add(7, 'd').format('YYYY-MM-DD')),
-      payasgo: new FormControl(false),
-      payid: new FormControl(1),
-      billingemail: new FormControl(email),
-      credits: new FormControl(60000),
-      accounttype: new FormControl(1),
-      email: new FormControl(email),
-      purchased: new FormControl(true),
-      role: new FormControl(4),
-      registrationtype: new FormControl(0),
-      analyticsstatus: new FormControl(true),
-      communicationstatus: new FormControl(true),
-      phone: new FormControl(null),
-      customerid: new FormControl(null),
-      address: new FormControl(null),
-      vat: new FormControl(null),
-      city: new FormControl(null),
-      verificationtoken: new FormControl(null),
-
-      // packageid_dr: new FormControl(null),
-      // size_dr: new FormControl(null),
-      // totaldevices_dr: new FormControl(null),
-      // expirydate_dr: new FormControl(null),
-    });
-  }
-
-  handleCredit(e) {
-    const selectedPack = this.packageList.find((pack) => pack.id == e);
-    if (selectedPack) {
-      this.userForm.controls.credits.setValue(selectedPack['credit']);
-    }
   }
 
   async getAccountData(paginationParams = this.pag_params) {
@@ -176,15 +76,15 @@ export class UsersComponent implements OnInit {
         state: state
       },
       nzOnOk: (event) => {
-        let formValue = event.userForm.value;
-        let valid: boolean = event.userForm.valid;
+        let formValue = event.accountForm.value;
+        let valid: boolean = event.accountForm.valid;
         if (valid == true) {
           state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
           return true;
         } else {
-          for (const i in event.userForm.controls) {
-            event.userForm.controls[i].markAsDirty();
-            event.userForm.controls[i].updateValueAndValidity();
+          for (const i in event.accountForm.controls) {
+            event.accountForm.controls[i].markAsDirty();
+            event.accountForm.controls[i].updateValueAndValidity();
           }
           return false
         }
@@ -243,7 +143,7 @@ export class UsersComponent implements OnInit {
       });
   }
 
-  onSubmit(event = this.userForm.value) {
+  onSubmit(event) {
     const input = new FormData()
     if (event['file'] !== null) input.append("file", event['file']);
     delete event['file'];
@@ -259,17 +159,6 @@ export class UsersComponent implements OnInit {
         this.notification.error(ACCOUNT_CONST.create_account_error);
       }
     );
-  }
-
-  matchPassword() {
-    this.matchPasswordErr = false;
-    if (
-      this.userForm.controls['newPassword'].value !==
-      this.userForm.controls['newPasswordRepeat'].value &&
-      this.userForm.controls['newPasswordRepeat'].value !== ''
-    ) {
-      this.matchPasswordErr = true;
-    }
   }
 
   getDefaults() {

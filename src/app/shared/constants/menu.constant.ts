@@ -7,7 +7,6 @@ export const MENUITEMS = [
     title: 'Admin',
     enablesIn: [APP_CONST.Role.SuperAdmin]
   },
-  // role == 1 ? true : false
   {
     id: 'sub_admin',
     path: '/sub-admin',
@@ -17,8 +16,7 @@ export const MENUITEMS = [
   {
     id: 'user',
     path: '/user',
-    title: 'User',
+    title: 'Account',
     enablesIn: [APP_CONST.Role.SuperAdmin, APP_CONST.Role.Admin, APP_CONST.Role.SubAdmin]
   },
-  // role == 1 || role == 2 ? true : false,
 ];

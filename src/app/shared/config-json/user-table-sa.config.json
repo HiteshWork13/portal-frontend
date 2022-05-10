@@ -1,10 +1,10 @@
 {
-  "Caption": "Users",
+  "Caption": "Accounts",
   "Header": {
     "showColumnToggle": true,
     "showSearch": false,
     "showAdd": true,
-    "addTooltipText": "Add User",
+    "addTooltipText": "Add Account",
     "showReset": false,
     "showDownload": false,
     "showClose": true

@@ -46,7 +46,7 @@ export class UserComponent implements OnInit {
 
   isAssociatesVisible: boolean = false;
   isInstallmentVisible: boolean = false;
-  userForm: FormGroup;
+  accountForm: FormGroup;
   matchPasswordErr: boolean = false;
   currentUserDetails: any;
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
@@ -77,7 +77,7 @@ export class UserComponent implements OnInit {
 
   createForm() {
     const email = `${Date.now()}@facitdatasystems.com`;
-    this.userForm = new FormGroup({
+    this.accountForm = new FormGroup({
       code: new FormControl(null),
       // End User
       firstname: new FormControl(null),
@@ -134,7 +134,7 @@ export class UserComponent implements OnInit {
   handleCredit(e) {
     const selectedPack = this.packageList.find(pack => pack.id == e)
     if (selectedPack) {
-      this.userForm.controls.credits.setValue(selectedPack['credit'])
+      this.accountForm.controls.credits.setValue(selectedPack['credit'])
     }
   }
 
@@ -171,15 +171,15 @@ export class UserComponent implements OnInit {
         state: state
       },
       nzOnOk: (event) => {
-        let formValue = event.userForm.value;
-        let valid: boolean = event.userForm.valid;
+        let formValue = event.accountForm.value;
+        let valid: boolean = event.accountForm.valid;
         if (valid == true) {
           state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
           return true;
         } else {
-          for (const i in event.userForm.controls) {
-            event.userForm.controls[i].markAsDirty();
-            event.userForm.controls[i].updateValueAndValidity();
+          for (const i in event.accountForm.controls) {
+            event.accountForm.controls[i].markAsDirty();
+            event.accountForm.controls[i].updateValueAndValidity();
           }
           return false
         }
@@ -218,7 +218,7 @@ export class UserComponent implements OnInit {
       });
   }
 
-  onSubmit(event = this.userForm.value) {
+  onSubmit(event = this.accountForm.value) {
     const input = new FormData()
     if (event['file'] !== null) input.append("file", event['file']);
     input.append("data", JSON.stringify(event))
@@ -238,9 +238,9 @@ export class UserComponent implements OnInit {
   matchPassword() {
     this.matchPasswordErr = false;
     if (
-      this.userForm.controls['newPassword'].value !==
-      this.userForm.controls['newPasswordRepeat'].value &&
-      this.userForm.controls['newPasswordRepeat'].value !== ''
+      this.accountForm.controls['newPassword'].value !==
+      this.accountForm.controls['newPasswordRepeat'].value &&
+      this.accountForm.controls['newPasswordRepeat'].value !== ''
     ) {
       this.matchPasswordErr = true;
     }
