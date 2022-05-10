@@ -211,14 +211,17 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  matchPassword() {
-    this.matchPasswordErr = false;
-    if (
-      this.adminForm.controls['newPassword'].value !==
-      this.adminForm.controls['newPasswordRepeat'].value &&
-      this.adminForm.controls['newPasswordRepeat'].value !== ''
-    ) {
-      this.matchPasswordErr = true;
-    }
+  statusChanged(event, row_data, key) {
+    row_data[key] = event == true ? 1 : 0;
+    this.adminService.updateAdmin(row_data.id, row_data).then((response: any) => {
+      this.adminList.map((element) => {
+        if (element['id'] == row_data.id) {
+          element = response['data'];
+        }
+      });
+      this.notification.success(ADMIN_CONST.status_update_success);
+    }, (_error) => {
+      this.notification.error(ADMIN_CONST.status_update_error);
+    })
   }
 }

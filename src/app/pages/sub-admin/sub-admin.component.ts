@@ -209,4 +209,18 @@ export class SubAdminComponent implements OnInit, OnChanges {
       this.notification.error(SUB_ADMIN_CONST.delete_sub_admin_error);
     });
   }
+
+  statusChanged(event, row_data, key) {
+    row_data[key] = event == true ? 1 : 0;
+    this.subAdminService.updateSubAdmin(row_data.id, row_data).then((response: any) => {
+      this.subAdminList.map((element) => {
+        if (element['id'] == row_data.id) {
+          element = response['data'];
+        }
+      });
+      this.notification.success(SUB_ADMIN_CONST.status_update_success);
+    }, (_error) => {
+      this.notification.error(SUB_ADMIN_CONST.status_update_error);
+    })
+  }
 }

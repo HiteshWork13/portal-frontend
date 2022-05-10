@@ -67,6 +67,7 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
+      "Width": "150px",
       "advanceFilter": {
         "dataType": "text",
         "dpConfig": null,
@@ -86,6 +87,7 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
+      "Width": "150px",
       "advanceFilter": {
         "dataType": "date_range",
         "dpConfig": null,
@@ -134,7 +136,7 @@
       }
     },
     {
-      "name": "Remaining Credits",
+      "name": "Credits",
       "dataType": "text",
       "property": "credits",
       "visible": true,
@@ -143,7 +145,6 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
-      "Width": "150px",
       "advanceFilter": {
         "dataType": "number",
         "dpConfig": null,
@@ -194,6 +195,7 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
+      "Width": "120px",
       "advanceFilter": {
         "dataType": "text",
         "dropdownItems": [],

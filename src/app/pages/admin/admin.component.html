@@ -37,8 +37,11 @@
 </ng-template>
 
 <ng-template #statusTemplate let-column="column" let-row="row" let-rowIndex="rowIndex" let-columnIndex="columnIndex">
-  <nz-tag *ngIf="row[column.property] == 0" [nzColor]="'#E23E31'">Inactive</nz-tag>
-  <nz-tag *ngIf="row[column.property] == 1" [nzColor]="'#4AAC4E'">Active</nz-tag>
+  <!-- <nz-tag *ngIf="row[column.property] == 0" [nzColor]="'#E23E31'">Inactive</nz-tag>
+  <nz-tag *ngIf="row[column.property] == 1" [nzColor]="'#4AAC4E'">Active</nz-tag> -->
+  <nz-switch nzSize="small" [ngModel]="row[column.property]"
+    (ngModelChange)="statusChanged($event,row,column.property)">
+  </nz-switch>
 </ng-template>
 
 <ng-template #temp>
