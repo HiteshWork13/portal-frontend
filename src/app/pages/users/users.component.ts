@@ -15,6 +15,7 @@ import { AccountService, NotificationService } from '@services';
 import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { UserFormComponent } from 'src/app/shared/components/user-form/user-form.component';
+import { ACCOUNT_CONST } from 'src/app/shared/constants/notifications.constant';
 import { UserDetailsComponent } from 'src/app/shared/user-details/user-details.component';
 @Component({
   selector: 'app-users',
@@ -212,9 +213,9 @@ export class UsersComponent implements OnInit {
           }
           return element;
         });
-        this.notification.success(response['message']);
-      }, (error) => {
-        this.notification.error(error['message']);
+        this.notification.success(ACCOUNT_CONST.update_account_success);
+      }, (_error) => {
+        this.notification.error(ACCOUNT_CONST.update_account_error);
       })
   }
 
@@ -232,11 +233,13 @@ export class UsersComponent implements OnInit {
 
   deleteAccount(id) {
     this.accountService.deleteAccount(id).then(
-      (response) => {
-        this.accountList = this.accountList.filter((element) => element['id'] !== id);
-        this.notification.success(response['message']);
-      }, (error) => {
-        this.notification.error(error['message']);
+      (response: any) => {
+        if (response.success) {
+          this.accountList = this.accountList.filter((element) => element['id'] !== id);
+          this.notification.success(ACCOUNT_CONST.delete_account_success);
+        }
+      }, (_error) => {
+        this.notification.error(ACCOUNT_CONST.delete_account_error);
       });
   }
 
@@ -249,11 +252,11 @@ export class UsersComponent implements OnInit {
       (result: any) => {
         if (result.success) {
           this.accountList.push(result.data);
-          this.notification.success(result['message']);
+          this.notification.success(ACCOUNT_CONST.create_account_success);
         }
       },
-      (error) => {
-        this.notification.error(error['message']);
+      (_error) => {
+        this.notification.error(ACCOUNT_CONST.create_account_error);
       }
     );
   }
@@ -319,9 +322,9 @@ export class UsersComponent implements OnInit {
           element = response['data'];
         }
       });
-      this.notification.success(response['message']);
-    }, (error) => {
-      this.notification.error(error['message']);
+      this.notification.success(ACCOUNT_CONST.status_update_success);
+    }, (_error) => {
+      this.notification.error(ACCOUNT_CONST.status_update_error);
     })
   }
 }

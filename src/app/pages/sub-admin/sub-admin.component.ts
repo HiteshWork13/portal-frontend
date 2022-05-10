@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { subAdminTableConfigJSON } from '@configJson';
 import { NotificationService, SubAdminService } from '@services';
 import { NzModalService } from 'ng-zorro-antd/modal';
-
+import { SUB_ADMIN_CONST } from 'src/app/shared/constants/notifications.constant';
 @Component({
   selector: 'app-sub-admin',
   templateUrl: './sub-admin.component.html',
@@ -77,8 +77,8 @@ export class SubAdminComponent implements OnInit, OnChanges {
   getSubAdminData() {
     this.subAdminService.getAllSubAdmin({ role: 3, created_by_id: this.currentUserDetails.id }).then((response: any) => {
       this.subAdminList = response.data;
-    }, (error) => {
-      this.notification.error(error.message);
+    }, (_error) => {
+      this.notification.error(SUB_ADMIN_CONST.get_sub_admin_error);
     });
   }
 
@@ -153,9 +153,9 @@ export class SubAdminComponent implements OnInit, OnChanges {
       this.subAdminService.createSubAdmin(formObj).then((response) => {
         this.subAdminList = [...this.subAdminList, response['data']];
         this.modalService.closeAll();
-        this.notification.success(response['message']);
-      }, (error) => {
-        this.notification.error(error['message']);
+        this.notification.success(SUB_ADMIN_CONST.create_sub_admin_success);
+      }, (_error) => {
+        this.notification.error(SUB_ADMIN_CONST.create_sub_admin_error);
         this.modalService.closeAll();
       });
     }
@@ -193,10 +193,10 @@ export class SubAdminComponent implements OnInit, OnChanges {
         }
         return element;
       });
-      this.notification.success(response['message']);
+      this.notification.success(SUB_ADMIN_CONST.update_sub_admin_success);
       this.modalService.closeAll();
-    }, (error) => {
-      this.notification.error(error['message']);
+    }, (_error) => {
+      this.notification.error(SUB_ADMIN_CONST.update_sub_admin_error);
       this.modalService.closeAll();
     });
   }
@@ -204,9 +204,9 @@ export class SubAdminComponent implements OnInit, OnChanges {
   deleteSubadmin(subadmin_id) {
     this.subAdminService.deleteSubAdmin(subadmin_id).then((response) => {
       this.subAdminList = this.subAdminList.filter((element) => element['id'] !== subadmin_id);
-      this.notification.success(response['message']);
-    }, (error) => {
-      this.notification.error(error['message']);
+      this.notification.success(SUB_ADMIN_CONST.delete_sub_admin_success);
+    }, (_error) => {
+      this.notification.error(SUB_ADMIN_CONST.delete_sub_admin_error);
     });
   }
 }
