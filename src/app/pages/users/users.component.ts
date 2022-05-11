@@ -48,8 +48,8 @@ export class UsersComponent implements OnInit {
     let api_body = {
       offset: offset,
       limit: paginationParams.pageSize,
-      created_by_id: currentUserId,
-      order: { "username": "ASC" },
+      created_by: currentUserId,
+      order: { "firstname": "ASC" },
     }
     this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
       if (account.success) {
@@ -168,7 +168,7 @@ export class UsersComponent implements OnInit {
         (column: any) => {
           if (column.property == 'actions') {
             column.actionTemplate = this.actionTemplate;
-          } else if (column.property == 'created_by') {
+          } else if (column.property == 'created_by_id') {
             column.actionTemplate = this.created_by_template;
           } else if (column.property == 'emailverified') {
             column.actionTemplate = this.statusTemplate
@@ -180,6 +180,7 @@ export class UsersComponent implements OnInit {
   }
 
   accountDetailsModel(row) {
+    console.log('row: ', row);
     this.modalService.create({
       nzTitle: 'Account Details',
       nzContent: UserDetailsComponent,

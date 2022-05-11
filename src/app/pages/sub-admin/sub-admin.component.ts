@@ -75,7 +75,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
   }
 
   getSubAdminData() {
-    this.subAdminService.getAllSubAdmin({ role: 3, created_by_id: this.currentUserDetails.id }).then((response: any) => {
+    this.subAdminService.getAllSubAdmin({ role: 3, created_by: this.currentUserDetails.id }).then((response: any) => {
       this.subAdminList = response.data;
     }, (_error) => {
       this.notification.error(SUB_ADMIN_CONST.get_sub_admin_error);

@@ -1,9 +1,9 @@
 <nz-table #fixedTable [nzTemplateMode]="true" id="accountsTable" [nzShowPagination]="false" [nzScroll]="{ x: 'auto' }">
     <tbody>
-        <ng-container *ngIf="row_data['created_by']">
+        <ng-container *ngIf="row_data['created_by_id']">
             <tr>
                 <td>Created By:</td>
-                <td>{{row_data['created_by']}}</td>
+                <td>{{row_data['created_by_id']}}</td>
             </tr>
             <h3 style="margin-top: 1rem;">End User Details</h3>
             <tr *ngFor="let endUserData of row_data['end_user']">

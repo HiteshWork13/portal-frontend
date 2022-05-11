@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as countries from 'country-list';
 import moment from 'moment';
-import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Observable, Observer } from 'rxjs';
 import { APP_CONST } from '../../constants/app.constant';
@@ -40,14 +39,15 @@ export class UserFormComponent implements OnInit {
   countryList: Array<string> = countries.getNames();
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
 
-  constructor(private modalService: NzModalService, private notification: NzNotificationService) { }
+  constructor(private notification: NzNotificationService) { }
 
   ngOnInit(): void {
     let current_user_details: any = localStorage.getItem('current_user_details');
     this.currentUserDetails = JSON.parse(current_user_details);
-    // this.currentUserDetails.role == 1;
     this.createForm();
     if (this.state == 'edit') {
+      this.accountForm.get('file').clearValidators();
+      this.accountForm.updateValueAndValidity();
       this.editAccount(this.item);
     }
   }

@@ -48,7 +48,7 @@ export class UserComponent implements OnInit {
     let api_body = {
       offset: offset,
       limit: paginationParams.pageSize,
-      created_by_id: this.selectedAdminId,
+      created_by: this.selectedAdminId,
       order: { "username": "ASC" },
     }
     this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
@@ -167,7 +167,7 @@ export class UserComponent implements OnInit {
         (column: any) => {
           if (column.property == 'actions') {
             column.actionTemplate = this.actionTemplate;
-          } else if (column.property == 'created_by') {
+          } else if (column.property == 'created_by_id') {
             column.actionTemplate = this.created_by_template;
           } else if (column.property == 'emailverified') {
             column.actionTemplate = this.statusTemplate

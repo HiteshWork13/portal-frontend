@@ -14,7 +14,8 @@ export class UserDetailsComponent implements OnInit {
   }
 
   accountDetails(row) {
-    if (row.created_by == null) {
+    console.log('row?.created_by_id: ', row?.created_by_id);
+    if (row?.created_by_id == null) {
       let userData = [
         { field: "First Name", value: row.firstname },
         { field: "Last Name", value: row.lastname },
@@ -37,7 +38,7 @@ export class UserDetailsComponent implements OnInit {
       ];
       this.row_data['userData'] = userData;
     } else {
-      let created_by = row.created_by.username
+      let created_by_id = row.created_by_id.username
       let endUserData = [
         { field: "First Name", value: row.firstname },
         { field: "Last Name", value: row.lastname },
@@ -59,9 +60,11 @@ export class UserDetailsComponent implements OnInit {
         { field: "Zip Code", value: row.postcode },
         { field: "Email Address", value: row.reseller_email },
       ]
-      this.row_data['created_by'] = created_by;
-      this.row_data['end_user'] = endUserData;
-      this.row_data['reseller'] = resellerData;
+      this.row_data = {
+        created_by_id: created_by_id,
+        end_user: endUserData,
+        reseller: resellerData
+      }
     }
   }
 }

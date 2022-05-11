@@ -67,7 +67,7 @@ export class AdminComponent implements OnInit {
   }
 
   getAdminData() {
-    this.adminService.getAllAdmin({ role: 2, created_by_id: this.currentUserDetails.id }).then((response: any) => {
+    this.adminService.getAllAdmin({ role: 2, created_by: this.currentUserDetails.id }).then((response: any) => {
       this.adminList = response.data;
     }, (error) => {
       this.notification.error(error.message);

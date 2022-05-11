@@ -188,7 +188,7 @@
     {
       "name": "Created By",
       "dataType": "text",
-      "property": "created_by",
+      "property": "created_by_id",
       "visible": true,
       "searchable": true,
       "searchValue": null,
