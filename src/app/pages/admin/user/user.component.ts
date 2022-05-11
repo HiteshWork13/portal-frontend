@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { superAdminUserTableConfigJson, userTableConfigJSON } from '@configJson';
 import { APP_CONST } from '@constants';
 import { AccountService, NotificationService } from '@services';
-import moment from 'moment';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { UserFormComponent } from 'src/app/shared/components/user-form/user-form.component';
 import { ACCOUNT_CONST } from 'src/app/shared/constants/notifications.constant';
@@ -17,45 +15,17 @@ export class UserComponent implements OnInit {
 
   @ViewChild('actionTemplate') actionTemplate: TemplateRef<any>;
   @ViewChild('created_by_template') created_by_template: TemplateRef<any>;
-
+  @ViewChild('statusTemplate') statusTemplate: TemplateRef<any>;
   @Input() selectedAdminId: string = null;
-
   @Output() close: EventEmitter<any> = new EventEmitter();
-
-  accountTableJSON: any = JSON.parse(JSON.stringify((userTableConfigJSON as any)));
   accountList: Array<any>;
-  modalRef: any;
-  packageList: Array<any> = [
-    {
-      id: 1,
-      label: "Pack 1",
-      credit: 10000
-    },
-    {
-      id: 2,
-      label: "Pack 2",
-      credit: 20000
-    },
-    {
-      id: 3,
-      label: "Pack 3",
-      credit: 30000
-    }
-  ]
-
-  isAssociatesVisible: boolean = false;
-  isInstallmentVisible: boolean = false;
-  accountForm: FormGroup;
-  matchPasswordErr: boolean = false;
+  accountTableJSON: any = JSON.parse(JSON.stringify((userTableConfigJSON as any)));
   currentUserDetails: any;
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
-
-  @ViewChild('statusTemplate') statusTemplate: TemplateRef<any>;
-  loading: boolean = true;
   pag_params: any = { pageIndex: 1, pageSize: 5 }
+  loading: boolean = true;
   totalData: number = 10;
   PageSize: number = 5;
-
 
   constructor(private modalService: NzModalService, private accountService: AccountService, private viewContainerRef: ViewContainerRef, private notification: NotificationService) { }
 
@@ -64,76 +34,12 @@ export class UserComponent implements OnInit {
     this.currentUserDetails = JSON.parse(current_user_details);
     this.accountTableJSON = this.currentUserDetails.role == this.superAdminRole ? JSON.parse(JSON.stringify(superAdminUserTableConfigJson as any)) : JSON.parse(JSON.stringify(userTableConfigJSON as any));
     this.getDefaults();
-    this.createForm();
     this.getAccountData();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes.selectedAdminId.currentValue) {
       this.getAccountData();
-    }
-  }
-
-  createForm() {
-    const email = `${Date.now()}@facitdatasystems.com`;
-    this.accountForm = new FormGroup({
-      code: new FormControl(null),
-      // End User
-      firstname: new FormControl(null),
-      lastname: new FormControl(null),
-      companyname: new FormControl(null),
-      enduser_street: new FormControl(null),
-      enduser_state: new FormControl(null),
-      postcode: new FormControl(null),
-      enduser_email: new FormControl(),
-      enduser_classification: new FormControl(null),
-      country: new FormControl(null),
-      packageid: new FormControl(null),
-
-      // Reseller
-      reseller_firstname: new FormControl(null),
-      reseller_lastname: new FormControl(null),
-      reseller_company: new FormControl(null),
-      reseller_street: new FormControl(null),
-      reseller_state: new FormControl(null),
-      reseller_code: new FormControl(null),
-      reseller_email: new FormControl(),
-
-      // Hard Core Values
-      triallimit: new FormControl(7),
-      password: new FormControl(`${Date.now()}${Math.random()}`),
-      totaldevices: new FormControl(1),
-      twofactor: new FormControl(false),
-      expirydate: new FormControl(moment().add(7, 'd').format('YYYY-MM-DD')),
-      payasgo: new FormControl(false),
-      payid: new FormControl(1),
-      billingemail: new FormControl(email),
-      credits: new FormControl(60000),
-      accounttype: new FormControl(1),
-      email: new FormControl(email),
-      purchased: new FormControl(true),
-      role: new FormControl(4),
-      registrationtype: new FormControl(0),
-      analyticsstatus: new FormControl(true),
-      communicationstatus: new FormControl(true),
-      phone: new FormControl(null),
-      customerid: new FormControl(null),
-      address: new FormControl(null),
-      vat: new FormControl(null),
-      city: new FormControl(null),
-      verificationtoken: new FormControl(null),
-
-      // packageid_dr: new FormControl(null),
-      // size_dr: new FormControl(null),
-      // totaldevices_dr: new FormControl(null),
-      // expirydate_dr: new FormControl(null),
-    });
-  }
-
-  handleCredit(e) {
-    const selectedPack = this.packageList.find(pack => pack.id == e)
-    if (selectedPack) {
-      this.accountForm.controls.credits.setValue(selectedPack['credit'])
     }
   }
 
@@ -217,7 +123,7 @@ export class UserComponent implements OnInit {
       });
   }
 
-  onSubmit(event = this.accountForm.value) {
+  onSubmit(event) {
     const input = new FormData()
     if (event['file'] !== null) input.append("file", event['file']);
     input.append("data", JSON.stringify(event))
@@ -233,7 +139,6 @@ export class UserComponent implements OnInit {
       }
     );
   }
-
 
   updateUser(id, event) {
     const input = new FormData();
@@ -252,17 +157,6 @@ export class UserComponent implements OnInit {
       }, (_error) => {
         this.notification.error(ACCOUNT_CONST.update_account_error);
       })
-  }
-
-  matchPassword() {
-    this.matchPasswordErr = false;
-    if (
-      this.accountForm.controls['newPassword'].value !==
-      this.accountForm.controls['newPasswordRepeat'].value &&
-      this.accountForm.controls['newPasswordRepeat'].value !== ''
-    ) {
-      this.matchPasswordErr = true;
-    }
   }
 
   getDefaults() {

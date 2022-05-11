@@ -14,30 +14,54 @@ export class UserDetailsComponent implements OnInit {
   }
 
   accountDetails(row) {
-    let created_by = row.created_by.username
-    let endUserData = [
-      { field: "First Name", value: row.firstname },
-      { field: "Last Name", value: row.lastname },
-      { field: "Company", value: row.companyname },
-      { field: "Street", value: row.enduser_street },
-      { field: "State", value: row.enduser_state },
-      { field: "Zip Code", value: row.postcode },
-      { field: "Email Address", value: row.enduser_email },
-      { field: "User Classification", value: row.enduser_classification },
-      { field: "Country", value: row.country },
-      { field: "Package", value: row.packageid },
-    ];
-    let resellerData = [
-      { field: "First Name", value: row.reseller_firstname },
-      { field: "Last Name", value: row.reseller_lastname },
-      { field: "Company", value: row.reseller_company },
-      { field: "Street", value: row.reseller_street },
-      { field: "State", value: row.reseller_state },
-      { field: "Zip Code", value: row.postcode },
-      { field: "Email Address", value: row.reseller_email },
-    ]
-    this.row_data['created_by'] = created_by;
-    this.row_data['end_user'] = endUserData;
-    this.row_data['reseller'] = resellerData;
+    if (row.created_by == null) {
+      let userData = [
+        { field: "First Name", value: row.firstname },
+        { field: "Last Name", value: row.lastname },
+        { field: "Email Address", value: row.enduser_email },
+        { field: "Company", value: row.companyname },
+        { field: "Phone", value: row.phone },
+        { field: "Address", value: row.address },
+        { field: "Zip Code", value: row.postcode },
+        { field: "Country", value: row.country },
+        { field: "Created At", value: row.created_at },
+        { field: "Package", value: row.packageid },
+        { field: "Account Type", value: row.accounttype },
+        { field: "Credits", value: row.credits },
+        { field: "Purchased", value: row.purchased },
+        { field: "Status", value: row.emailverified },
+        { field: "Trial Limit", value: row.triallimit },
+        { field: "Registration Type", value: row.registrationtype },
+        { field: "Total Devices", value: row.totaldevices },
+        { field: "Expiry Date", value: row.expirydate },
+      ];
+      this.row_data['userData'] = userData;
+    } else {
+      let created_by = row.created_by.username
+      let endUserData = [
+        { field: "First Name", value: row.firstname },
+        { field: "Last Name", value: row.lastname },
+        { field: "Company", value: row.companyname },
+        { field: "Street", value: row.enduser_street },
+        { field: "State", value: row.enduser_state },
+        { field: "Zip Code", value: row.postcode },
+        { field: "Email Address", value: row.enduser_email },
+        { field: "User Classification", value: row.enduser_classification },
+        { field: "Country", value: row.country },
+        { field: "Package", value: row.packageid },
+      ];
+      let resellerData = [
+        { field: "First Name", value: row.reseller_firstname },
+        { field: "Last Name", value: row.reseller_lastname },
+        { field: "Company", value: row.reseller_company },
+        { field: "Street", value: row.reseller_street },
+        { field: "State", value: row.reseller_state },
+        { field: "Zip Code", value: row.postcode },
+        { field: "Email Address", value: row.reseller_email },
+      ]
+      this.row_data['created_by'] = created_by;
+      this.row_data['end_user'] = endUserData;
+      this.row_data['reseller'] = resellerData;
+    }
   }
 }

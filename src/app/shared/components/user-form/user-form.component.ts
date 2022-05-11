@@ -14,9 +14,10 @@ import { APP_CONST } from '../../constants/app.constant';
 export class UserFormComponent implements OnInit {
   @Input() title?: string;
   @Input() subtitle?: string;
-  @Input() item: any;
-  @Output() formValue: EventEmitter<any> = new EventEmitter();
   @Input() state: string = 'add';
+  @Input() item: any;
+  @Input() btnName: any = 'Save';
+  @Output() formValue: EventEmitter<any> = new EventEmitter();
   accountForm: FormGroup;
   packageList: Array<any> = [
     {
@@ -35,7 +36,6 @@ export class UserFormComponent implements OnInit {
       credit: 30000,
     },
   ];
-  @Input() btnName: any = 'Save';
   currentUserDetails: any;
   countryList: Array<string> = countries.getNames();
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
@@ -182,7 +182,6 @@ export class UserFormComponent implements OnInit {
         this.accountForm.patchValue({
           file: files[0]
         })
-        console.log(this.accountForm.get('file').value);
       }
     })
   }
