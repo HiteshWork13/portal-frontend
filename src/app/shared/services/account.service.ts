@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { APP_CONST } from '../constants/app.constant';
 import { DataService } from './data.service';
 
 @Injectable({
@@ -6,7 +8,7 @@ import { DataService } from './data.service';
 })
 export class AccountService {
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private http: HttpClient) { }
 
   async createAccount(formData) {
     return await this.dataService.POST("/account/createAccount", formData)
@@ -31,5 +33,10 @@ export class AccountService {
 
   async deleteAccount(id) {
     return await this.dataService.DELETE(`/account/deleteAccount/${id}`)
+  }
+
+  downloadDocument(id) {
+    let url = `/document/downloadDocument/${id}`
+    return this.http.get(`${APP_CONST.ServerUrl}${url}`, { responseType: 'arraybuffer' })
   }
 }

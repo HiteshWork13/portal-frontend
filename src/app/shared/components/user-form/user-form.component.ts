@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as countries from 'country-list';
 import moment from 'moment';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Observable, Observer } from 'rxjs';
 import { APP_CONST } from '../../constants/app.constant';
+import { AccountService } from '../../services/account.service';
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
@@ -16,7 +17,6 @@ export class UserFormComponent implements OnInit {
   @Input() state: string = 'add';
   @Input() item: any;
   @Input() btnName: any = 'Save';
-  @Output() formValue: EventEmitter<any> = new EventEmitter();
   accountForm: FormGroup;
   packageList: Array<any> = [
     {
@@ -39,7 +39,7 @@ export class UserFormComponent implements OnInit {
   countryList: Array<string> = countries.getNames();
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
 
-  constructor(private notification: NzNotificationService) { }
+  constructor(private notification: NzNotificationService, private accountService: AccountService) { }
 
   ngOnInit(): void {
     let current_user_details: any = localStorage.getItem('current_user_details');
@@ -117,10 +117,10 @@ export class UserFormComponent implements OnInit {
     }
   }
 
-  onSubmit() {
-  }
+  onSubmit() { }
 
   editAccount(item) {
+    let file_details = item.document == null ? [] : { name: item.document.document_name, id: item.document.id }
     this.accountForm.patchValue({
       id: item.id,
       code: item.code,
@@ -167,6 +167,8 @@ export class UserFormComponent implements OnInit {
       vat: item.vat,
       city: item.city,
       verificationtoken: item.verificationtoken,
+
+      file: file_details,
     });
   }
 
@@ -175,7 +177,6 @@ export class UserFormComponent implements OnInit {
       accept: ['application/pdf'],
       size: APP_CONST.MaxFileSizeInMB
     }
-
     const files = event.target.files;
     this.validateSizeBeforeUpload(files[0], rules).subscribe(isValid => {
       if (isValid) {
@@ -212,5 +213,22 @@ export class UserFormComponent implements OnInit {
     if (document.getElementById(id)) {
       document.getElementById(id).click();
     }
+  }
+
+  downloadDoc(id) {
+    this.accountService.downloadDocument(id).subscribe((result: any) => {
+      let dataType = result.type;
+      let binaryData = [];
+      binaryData.push(result);
+      let downloadLink = document.createElement('a');
+      downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
+      if (id + '.pdf')
+        downloadLink.setAttribute('download', id + '.pdf');
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+
+    }, (_error) => {
+      this.notification.create('error', 'File Missing', `Server Error, Please try again`, { nzDuration: 6000, nzPauseOnHover: true });
+    })
   }
 }

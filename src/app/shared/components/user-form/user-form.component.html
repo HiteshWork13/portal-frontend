@@ -164,8 +164,14 @@
                                 Support for a single PDF file
                             </p>
                             <p class="ant-upload-hint m-b-0 text-truncate w-100 p-l-10 p-r-10 text-center"
-                                *ngIf="accountForm.get('file').value && accountForm.get('file').value['name']">
+                                *ngIf="accountForm.get('file').value && accountForm.get('file').value['name']"
+                                (click)="$event.stopPropagation();">
                                 {{accountForm.get('file').value['name']}}
+                                <span
+                                    (click)="$event.stopPropagation();downloadDoc(accountForm.get('file').value['id'])"
+                                    *ngIf="state == 'edit'">
+                                    <i nz-icon nzType="download" style="font-size: 20px;"></i>
+                                </span>
                             </p>
                         </div>
                         <ng-container *ngIf="accountForm.get('file').dirty && accountForm.get('file').errors">

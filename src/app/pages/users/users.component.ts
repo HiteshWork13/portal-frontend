@@ -52,6 +52,7 @@ export class UsersComponent implements OnInit {
       order: { "firstname": "ASC" },
     }
     this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
+      console.log('asdf account: ', account);
       if (account.success) {
         this.accountList = account.data;
         this.loading = false;
@@ -101,6 +102,7 @@ export class UsersComponent implements OnInit {
   }
 
   updateUser(id, event) {
+    console.log('event file', event['file'])
     const input = new FormData();
     if (event['file'] !== null) input.append("file", event['file']);
     delete event['file'];
