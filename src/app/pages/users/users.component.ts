@@ -3,6 +3,7 @@ import { superAdminUserTableConfigJson, userTableConfigJSON } from '@configJson'
 import { APP_CONST } from '@constants';
 import { AccountService, NotificationService } from '@services';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { DocumentListComponent } from 'src/app/shared/components/document-list/document-list.component';
 import { UserFormComponent } from 'src/app/shared/components/user-form/user-form.component';
 import { ACCOUNT_CONST } from 'src/app/shared/constants/notifications.constant';
 import { UserDetailsComponent } from 'src/app/shared/user-details/user-details.component';
@@ -218,5 +219,32 @@ export class UsersComponent implements OnInit {
     }, (_error) => {
       this.notification.error(ACCOUNT_CONST.status_update_error);
     })
+  }
+
+  openDocumentModal(row_data) {
+    console.log('row_data: ', row_data);
+    this.modalService.create({
+      nzTitle: 'Documents',
+      nzContent: DocumentListComponent,
+      nzViewContainerRef: this.viewContainerRef,
+      nzWidth: '80%',
+      nzOnOk: (event) => {
+        /* let formValue = event.accountForm.value;
+        let valid: boolean = event.accountForm.valid;
+        if (valid == true) {
+          state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
+          return true;
+        } else {
+          for (const i in event.accountForm.controls) {
+            event.accountForm.controls[i].markAsDirty();
+            event.accountForm.controls[i].updateValueAndValidity();
+          }
+          return false
+        } */
+      },
+      nzMaskClosable: false,
+      nzAutofocus: null,
+      nzOnCancel: () => this.onClose(),
+    });
   }
 }

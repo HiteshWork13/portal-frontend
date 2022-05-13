@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DocumentListComponent } from './components/document-list/document-list.component';
 import { UserFormComponent } from './components/user-form/user-form.component';
 // import { IconsProviderModule } from './icons-provider.module';
 import { NgZorroAntdModule } from './ng-zorro-antd.module';
@@ -8,7 +9,7 @@ import { UserDetailsComponent } from './user-details/user-details.component';
 import { WidgetModule } from './widgets/widget.module';
 
 @NgModule({
-  declarations: [UserFormComponent, UserDetailsComponent],
+  declarations: [UserFormComponent, UserDetailsComponent, DocumentListComponent],
   imports: [
     CommonModule,
     NgZorroAntdModule,
@@ -22,7 +23,8 @@ import { WidgetModule } from './widgets/widget.module';
     FormsModule,
     WidgetModule,
     UserFormComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    DocumentListComponent
   ],
 })
 export class SharedModule { }

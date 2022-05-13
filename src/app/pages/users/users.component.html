@@ -27,6 +27,9 @@
                 <li nz-menu-item role="menuitem">
                     <a class="dropdown-item" (click)="openModal('edit', row)">Edit</a>
                 </li>
+                <li nz-menu-item role="menuitem">
+                    <a class="dropdown-item" (click)="openDocumentModal(row)">PO</a>
+                </li>
                 <li nz-menu-item role="menuitem" *ngIf="currentUserDetails.role == superAdminRole">
                     <a class="dropdown-item" (click)="showDeleteConfirm(row.id)">Delete</a>
                 </li>
