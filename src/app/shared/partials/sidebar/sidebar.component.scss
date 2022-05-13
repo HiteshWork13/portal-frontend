@@ -11,7 +11,7 @@
   padding-left: 24px;
   overflow: hidden;
   line-height: 64px;
-  background: #001529;
+  background: #fff;
   transition: all 0.3s;
 }
 
@@ -25,7 +25,8 @@
 .sidebar-logo h1 {
   display: inline-block;
   margin: 0 0 0 20px;
-  color: #fff;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: bold;
   font-weight: 600;
   font-size: 14px;
   font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
