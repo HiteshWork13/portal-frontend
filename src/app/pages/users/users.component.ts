@@ -53,12 +53,12 @@ export class UsersComponent implements OnInit {
       order: { "firstname": "ASC" },
     }
     this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
-      console.log('asdf account: ', account);
       if (account.success) {
-        this.accountList = account.data;
+        console.log('DATA account: ', account);
+        this.accountList = account?.data;
         this.loading = false;
-        this.totalData = account.counts;
-        this.PageSize = account.limit;
+        this.totalData = account?.counts;
+        this.PageSize = account?.limit ? account?.limit : 5;
       }
     },
       (_error) => {
@@ -103,7 +103,6 @@ export class UsersComponent implements OnInit {
   }
 
   updateUser(id, event) {
-    console.log('event file', event['file'])
     const input = new FormData();
     if (event['file'] !== null) input.append("file", event['file']);
     delete event['file'];
@@ -183,7 +182,6 @@ export class UsersComponent implements OnInit {
   }
 
   accountDetailsModel(row) {
-    console.log('row: ', row);
     this.modalService.create({
       nzTitle: 'Account Details',
       nzContent: UserDetailsComponent,
@@ -222,26 +220,21 @@ export class UsersComponent implements OnInit {
   }
 
   openDocumentModal(row_data) {
-    console.log('row_data: ', row_data);
     this.modalService.create({
       nzTitle: 'Documents',
       nzContent: DocumentListComponent,
       nzViewContainerRef: this.viewContainerRef,
-      nzWidth: '80%',
-      nzOnOk: (event) => {
-        /* let formValue = event.accountForm.value;
-        let valid: boolean = event.accountForm.valid;
-        if (valid == true) {
-          state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
-          return true;
-        } else {
-          for (const i in event.accountForm.controls) {
-            event.accountForm.controls[i].markAsDirty();
-            event.accountForm.controls[i].updateValueAndValidity();
-          }
-          return false
-        } */
+      nzComponentParams: {
+        account_id: row_data.created_by_id.id,
       },
+      nzWidth: '60%',
+      nzFooter: [
+        {
+          label: 'Close',
+          type: 'default',
+          onClick: () => this.onClose(),
+        },
+      ],
       nzMaskClosable: false,
       nzAutofocus: null,
       nzOnCancel: () => this.onClose(),

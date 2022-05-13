@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { APP_CONST } from '../constants/app.constant';
 import { DataService } from './data.service';
 
 @Injectable({
@@ -33,10 +32,5 @@ export class AccountService {
 
   async deleteAccount(id) {
     return await this.dataService.DELETE(`/account/deleteAccount/${id}`)
-  }
-
-  downloadDocument(id) {
-    let url = `/document/downloadDocument/${id}`
-    return this.http.get(`${APP_CONST.ServerUrl}${url}`, { responseType: 'arraybuffer' })
   }
 }

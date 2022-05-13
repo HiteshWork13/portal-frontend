@@ -6,6 +6,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Observable, Observer } from 'rxjs';
 import { APP_CONST } from '../../constants/app.constant';
 import { AccountService } from '../../services/account.service';
+import { DocumentService } from '../../services/document.service';
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
@@ -39,7 +40,7 @@ export class UserFormComponent implements OnInit {
   countryList: Array<string> = countries.getNames();
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
 
-  constructor(private notification: NzNotificationService, private accountService: AccountService) { }
+  constructor(private notification: NzNotificationService, private accountService: AccountService, private documentService: DocumentService) { }
 
   ngOnInit(): void {
     let current_user_details: any = localStorage.getItem('current_user_details');
@@ -216,7 +217,7 @@ export class UserFormComponent implements OnInit {
   }
 
   downloadDoc(id) {
-    this.accountService.downloadDocument(id).subscribe((result: any) => {
+    this.documentService.downloadDocument(id).subscribe((result: any) => {
       let dataType = result.type;
       let binaryData = [];
       binaryData.push(result);
