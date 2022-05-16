@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { superAdminUserTableConfigJson, userTableConfigJSON } from '@configJson';
 import { APP_CONST } from '@constants';
-import { AccountService, NotificationService } from '@services';
+import { AccountService, DocumentService, NotificationService } from '@services';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { DocumentListComponent } from 'src/app/shared/components/document-list/document-list.component';
 import { UserFormComponent } from 'src/app/shared/components/user-form/user-form.component';
@@ -32,7 +32,8 @@ export class UsersComponent implements OnInit {
     private modalService: NzModalService,
     private accountService: AccountService,
     private notification: NotificationService,
-    private viewContainerRef: ViewContainerRef
+    private viewContainerRef: ViewContainerRef,
+    private documentService: DocumentService
   ) { }
 
   ngOnInit(): void {
@@ -225,19 +226,29 @@ export class UsersComponent implements OnInit {
       nzContent: DocumentListComponent,
       nzViewContainerRef: this.viewContainerRef,
       nzComponentParams: {
-        account_id: row_data.created_by_id.id,
+        account_id: row_data.id,
       },
       nzWidth: '60%',
-      nzFooter: [
-        {
-          label: 'Close',
-          type: 'default',
-          onClick: () => this.onClose(),
-        },
-      ],
+      nzOnOk: (event) => { this.uploadDocument(row_data.id, event.documentForm.value); },
       nzMaskClosable: false,
       nzAutofocus: null,
       nzOnCancel: () => this.onClose(),
     });
+  }
+
+  uploadDocument(id, event) {
+    if (event['file'] !== null) {
+      const input = new FormData();
+      if (event['file'] !== null) input.append("file", event['file']);
+      delete event['file'];
+      input.append("account_id", String(id));
+      this.documentService.uploadNewDocument(input).subscribe((result: any) => {
+        if (result.statusCode == 200) {
+          this.notification.success(result.message);
+        }
+      }, (_error) => {
+        this.notification.success(ACCOUNT_CONST.upload_doc_error);
+      })
+    }
   }
 }

@@ -40,3 +40,10 @@ export const ACCOUNT_CONST: any = {
     delete_account_success: 'Account deleted successfully',
     delete_account_error: 'Error while deleting account, please try again',
 }
+
+export const DOCUMENT_CONST: any = {
+    upload_doc_success: 'Document Uploaded successfully',
+    upload_doc_error: 'Error while uploading document, please try again',
+    delete_doc_success: 'Document Deleted successfully',
+    delete_doc_error: 'Error while deleting document, please try again'
+}

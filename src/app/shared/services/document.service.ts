@@ -18,4 +18,14 @@ export class DocumentService {
     let url = `/document/getAllDocuments`;
     return this.http.post(`${APP_CONST.ServerUrl}${url}`, date)
   }
+
+  uploadNewDocument(date) {
+    let url = `/document/uploadDocument`;
+    return this.http.post(`${APP_CONST.ServerUrl}${url}`, date)
+  }
+
+  deleteDocument(id) {
+    let url = `/document/deleteDocument/${id}`;
+    return this.http.delete(`${APP_CONST.ServerUrl}${url}`)
+  }
 }

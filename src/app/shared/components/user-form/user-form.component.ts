@@ -19,6 +19,7 @@ export class UserFormComponent implements OnInit {
   @Input() item: any;
   @Input() btnName: any = 'Save';
   accountForm: FormGroup;
+  newForm: FormGroup;
   packageList: Array<any> = [
     {
       id: 1,
@@ -39,6 +40,7 @@ export class UserFormComponent implements OnInit {
   currentUserDetails: any;
   countryList: Array<string> = countries.getNames();
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
+  oldForm: boolean;
 
   constructor(private notification: NzNotificationService, private accountService: AccountService, private documentService: DocumentService) { }
 
@@ -50,11 +52,13 @@ export class UserFormComponent implements OnInit {
       this.accountForm.get('file').clearValidators();
       this.accountForm.updateValueAndValidity();
       this.editAccount(this.item);
+      if (this.item.created_by_id == null) this.editNewForm(this.item);
     }
   }
 
   createForm() {
     const email = `${Date.now()}@facitdatasystems.com`;
+    /* Below form is used when account is created in normal flow */
     this.accountForm = new FormGroup({
       code: new FormControl(null),
       // End User
@@ -109,6 +113,27 @@ export class UserFormComponent implements OnInit {
       // totaldevices_dr: new FormControl(null,[Validators.required]),
       // expirydate_dr: new FormControl(null,[Validators.required]),
     });
+    /* Below form is used when account is created by another software, "created_by_id = null" */
+    this.newForm = new FormGroup({
+      firstname: new FormControl(null, [Validators.required]),
+      lastname: new FormControl(null, [Validators.required]),
+      enduser_email: new FormControl(null, [Validators.required]),
+      companyname: new FormControl(null, [Validators.required]),
+      address: new FormControl(null, [Validators.required]),
+      postcode: new FormControl(null, [Validators.required]),
+      country: new FormControl(null, [Validators.required]),
+      packageid: new FormControl(null, [Validators.required]),
+      // Hard Core Values
+      phone: new FormControl(null),
+      triallimit: new FormControl(7),
+      accounttype: new FormControl(1),
+      credits: new FormControl(60000),
+      purchased: new FormControl(true),
+      role: new FormControl(4),
+      registrationtype: new FormControl(0),
+      totaldevices: new FormControl(1),
+      expirydate: new FormControl(moment().add(7, 'd').format('YYYY-MM-DD')),
+    })
   }
 
   handleCredit(e) {
@@ -230,6 +255,28 @@ export class UserFormComponent implements OnInit {
 
     }, (_error) => {
       this.notification.create('error', 'File Missing', `Server Error, Please try again`, { nzDuration: 6000, nzPauseOnHover: true });
+    })
+  }
+
+  editNewForm(item) {
+    this.oldForm = false;
+    this.newForm.patchValue({
+      firstname: item.firstname,
+      lastname: item.lastname,
+      enduser_email: item.enduser_email,
+      companyname: item.companyname,
+      phone: item.phone,
+      address: item.address,
+      postcode: item.postcode,
+      country: item.country,
+      packageid: item.packageid,
+      accounttype: item.accounttype,
+      credits: item.credits,
+      purchased: item.purchased,
+      triallimit: item.triallimit,
+      registrationtype: item.registrationtype,
+      totaldevices: item.totaldevices,
+      expirydate: item.expirydate,
     })
   }
 }
