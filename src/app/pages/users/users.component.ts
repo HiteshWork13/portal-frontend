@@ -55,7 +55,7 @@ export class UsersComponent implements OnInit {
     }
     this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
       if (account.success) {
-        console.log('DATA account: ', account);
+        // console.log('DATA account: ', account);
         this.accountList = account?.data;
         this.loading = false;
         this.totalData = account?.counts;
