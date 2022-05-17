@@ -55,7 +55,6 @@ export class UsersComponent implements OnInit {
     }
     this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
       if (account.success) {
-        // console.log('DATA account: ', account);
         this.accountList = account?.data;
         this.loading = false;
         this.totalData = account?.counts;
@@ -237,7 +236,7 @@ export class UsersComponent implements OnInit {
   }
 
   uploadDocument(id, event) {
-    if (event['file'] !== null) {
+    if (event['file'] !== null && event['file']?.size) {
       const input = new FormData();
       if (event['file'] !== null) input.append("file", event['file']);
       delete event['file'];

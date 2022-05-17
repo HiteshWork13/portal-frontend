@@ -45,5 +45,7 @@ export const DOCUMENT_CONST: any = {
     upload_doc_success: 'Document Uploaded successfully',
     upload_doc_error: 'Error while uploading document, please try again',
     delete_doc_success: 'Document Deleted successfully',
-    delete_doc_error: 'Error while deleting document, please try again'
+    delete_doc_error: 'Error while deleting document, please try again',
+    update_doc_success: 'Document Updated successfully',
+    update_doc_error: 'Error while updating document, please try again',
 }

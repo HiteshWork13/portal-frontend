@@ -4,7 +4,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Observable, Observer } from 'rxjs';
 import { APP_CONST } from '../../constants/app.constant';
-import { DOCUMENT_CONST } from '../../constants/notifications.constant';
+import { ACCOUNT_CONST, DOCUMENT_CONST } from '../../constants/notifications.constant';
 import { DocumentService } from '../../services/document.service';
 
 @Component({
@@ -12,11 +12,14 @@ import { DocumentService } from '../../services/document.service';
   templateUrl: './document-list.component.html',
   styleUrls: ['./document-list.component.scss']
 })
+
 export class DocumentListComponent implements OnInit {
 
   @Input() account_id;
   docList: any = [];
   documentForm: FormGroup;
+  old_id: any;
+  isConfirmLoading: boolean = false;
 
   constructor(private documentService: DocumentService, private notification: NzNotificationService, private modalService: NzModalService,) { }
 
@@ -83,8 +86,10 @@ export class DocumentListComponent implements OnInit {
     });
   };
 
-  editDocument() {
-    // 
+  editDocument(doc_data) {
+    this.old_id = doc_data.id;
+    let file_name = { name: doc_data.document_name, id: doc_data.id }
+    this.documentForm.patchValue({ file: file_name })
   }
 
   showDeleteConfirm(id: any): void {
@@ -111,6 +116,55 @@ export class DocumentListComponent implements OnInit {
   }
 
   onClose() {
+    this.isConfirmLoading = false;
     this.modalService.closeAll();
+  }
+
+  cancelChanges() {
+    this.documentForm.patchValue({ file: null });
+    this.old_id = null;
+  }
+
+  saveChanges() {
+    let event = this.documentForm.value;
+    this.isConfirmLoading = true;
+    if (event['file'] !== null && event['file']?.size) {
+      const input = new FormData();
+      if (event['file'] !== null) input.append("file", event['file']);
+      delete event['file'];
+      if (this.old_id) {
+        input.append("doc_id", this.old_id);
+        this.updateDocument(input);  /* Update old document */
+      } else {
+        input.append("account_id", String(this.account_id));
+        this.uploadDocument(input);  /* Upload new document */
+      }
+    } else {
+      this.onClose();
+    }
+  }
+
+  uploadDocument(input) {
+    this.documentService.uploadNewDocument(input).subscribe((result: any) => {
+      if (result.statusCode == 200) {
+        this.notification.create('success', result.message, '', { nzDuration: 6000, nzPauseOnHover: true });
+        this.onClose();
+      }
+    }, (_error) => {
+      this.notification.create('success', ACCOUNT_CONST.upload_doc_error, '', { nzDuration: 6000, nzPauseOnHover: true });
+      this.onClose();
+    })
+  }
+
+  updateDocument(input) {
+    this.documentService.updateOldDocument(input).subscribe((result: any) => {
+      if (result.statusCode == 200) {
+        this.notification.create('success', result.message, '', { nzDuration: 6000, nzPauseOnHover: true });
+        this.onClose();
+      }
+    }, (_error) => {
+      this.notification.create('error', DOCUMENT_CONST.update_doc_error, '', { nzDuration: 6000, nzPauseOnHover: true });
+      this.onClose();
+    })
   }
 }

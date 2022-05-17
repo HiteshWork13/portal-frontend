@@ -11,21 +11,26 @@ export class DocumentService {
 
   downloadDocument(id) {
     let url = `/document/downloadDocument/${id}`;
-    return this.http.get(`${APP_CONST.ServerUrl}${url}`, { responseType: 'arraybuffer' })
+    return this.http.get(`${APP_CONST.ServerUrl}${url}`, { responseType: 'arraybuffer' });
   }
 
-  getAllDocuments(date) {
+  getAllDocuments(data) {
     let url = `/document/getAllDocuments`;
-    return this.http.post(`${APP_CONST.ServerUrl}${url}`, date)
+    return this.http.post(`${APP_CONST.ServerUrl}${url}`, data);
   }
 
-  uploadNewDocument(date) {
+  uploadNewDocument(data) {
     let url = `/document/uploadDocument`;
-    return this.http.post(`${APP_CONST.ServerUrl}${url}`, date)
+    return this.http.post(`${APP_CONST.ServerUrl}${url}`, data);
+  }
+
+  updateOldDocument(data) {
+    let url = `/document/updateDocument`;
+    return this.http.post(`${APP_CONST.ServerUrl}${url}`, data)
   }
 
   deleteDocument(id) {
     let url = `/document/deleteDocument/${id}`;
-    return this.http.delete(`${APP_CONST.ServerUrl}${url}`)
+    return this.http.delete(`${APP_CONST.ServerUrl}${url}`);
   }
 }
