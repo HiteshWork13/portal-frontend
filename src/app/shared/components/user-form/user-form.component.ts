@@ -40,7 +40,7 @@ export class UserFormComponent implements OnInit {
   currentUserDetails: any;
   countryList: Array<string> = countries.getNames();
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
-  oldForm: boolean;
+  oldForm: boolean = true;
 
   constructor(private notification: NzNotificationService, private accountService: AccountService, private documentService: DocumentService) { }
 

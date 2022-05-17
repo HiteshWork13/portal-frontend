@@ -87,7 +87,7 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
-      "Width": "150px",
+      "Width": "170px",
       "advanceFilter": {
         "dataType": "date_range",
         "dpConfig": null,

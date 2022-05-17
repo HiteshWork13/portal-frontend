@@ -3,8 +3,9 @@
 <ng-container *ngIf="accountTableJSON">
     <!-- [ScrollConfig]="scrollConfig" -->
     <app-table class="height-max" [Config]="accountTableJSON" [Data]="accountList"
-        (header_addClick)="openModal('add', '')" (header_deleteClick)="showDeleteConfirm(null)"
-        (pageIndex)="getAccountData($event)" [loading]="loading" [TotalItems]="totalData" [PageSize]="PageSize">
+        (sortTableColumn)="sortAccountTable($event)" (header_addClick)="openModal('add', '')"
+        (header_deleteClick)="showDeleteConfirm(null)" (pageIndex)="getAccountData($event)" [loading]="loading"
+        [TotalItems]="totalData" [PageSize]="PageSize" [sorting]="tabsorting">
     </app-table>
 </ng-container>
 

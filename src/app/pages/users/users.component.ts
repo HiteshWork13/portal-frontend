@@ -27,6 +27,7 @@ export class UsersComponent implements OnInit {
   loading: boolean = true;
   totalData: number = 10;
   PageSize: number = 5;
+  tabsorting: boolean = false;
 
   constructor(
     private modalService: NzModalService,
@@ -41,20 +42,25 @@ export class UsersComponent implements OnInit {
     this.currentUserDetails = JSON.parse(current_user_details);
     this.accountTableJSON = this.currentUserDetails.role == this.superAdminRole ? JSON.parse(JSON.stringify(superAdminUserTableConfigJson as any)) : JSON.parse(JSON.stringify(userTableConfigJSON as any));
     this.getDefaults();
-    this.getAccountData();
+    // this.getAccountData();
   }
 
-  async getAccountData(paginationParams = this.pag_params) {
+  async getAccountData(paginationParams = this.pag_params, sort_property = 'firstname', sort_order = 'ASC') {
+    this.loading = true;
     const currentUserId = localStorage.getItem('current_user_id');
     let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
+    sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
     let api_body = {
       offset: offset,
       limit: paginationParams.pageSize,
       created_by: currentUserId,
-      order: { "firstname": "ASC" },
+      order: {
+        [sort_property]: sort_order
+      },
     }
     this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
       if (account.success) {
+        this.tabsorting = false;
         this.accountList = account?.data;
         this.loading = false;
         this.totalData = account?.counts;
@@ -62,6 +68,7 @@ export class UsersComponent implements OnInit {
       }
     },
       (_error) => {
+        this.tabsorting = false;
         this.loading = false;
       }
     );
@@ -249,5 +256,10 @@ export class UsersComponent implements OnInit {
         this.notification.success(ACCOUNT_CONST.upload_doc_error);
       })
     }
+  }
+
+  sortAccountTable(event) {
+    this.tabsorting = true;
+    this.getAccountData(this.pag_params, event.sort_property, event.sort_order,);
   }
 }

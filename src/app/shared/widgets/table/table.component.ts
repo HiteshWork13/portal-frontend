@@ -36,6 +36,7 @@ export class TableComponent implements OnInit {
   @Output() header_downloadClick: EventEmitter<any> = new EventEmitter();
   @Output() header_uploadClick: EventEmitter<any> = new EventEmitter();
   @Output() pageIndex: EventEmitter<any> = new EventEmitter();
+  @Output() sortTableColumn: EventEmitter<any> = new EventEmitter();
 
   clickedRowIndex: number;
   selectAll: Boolean = false;
@@ -43,6 +44,7 @@ export class TableComponent implements OnInit {
   public readonly tableId = Math.round(Math.random() * 10000000000) + Date.now();
   public readonly resizableEdge = { top: false, bottom: false, left: true, right: true, };
   public readonly defaultMaskDate = [/\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  @Input() sorting: boolean = false;
 
   constructor() { }
 
@@ -168,6 +170,15 @@ export class TableComponent implements OnInit {
   } */
 
   pageIndexChanged(event) {
-    this.pageIndex.emit(event);
+    if (!this.sorting) this.pageIndex.emit(event);
+  }
+
+  sortColumn(event, property) {
+    this.sorting = true;
+    let sortData = {
+      sort_property: property,
+      sort_order: event == null ? 'ascend' : event,
+    }
+    this.sortTableColumn.emit(sortData)
   }
 }

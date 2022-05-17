@@ -7,7 +7,7 @@
     </wic-table-header>
   </div>
 </div>
-<nz-table class="core-table" #fixedTable [nzTotal]="TotalItems" [nzPageSize]="PageSize" [nzPageIndex]="PageIndex"
+<nz-table class="core-table" #sortTable [nzTotal]="TotalItems" [nzPageSize]="PageSize" [nzPageIndex]="PageIndex"
   [nzData]="Data" [id]="tableId" nzFrontPagination="{{ Config.PaginationType != 'Dynamic' ? true : false }}"
   nzShowPagination="{{Config.Pagination || false}}" nzShowSizeChanger="{{Config.PageSizeChanger || false}}"
   [nzScroll]="ScrollConfig" (nzQueryParams)="pageIndexChanged($event)" [nzLoading]="loading" nzPaginationType="small">
@@ -17,7 +17,8 @@
         <th>#ID</th>
         <ng-container *ngFor="let column of Config.Columns;trackBy: trackBy;let i = index;let last = last">
           <ng-container *ngIf="column.visible">
-            <th [ngStyle]="{'min-width': column['Width'] || 'auto' }"
+            <th [ngStyle]="{'min-width': column['Width'] || 'auto' }" [nzSortFn]="true"
+              (nzSortOrderChange)="sortColumn($event,column.property)"
               [ngClass]="{ 'bg-white': Mode == 'Normal', 'flex-1': last }"
               class="text-left header_column header_column_{{ tableId }}_{{i}}" mwlResizable>
               <!-- [ngStyle]="{ width: column.columnWidth }" -->

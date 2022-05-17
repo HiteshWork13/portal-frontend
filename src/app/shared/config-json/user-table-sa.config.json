@@ -41,6 +41,7 @@
       "name": "First Name",
       "dataType": "text",
       "property": "reseller_firstname",
+      "compare": "",
       "visible": true,
       "searchable": true,
       "searchValue": null,
@@ -85,6 +86,7 @@
       "searchValue": null,
       "sortable": true,
       "sortOrder": "",
+      "Width": "170px",
       "SearchFormTemplate": null,
       "advanceFilter": {
         "dataType": "date_range",
