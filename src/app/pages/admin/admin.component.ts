@@ -28,6 +28,11 @@ export class AdminComponent implements OnInit {
   // When click on particular admin
   selectedAdminIdForSubAdmin: string = null;
   selectedAdminIdForAccounts: string = null;
+  tabsorting: boolean = false;
+  pag_params: any = { pageIndex: 1, pageSize: 5 };
+  loading: boolean = true;
+  totalData: number = 10;
+  PageSize: number = 5;
 
   constructor(
     private modalService: NzModalService,
@@ -66,10 +71,30 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  getAdminData() {
-    this.adminService.getAllAdmin({ role: 2, created_by: this.currentUserDetails.id }).then((response: any) => {
-      this.adminList = response.data;
+  getAdminData(paginationParams = this.pag_params, sort_property = 'username', sort_order = 'ASC') {
+    this.loading = true;
+    let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
+    sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
+    let api_body = {
+      role: 2,
+      created_by: this.currentUserDetails.id,
+      offset: offset,
+      limit: paginationParams.pageSize,
+      order: {
+        [sort_property]: sort_order
+      },
+    }
+    this.adminService.getAllAdmin(api_body).then((response: any) => {
+      if (response.success) {
+        this.adminList = response.data;
+        this.loading = false;
+        this.totalData = response?.counts;
+        this.PageSize = response?.limit ? response?.limit : 5;
+        this.tabsorting = false;
+      }
     }, (error) => {
+      this.loading = false;
+      this.tabsorting = false;
       this.notification.error(error.message);
     });
   }
@@ -223,5 +248,10 @@ export class AdminComponent implements OnInit {
     }, (_error) => {
       this.notification.error(ADMIN_CONST.status_update_error);
     })
+  }
+
+  sortAdminTable(event) {
+    this.tabsorting = true;
+    this.getAdminData(this.pag_params, event.sort_property, event.sort_order,);
   }
 }

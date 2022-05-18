@@ -100,7 +100,7 @@ export class DocumentListComponent implements OnInit {
       nzOkDanger: true,
       nzOnOk: () => this.deleteDocument(id),
       nzCancelText: 'No',
-      nzOnCancel: () => this.onClose(),
+      // nzOnCancel: () => this.onClose(),
     });
   }
 

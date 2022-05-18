@@ -1,6 +1,8 @@
 <ng-container *ngIf="adminTableJSON">
   <app-table (onRowClick)="handleAdminRowClick($event)" [Config]="adminTableJSON" [Data]="adminList"
-    (header_addClick)="openModal(temp, 'add', '')"></app-table>
+    (header_addClick)="openModal(temp, 'add', '')" [TotalItems]="totalData" [PageSize]="PageSize" [sorting]="tabsorting"
+    (sortTableColumn)="sortAdminTable($event)">
+  </app-table>
 </ng-container>
 
 <div *ngIf="isSubAdminVisible" style="margin: 25px 0 0 0">

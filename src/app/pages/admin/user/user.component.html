@@ -3,7 +3,8 @@
 <ng-container *ngIf="accountTableJSON">
     <app-table [Config]="accountTableJSON" [Data]="accountList" (header_addClick)="openModal('add', '')"
         (header_closeClick)="close.emit()" (pageIndex)="getAccountData($event)" [loading]="loading"
-        [TotalItems]="totalData" [PageSize]="PageSize">
+        [TotalItems]="totalData" [PageSize]="PageSize" (sortTableColumn)="sortAccountTable($event)"
+        [sorting]="tabsorting">
     </app-table>
 </ng-container>
 
@@ -25,6 +26,9 @@
                 </li>
                 <li nz-menu-item role="menuitem">
                     <a class="dropdown-item" (click)="openModal('edit', row)">Edit</a>
+                </li>
+                <li nz-menu-item role="menuitem">
+                    <a class="dropdown-item" (click)="openDocumentModal(row)">PO</a>
                 </li>
                 <li nz-menu-item role="menuitem">
                     <a class="dropdown-item" (click)="showDeleteConfirm(row)"

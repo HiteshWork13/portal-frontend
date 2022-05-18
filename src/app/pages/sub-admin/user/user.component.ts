@@ -3,6 +3,7 @@ import { superAdminUserTableConfigJson, userTableConfigJSON } from '@configJson'
 import { APP_CONST } from '@constants';
 import { AccountService, NotificationService } from '@services';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { DocumentListComponent } from 'src/app/shared/components/document-list/document-list.component';
 import { UserFormComponent } from 'src/app/shared/components/user-form/user-form.component';
 import { ACCOUNT_CONST } from 'src/app/shared/constants/notifications.constant';
 import { UserDetailsComponent } from 'src/app/shared/user-details/user-details.component';
@@ -28,7 +29,7 @@ export class UserComponent implements OnInit {
   loading: boolean = true;
   totalData: number = 10;
   PageSize: number = 5;
-
+  tabsorting: boolean = false;
 
   constructor(private modalService: NzModalService, private accountService: AccountService, private notification: NotificationService, private viewContainerRef: ViewContainerRef) { }
 
@@ -37,7 +38,7 @@ export class UserComponent implements OnInit {
     this.currentUserDetails = JSON.parse(current_user_details);
     this.accountTableJSON = this.currentUserDetails.role == this.superAdminRole ? JSON.parse(JSON.stringify(superAdminUserTableConfigJson as any)) : JSON.parse(JSON.stringify(userTableConfigJSON as any));
     this.getDefaults();
-    this.getAccountData();
+    // this.getAccountData();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -46,13 +47,18 @@ export class UserComponent implements OnInit {
     }
   }
 
-  async getAccountData(paginationParams = this.pag_params) {
+  async getAccountData(paginationParams = this.pag_params, sort_property = 'firstname', sort_order = 'ASC') {
+    this.loading = true;
+    const currentUserId = localStorage.getItem('current_user_id');
     let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
+    sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
     let api_body = {
       offset: offset,
       limit: paginationParams.pageSize,
-      created_by: this.selectedAdminId,
-      order: { "username": "ASC" },
+      created_by: currentUserId,
+      order: {
+        [sort_property]: sort_order
+      },
     }
     this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
       if (account.success) {
@@ -60,10 +66,12 @@ export class UserComponent implements OnInit {
         this.loading = false;
         this.totalData = account.counts;
         this.PageSize = account.limit;
+        this.tabsorting = false;
       }
     },
       (_error) => {
         this.loading = false;
+        this.tabsorting = false;
       }
     );
   }
@@ -217,5 +225,26 @@ export class UserComponent implements OnInit {
     }, (_error) => {
       this.notification.error(ACCOUNT_CONST.status_update_error);
     })
+  }
+
+  openDocumentModal(row_data) {
+    this.modalService.create({
+      nzTitle: 'Documents',
+      nzContent: DocumentListComponent,
+      nzViewContainerRef: this.viewContainerRef,
+      nzComponentParams: {
+        account_id: row_data.id,
+      },
+      nzWidth: '60%',
+      // nzOnOk: (event) => { this.uploadDocument(row_data.id, event.documentForm.value); },
+      nzMaskClosable: false,
+      nzAutofocus: null,
+      nzOnCancel: () => this.onClose(),
+    });
+  }
+
+  sortAccountTable(event) {
+    this.tabsorting = true;
+    this.getAccountData(this.pag_params, event.sort_property, event.sort_order,);
   }
 }
