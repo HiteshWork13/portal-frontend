@@ -247,9 +247,9 @@ export class UsersComponent implements OnInit {
       nzTitle: 'Devices',
       nzContent: DeviceListComponent,
       nzViewContainerRef: this.viewContainerRef,
-      // nzComponentParams: {
-      //   account_id: row_data.id,
-      // },
+      nzComponentParams: {
+        account_id: row_data.id,
+      },
       nzWidth: '60%',
       nzMaskClosable: false,
       nzAutofocus: null,
@@ -260,5 +260,9 @@ export class UsersComponent implements OnInit {
   sortAccountTable(event) {
     this.tabsorting = true;
     this.getAccountData(this.pag_params, event.sort_property, event.sort_order,);
+  }
+
+  search() {
+    // 
   }
 }

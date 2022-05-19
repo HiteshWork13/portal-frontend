@@ -29,12 +29,17 @@
     </ng-container>
 
     <!-- Search Button -->
-    <button nz-button nz-tooltip nzTooltipTitle="Search" nzType="dashed" nzShape="circle" (click)="search()"
-      *ngIf="Header?.showSearch" class="wic-table-header-button">
-      <span class="btn-wrapper--icon">
-        <i nz-icon nzType="search" nzTheme="outline"></i>
-      </span>
-    </button>
+    <ng-container *ngIf="Header?.showSearch">
+      <div class="search-container">
+        <input type="text" name="search" trim="blur" placeholder="Search..." #search class="search-input" />
+        <button nz-button nz-tooltip nzTooltipTitle="Search" nzType="dashed" nzShape="circle"
+          class="wic-table-header-button">
+          <span class="btn-wrapper--icon">
+            <i nz-icon nzType="search" nzTheme="outline"></i>
+          </span>
+        </button>
+      </div>
+    </ng-container>
 
     <!-- Add Button -->
     <button nz-button nzType="dashed" nzShape="circle" nz-tooltip [nzTooltipTitle]="Header?.addTooltipText"

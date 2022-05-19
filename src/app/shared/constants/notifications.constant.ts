@@ -49,3 +49,10 @@ export const DOCUMENT_CONST: any = {
     update_doc_success: 'Document Updated successfully',
     update_doc_error: 'Error while updating document, please try again',
 }
+
+export const DEVICE_CONST: any = {
+    update_device_success: 'Device Updated successfully',
+    update_device_error: 'Error while updating device, please try again',
+    delete_device_success: 'Device Deleted successfully',
+    delete_device_error: 'Error while deleting device, please try again',
+}

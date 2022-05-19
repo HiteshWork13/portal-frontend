@@ -2,7 +2,7 @@
   "Caption": "Accounts",
   "Header": {
     "showColumnToggle": true,
-    "showSearch": false,
+    "showSearch": true,
     "showAdd": true,
     "addTooltipText": "Add Account",
     "showReset": false,

@@ -5,7 +5,7 @@
     <app-table class="height-max" [Config]="accountTableJSON" [Data]="accountList"
         (sortTableColumn)="sortAccountTable($event)" (header_addClick)="openModal('add', '')"
         (header_deleteClick)="showDeleteConfirm(null)" (pageIndex)="getAccountData($event)" [loading]="loading"
-        [TotalItems]="totalData" [PageSize]="PageSize" [sorting]="tabsorting">
+        [TotalItems]="totalData" [PageSize]="PageSize" [sorting]="tabsorting" (header_searchClick)="search()">
     </app-table>
 </ng-container>
 
