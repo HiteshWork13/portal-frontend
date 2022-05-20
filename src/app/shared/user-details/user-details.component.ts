@@ -14,7 +14,6 @@ export class UserDetailsComponent implements OnInit {
   }
 
   accountDetails(row) {
-    console.log('row?.created_by_id: ', row?.created_by_id);
     if (row?.created_by_id == null) {
       let userData = [
         { field: "First Name", value: row.firstname },

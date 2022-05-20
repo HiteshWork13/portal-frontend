@@ -14,7 +14,6 @@ export class CanActivateGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    console.log("route", route)
     const currentRoute = route.url[0].path
     const menu = MENUITEMS.find(menu => menu.path == `/${currentRoute}`)
     const currentUser = JSON.parse(localStorage.getItem('current_user_details'))
@@ -23,7 +22,6 @@ export class CanActivateGuard implements CanActivate {
     }
     else {
       let firstMenu = MENUITEMS.find(menu => menu.enablesIn.indexOf(currentUser.role) > -1)
-      console.log('firstMenu: ', firstMenu);
       if (firstMenu && firstMenu.path != `/${currentRoute}`)
         this._router.navigate([firstMenu.path]);
       return false;

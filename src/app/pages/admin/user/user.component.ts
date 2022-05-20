@@ -28,6 +28,7 @@ export class UserComponent implements OnInit {
   totalData: number = 10;
   PageSize: number = 5;
   tabsorting: boolean = false;
+  currentUserId = localStorage.getItem('current_user_id');
 
   constructor(private modalService: NzModalService, private accountService: AccountService, private viewContainerRef: ViewContainerRef, private notification: NotificationService) { }
 
@@ -41,19 +42,18 @@ export class UserComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes.selectedAdminId.currentValue) {
-      this.getAccountData();
+      this.getAccountData(this.pag_params, 'firstname', 'ASC', changes.selectedAdminId.currentValue);
     }
   }
 
-  async getAccountData(paginationParams = this.pag_params, sort_property = 'firstname', sort_order = 'ASC') {
+  async getAccountData(paginationParams = this.pag_params, sort_property = 'firstname', sort_order = 'ASC', idToGetAccount = this.currentUserId) {
     this.loading = true;
-    const currentUserId = localStorage.getItem('current_user_id');
     let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
     sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
     let api_body = {
       offset: offset,
       limit: paginationParams.pageSize,
-      created_by: currentUserId,
+      created_by: idToGetAccount,
       order: {
         [sort_property]: sort_order
       },
