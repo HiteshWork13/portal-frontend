@@ -1,7 +1,8 @@
 <ng-container *ngIf="adminTableJSON">
   <app-table (onRowClick)="handleAdminRowClick($event)" [Config]="adminTableJSON" [Data]="adminList"
     (header_addClick)="openModal(temp, 'add', '')" [TotalItems]="totalData" [PageSize]="PageSize" [sorting]="tabsorting"
-    (sortTableColumn)="sortAdminTable($event)">
+    (sortTableColumn)="sortAdminTable($event)" (header_searchClick)="search($event)" (pageIndex)="getAdminData($event)"
+    [loading]="loading">
   </app-table>
 </ng-container>
 

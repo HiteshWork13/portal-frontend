@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { adminTableConfigJSON } from "@configJson";
+import { APP_CONST } from '@constants';
 import { AdminService, NotificationService } from '@services';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ADMIN_CONST } from 'src/app/shared/constants/notifications.constant';
@@ -29,10 +30,14 @@ export class AdminComponent implements OnInit {
   selectedAdminIdForSubAdmin: string = null;
   selectedAdminIdForAccounts: string = null;
   tabsorting: boolean = false;
-  pag_params: any = { pageIndex: 1, pageSize: 5 };
   loading: boolean = true;
   totalData: number = 10;
   PageSize: number = 5;
+  pag_params: any = { pageIndex: 1, pageSize: 5 };
+  adminRole: any = APP_CONST.Role.Admin;
+  search_keyword: any = '';
+  default_sort_property: string = 'username';
+  default_sort_order: string = 'ascend';
 
   constructor(
     private modalService: NzModalService,
@@ -43,7 +48,7 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
     this.getDefaults();
     this.createForm();
-    this.getAdminData();
+    // this.getAdminData();
   }
 
   getDefaults() {
@@ -66,23 +71,24 @@ export class AdminComponent implements OnInit {
       email: new FormControl(null, Validators.required),
       password: new FormControl(null, Validators.required),
       status: new FormControl(1),
-      role: new FormControl(2),
+      role: new FormControl(this.adminRole),
       // created_by: new FormControl(String(this.currentUserDetails.id)),
     });
   }
 
-  getAdminData(paginationParams = this.pag_params, sort_property = 'username', sort_order = 'ASC') {
+  getAdminData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, search_query = this.search_keyword) {
     this.loading = true;
     let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
     sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
     let api_body = {
-      role: 2,
       created_by: this.currentUserDetails.id,
+      role: this.adminRole,
       offset: offset,
       limit: paginationParams.pageSize,
       order: {
         [sort_property]: sort_order
       },
+      search_query: search_query
     }
     this.adminService.getAllAdmin(api_body).then((response: any) => {
       if (response.success) {
@@ -92,10 +98,10 @@ export class AdminComponent implements OnInit {
         this.PageSize = response?.limit ? response?.limit : 5;
         this.tabsorting = false;
       }
-    }, (error) => {
+    }, (_error) => {
       this.loading = false;
       this.tabsorting = false;
-      this.notification.error(error.message);
+      this.notification.error(ADMIN_CONST.get_admin_error);
     });
   }
 
@@ -253,5 +259,10 @@ export class AdminComponent implements OnInit {
   sortAdminTable(event) {
     this.tabsorting = true;
     this.getAdminData(this.pag_params, event.sort_property, event.sort_order,);
+  }
+
+  search(keyword) {
+    this.search_keyword = keyword;
+    this.getAdminData(this.pag_params, this.default_sort_property, this.default_sort_order, this.search_keyword);
   }
 }

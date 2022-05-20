@@ -55,3 +55,7 @@
     width: 0px;
     transition: 0.8s;
 }
+
+.search-input:focus {
+    width: 200px !important;
+}

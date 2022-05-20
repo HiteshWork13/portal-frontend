@@ -19,6 +19,8 @@ export class TableHeaderComponent implements OnInit {
   @Output() downloadClick: EventEmitter<any> = new EventEmitter();
   @Output() uploadClick: EventEmitter<any> = new EventEmitter();
 
+  searchedValue: any;
+
   constructor() { }
 
   ngOnInit(): void { }
@@ -30,7 +32,7 @@ export class TableHeaderComponent implements OnInit {
   }
 
   search() {
-    this.searchClick.emit();
+    this.searchClick.emit(this.searchedValue);
   }
 
   add() {

@@ -31,6 +31,9 @@ export class UserComponent implements OnInit {
   PageSize: number = 5;
   tabsorting: boolean = false;
   currentUserId = localStorage.getItem('current_user_id')
+  search_keyword: any = '';
+  default_sort_property: string = 'firstname';
+  default_sort_order: string = 'ascend';
 
   constructor(private modalService: NzModalService, private accountService: AccountService, private notification: NotificationService, private viewContainerRef: ViewContainerRef) { }
 
@@ -44,11 +47,11 @@ export class UserComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes.selectedAdminId.currentValue) {
-      this.getAccountData(this.pag_params, 'firstname', 'ASC', changes.selectedAdminId.currentValue);
+      this.getAccountData(this.pag_params, this.default_sort_property, this.default_sort_order, changes.selectedAdminId.currentValue);
     }
   }
 
-  async getAccountData(paginationParams = this.pag_params, sort_property = 'firstname', sort_order = 'ASC', idToGetAccount = this.currentUserId) {
+  async getAccountData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, idToGetAccount = this.currentUserId, search_query = this.search_keyword) {
     this.loading = true;
     let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
     sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
@@ -59,6 +62,7 @@ export class UserComponent implements OnInit {
       order: {
         [sort_property]: sort_order
       },
+      search_query: search_query
     }
     this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
       if (account.success) {
@@ -246,5 +250,10 @@ export class UserComponent implements OnInit {
   sortAccountTable(event) {
     this.tabsorting = true;
     this.getAccountData(this.pag_params, event.sort_property, event.sort_order,);
+  }
+
+  search(keyword) {
+    this.search_keyword = keyword;
+    this.getAccountData(this.pag_params, 'firstname', 'ascend', this.search_keyword);
   }
 }

@@ -5,7 +5,7 @@
     <app-table class="height-max" [Config]="accountTableJSON" [Data]="accountList"
         (sortTableColumn)="sortAccountTable($event)" (header_addClick)="openModal('add', '')"
         (header_deleteClick)="showDeleteConfirm(null)" (pageIndex)="getAccountData($event)" [loading]="loading"
-        [TotalItems]="totalData" [PageSize]="PageSize" [sorting]="tabsorting" (header_searchClick)="search()">
+        [TotalItems]="totalData" [PageSize]="PageSize" [sorting]="tabsorting" (header_searchClick)="search($event)">
     </app-table>
 </ng-container>
 
@@ -31,9 +31,8 @@
                 <li nz-menu-item role="menuitem">
                     <a class="dropdown-item" (click)="openDocumentModal(row)">PO</a>
                 </li>
-                <li nz-menu-item role="menuitem">
-                    <a class="dropdown-item" (click)="openDevicesModel(row)"
-                        *ngIf="currentUserDetails.role == superAdminRole">View Devices</a>
+                <li nz-menu-item role="menuitem" *ngIf="currentUserDetails.role == superAdminRole">
+                    <a class="dropdown-item" (click)="openDevicesModel(row)">View Devices</a>
                 </li>
                 <li nz-menu-item role="menuitem" *ngIf="currentUserDetails.role == superAdminRole">
                     <a class="dropdown-item" (click)="showDeleteConfirm(row.id)">Delete</a>

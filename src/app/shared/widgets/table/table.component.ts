@@ -106,8 +106,8 @@ export class TableComponent implements OnInit {
     }
   }
 
-  search() {
-    this.header_searchClick.emit();
+  search(event) {
+    this.header_searchClick.emit(event);
   }
 
   add() {

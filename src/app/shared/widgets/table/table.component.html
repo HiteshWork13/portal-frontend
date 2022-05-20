@@ -1,7 +1,7 @@
 <div class="card-header py-3">
   <div class="d-flex">
     <wic-table-header [Caption]="Config?.Caption" [Header]="Config.Header" [Columns]="Config.Columns"
-      [ExtraButtons]="ExtraHeaderButtons" [ExtraButtonContext]="{ Data: Data }" (searchClick)="search()"
+      [ExtraButtons]="ExtraHeaderButtons" [ExtraButtonContext]="{ Data: Data }" (searchClick)="search($event)"
       (addClick)="add()" (resetClick)="reset()" (closeClick)="close()" (downloadClick)="download()"
       (uploadClick)="upload()">
     </wic-table-header>

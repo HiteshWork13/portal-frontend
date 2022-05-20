@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NgZorroAntdModule } from '../ng-zorro-antd.module';
 import { TableColumnHeaderComponent } from './table-column-header/table-column-header.component';
 import { TableHeaderComponent } from './table-header/table-header.component';
@@ -15,7 +16,8 @@ const components = [
   declarations: [components],
   imports: [
     CommonModule,
-    NgZorroAntdModule
+    NgZorroAntdModule,
+    FormsModule
   ],
   exports: [components]
 })
