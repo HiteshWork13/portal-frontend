@@ -104,6 +104,23 @@ export class DocumentListComponent implements OnInit {
     });
   }
 
+  downloadFile(id: any): void {
+    this.documentService.downloadDocument(id).subscribe((result: any) => {
+      let dataType = result.type;
+      let binaryData = [];
+      binaryData.push(result);
+      let downloadLink = document.createElement('a');
+      downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
+      if (id + '.pdf')
+        downloadLink.setAttribute('download', id + '.pdf');
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+
+    }, (_error) => {
+      this.notification.create('error', 'File Missing', `Server Error, Please try again`, { nzDuration: 6000, nzPauseOnHover: true });
+    })
+  }
+
   deleteDocument(id) {
     this.documentService.deleteDocument(id).subscribe((result: any) => {
       if (result.statusCode == 200) {

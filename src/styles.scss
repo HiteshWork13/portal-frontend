@@ -2,47 +2,47 @@
 @import url(assets/scss/_utilities-enlink.scss);
 
 .wi-action-menu {
-    min-width: 130px;
+  min-width: 130px;
 
-    li {
-        font-size: 16px;
-        font-weight: 600;
-    }
+  li {
+    font-size: 16px;
+    font-weight: 600;
+  }
 }
 
 .truncate {
-    display: -webkit-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 
-    &.tri-line {
-        -webkit-line-clamp: 3;
-    }
+  &.tri-line {
+    -webkit-line-clamp: 3;
+  }
 }
 
 .validationColor {
-    color: #de4436 !important;
+  color: #de4436 !important;
 }
 
 .custom-file-uploader {
-    width: 100px;
-    height: 100px;
-    background: #fff5ec;
-    border-radius: 5px;
-    border: 2px dashed #C7CED7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    cursor: pointer;
-    user-select: none;
-    transition: border-color .3s;
+  width: 100px;
+  height: 100px;
+  background: #fff5ec;
+  border-radius: 5px;
+  border: 2px dashed #C7CED7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color .3s;
 
-    &:hover {
-        border-color: #FF9842;
-    }
+  &:hover {
+    border-color: #FF9842;
+  }
 }
 
 // .core-table {
@@ -70,9 +70,13 @@
 // }
 
 .ant-layout-sider {
-    background-color: #FBF3EB;
+  background-color: #FBF3EB;
 }
 
 .ant-table-column-sorter-full {
-    display: none !important;
+  display: none !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
