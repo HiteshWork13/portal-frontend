@@ -51,7 +51,7 @@ export class UserComponent implements OnInit {
     }
   }
 
-  async getAccountData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, idToGetAccount = this.currentUserId, search_query = this.search_keyword) {
+  async getAccountData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, idToGetAccount = this.selectedAdminId || this.currentUserId, search_query = this.search_keyword) {
     this.loading = true;
     let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
     sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
@@ -254,6 +254,6 @@ export class UserComponent implements OnInit {
 
   search(keyword) {
     this.search_keyword = keyword;
-    this.getAccountData(this.pag_params, 'firstname', 'ascend', this.currentUserId, this.search_keyword);
+    this.getAccountData(this.pag_params, 'firstname', 'ascend', this.selectedAdminId || this.currentUserId, this.search_keyword);
   }
 }
