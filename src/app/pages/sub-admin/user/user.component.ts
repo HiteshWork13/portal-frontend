@@ -254,6 +254,6 @@ export class UserComponent implements OnInit {
 
   search(keyword) {
     this.search_keyword = keyword;
-    this.getAccountData(this.pag_params, 'firstname', 'ascend', this.search_keyword);
+    this.getAccountData(this.pag_params, 'firstname', 'ascend', this.currentUserId, this.search_keyword);
   }
 }

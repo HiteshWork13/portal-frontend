@@ -2,7 +2,10 @@
 </div>
 <ng-container *ngIf="subAdminTableJSON">
   <app-table (onRowClick)="showAccounts($event.data)" [Config]="subAdminTableJSON" [Data]="subAdminList"
-    (header_addClick)="openModal(addForm, 'add', '')" (header_closeClick)="close.emit()"></app-table>
+    (header_addClick)="openModal(addForm, 'add', '')" (header_closeClick)="close.emit()" [TotalItems]="totalData"
+    [PageSize]="PageSize" [sorting]="tabsorting" (sortTableColumn)="sortTable($event)"
+    (header_searchClick)="search($event)" (pageIndex)="getSubAdminData($event)" [loading]="loading">
+  </app-table>
 </ng-container>
 
 <ng-template #addForm>

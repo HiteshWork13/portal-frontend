@@ -2,15 +2,15 @@
   "Caption": "Sub admin",
   "Header": {
     "showColumnToggle": true,
-    "showSearch": false,
+    "showSearch": true,
     "showAdd": false,
     "showReset": false,
     "showDownload": false,
     "showClose": true
   },
-  "Pagination": false,
+  "Pagination": true,
   "PageSizeChanger": false,
-  "PaginationType": "static",
+  "PaginationType": "Dynamic",
   "SortingType": "static",
   "SearchType": "static",
   "selectedRowClassName": "selected-row",

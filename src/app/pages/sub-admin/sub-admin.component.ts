@@ -1,6 +1,7 @@
-import { Component, ElementRef, EventEmitter, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { subAdminTableConfigJSON } from '@configJson';
+import { APP_CONST } from '@constants';
 import { NotificationService, SubAdminService } from '@services';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { SUB_ADMIN_CONST } from 'src/app/shared/constants/notifications.constant';
@@ -9,7 +10,7 @@ import { SUB_ADMIN_CONST } from 'src/app/shared/constants/notifications.constant
   templateUrl: './sub-admin.component.html',
   styleUrls: ['./sub-admin.component.scss'],
 })
-export class SubAdminComponent implements OnInit, OnChanges {
+export class SubAdminComponent implements OnInit {
   @ViewChild('actionTemplate') actionTemplate: TemplateRef<any>;
   @ViewChild('statusTemplate') statusTemplate: TemplateRef<any>;
   @ViewChild('username', { static: false }) username: ElementRef;
@@ -27,6 +28,15 @@ export class SubAdminComponent implements OnInit, OnChanges {
   mode: string = 'add';
 
   selectedSubAdminId: string;
+  tabsorting: boolean = false;
+  pag_params: any = { pageIndex: 1, pageSize: 5 };
+  totalData: number = 10;
+  PageSize: number = 5;
+  loading: boolean = true;
+  search_keyword: any = '';
+  default_sort_property: string = 'username';
+  default_sort_order: string = 'ascend';
+  subAdminRole: any = APP_CONST.Role.SubAdmin;
 
   constructor(
     private modalService: NzModalService,
@@ -39,14 +49,14 @@ export class SubAdminComponent implements OnInit, OnChanges {
     this.currentUserDetails = JSON.parse(current_user_details);
     this.getDefaults();
     this.createForm();
-    this.getSubAdminData();
+    // this.getSubAdminData();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  /* ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes.selectedAdminId.currentValue) {
       this.getSubAdminData();
     }
-  }
+  } */
 
   getDefaults() {
     this.subAdminTableJSON.Header.showClose = false;
@@ -69,15 +79,37 @@ export class SubAdminComponent implements OnInit, OnChanges {
       email: new FormControl(null, Validators.required),
       password: new FormControl(null, Validators.required),
       status: new FormControl(1),
-      role: new FormControl(3),
+      role: new FormControl(this.subAdminRole),
       // created_by: new FormControl(this.currentUserDetails.id),
     });
   }
 
-  getSubAdminData() {
-    this.subAdminService.getAllSubAdmin({ role: 3, created_by: this.currentUserDetails.id }).then((response: any) => {
-      this.subAdminList = response.data;
+  getSubAdminData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, search_query = this.search_keyword) {
+    this.tabsorting = false;
+    this.loading = true;
+    const currentUserId = localStorage.getItem('current_user_id');
+    let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
+    sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
+    let api_body = {
+      created_by: currentUserId,
+      role: this.subAdminRole,
+      offset: offset,
+      limit: paginationParams.pageSize,
+      order: {
+        [sort_property]: sort_order
+      },
+      search_query: search_query
+    }
+    this.subAdminService.getAllSubAdmin(api_body).then((response: any) => {
+      if (response.success) {
+        this.subAdminList = response.data;
+        this.loading = false;
+        this.totalData = response?.counts;
+        this.PageSize = response?.limit ? response?.limit : 5;
+      }
     }, (_error) => {
+      this.loading = false;
+      // this.tabsorting = false;
       this.notification.error(SUB_ADMIN_CONST.get_sub_admin_error);
     });
   }
@@ -222,5 +254,16 @@ export class SubAdminComponent implements OnInit, OnChanges {
     }, (_error) => {
       this.notification.error(SUB_ADMIN_CONST.status_update_error);
     })
+  }
+
+  sortAccountTable(event) {
+    console.log('SORT', event);
+    this.tabsorting = true;
+    this.getSubAdminData(this.pag_params, event.sort_property, event.sort_order);
+  }
+
+  search(keyword) {
+    this.search_keyword = keyword;
+    this.getSubAdminData(this.pag_params, this.default_sort_property, this.default_sort_order, this.search_keyword);
   }
 }

@@ -51,6 +51,7 @@ export class UserComponent implements OnInit {
 
   async getAccountData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, idToGetAccount = this.currentUserId, search_query = this.search_keyword) {
     this.loading = true;
+    this.tabsorting = false;
     let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
     sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
     let api_body = {
@@ -68,7 +69,6 @@ export class UserComponent implements OnInit {
         this.loading = false;
         this.totalData = account.counts;
         this.PageSize = account.limit;
-        this.tabsorting = false;
       }
     },
       (_error) => {
@@ -252,6 +252,6 @@ export class UserComponent implements OnInit {
 
   search(keyword) {
     this.search_keyword = keyword;
-    this.getAccountData(this.pag_params, 'firstname', 'ascend', this.search_keyword);
+    this.getAccountData(this.pag_params, 'firstname', 'ascend', this.currentUserId, this.search_keyword);
   }
 }
