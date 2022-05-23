@@ -78,6 +78,7 @@ export class AdminComponent implements OnInit {
 
   getAdminData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, search_query = this.search_keyword) {
     this.loading = true;
+    this.tabsorting = false;
     let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
     sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
     let api_body = {

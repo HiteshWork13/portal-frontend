@@ -32,7 +32,7 @@
     <ng-container *ngIf="Header?.showSearch">
       <div class="search-container">
         <input nz-input type="text" name="search" trim="blur" [(ngModel)]="searchedValue" placeholder="Search..."
-          #searchInput class="search-input p-0" (keydown.enter)="search()" />
+          #searchInput class="search-input" (keydown.enter)="search()" />
         <button nz-button nz-tooltip nzTooltipTitle="Search" nzType="dashed" nzShape="circle"
           class="wic-table-header-button" (click)="search()">
           <span class="btn-wrapper--icon">

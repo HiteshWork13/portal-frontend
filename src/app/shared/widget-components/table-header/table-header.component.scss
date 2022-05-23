@@ -42,18 +42,22 @@
     border: none;
 }
 
-.search-container:hover>.search-input {
+/* .search-container:hover>.search-input {
     width: 200px;
     border: 1px dashed #d9d9d9;
     border-radius: 50px;
     padding: 4px 4px 4px 14px;
-}
+} */
 
 .search-container .search-input {
     background: transparent;
-    outline: none;
-    width: 0px;
-    transition: 0.8s;
+    // outline: none;
+    // width: 0px;
+    // transition: 0.8s;
+    width: 200px;
+    border: 1px dashed #d9d9d9;
+    // border-radius: 50px;
+    padding: 4px 4px 4px 14px;
 }
 
 .search-input:focus {
