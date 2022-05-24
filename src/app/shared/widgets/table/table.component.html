@@ -10,7 +10,8 @@
 <nz-table class="core-table" #sortTable [nzTotal]="TotalItems" [nzPageSize]="PageSize" [nzPageIndex]="PageIndex"
   [nzData]="Data" [id]="tableId" nzFrontPagination="{{ Config.PaginationType != 'Dynamic' ? true : false }}"
   nzShowPagination="{{Config.Pagination || false}}" nzShowSizeChanger="{{Config.PageSizeChanger || false}}"
-  [nzScroll]="ScrollConfig" (nzQueryParams)="pageIndexChanged($event)" [nzLoading]="loading" nzPaginationType="small">
+  [nzScroll]="ScrollConfig" (nzPageIndexChange)="pageIndexChanged($event)" [nzLoading]="loading"
+  nzPaginationType="small">
   <thead>
     <tr class="header_row" [ngClass]="{ 'table-view-header': Mode == 'View' }">
       <ng-container *ngIf="Config.Columns.length > 0">

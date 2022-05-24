@@ -28,14 +28,13 @@ export class SubAdminComponent implements OnInit {
   mode: string = 'add';
 
   selectedSubAdminId: string;
-  tabsorting: boolean = false;
-  pag_params: any = { pageIndex: 1, pageSize: 5 };
+  pag_params: any = { pageIndex: 1, pageSize: 10 };
   totalData: number = 10;
-  PageSize: number = 5;
+  PageSize: number = 10;
   loading: boolean = true;
   search_keyword: any = '';
   default_sort_property: string = 'username';
-  default_sort_order: string = 'ascend';
+  default_sort_order: any = null;
   subAdminRole: any = APP_CONST.Role.SubAdmin;
 
   constructor(
@@ -49,7 +48,7 @@ export class SubAdminComponent implements OnInit {
     this.currentUserDetails = JSON.parse(current_user_details);
     this.getDefaults();
     this.createForm();
-    // this.getSubAdminData();
+    this.getSubAdminData();
   }
 
   /* ngOnChanges(changes: SimpleChanges): void {
@@ -85,31 +84,32 @@ export class SubAdminComponent implements OnInit {
   }
 
   getSubAdminData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, search_query = this.search_keyword) {
-    this.tabsorting = false;
     this.loading = true;
     const currentUserId = localStorage.getItem('current_user_id');
     let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
-    sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
+    // sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
     let api_body = {
       created_by: currentUserId,
       role: this.subAdminRole,
       offset: offset,
       limit: paginationParams.pageSize,
-      order: {
-        [sort_property]: sort_order
-      },
       search_query: search_query
+    }
+    if (sort_order !== null) {
+      sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
+      api_body['order'] = {
+        [sort_property]: sort_order
+      }
     }
     this.subAdminService.getAllSubAdmin(api_body).then((response: any) => {
       if (response.success) {
         this.subAdminList = response.data;
         this.loading = false;
         this.totalData = response?.counts;
-        this.PageSize = response?.limit ? response?.limit : 5;
+        this.PageSize = response?.limit ? response?.limit : 10;
       }
     }, (_error) => {
       this.loading = false;
-      // this.tabsorting = false;
       this.notification.error(SUB_ADMIN_CONST.get_sub_admin_error);
     });
   }
@@ -256,14 +256,17 @@ export class SubAdminComponent implements OnInit {
     })
   }
 
-  sortAccountTable(event) {
-    console.log('SORT', event);
-    this.tabsorting = true;
+  sortTable(event) {
     this.getSubAdminData(this.pag_params, event.sort_property, event.sort_order);
   }
 
   search(keyword) {
     this.search_keyword = keyword;
     this.getSubAdminData(this.pag_params, this.default_sort_property, this.default_sort_order, this.search_keyword);
+  }
+
+  indexChanged(event) {
+    this.pag_params['pageIndex'] = event;
+    this.getSubAdminData(this.pag_params);
   }
 }

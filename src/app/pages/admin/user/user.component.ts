@@ -23,15 +23,15 @@ export class UserComponent implements OnInit {
   accountTableJSON: any = JSON.parse(JSON.stringify((userTableConfigJSON as any)));
   currentUserDetails: any;
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
-  pag_params: any = { pageIndex: 1, pageSize: 5 }
+  pag_params: any = { pageIndex: 1, pageSize: 10 }
   loading: boolean = true;
   totalData: number = 10;
-  PageSize: number = 5;
+  PageSize: number = 10;
   tabsorting: boolean = false;
   currentUserId = localStorage.getItem('current_user_id');
   search_keyword: any = '';
-  default_sort_property: string = 'firstname';
-  default_sort_order: string = 'ascend';
+  default_sort_property: string = 'reseller_firstname';
+  default_sort_order: any = null;
 
   constructor(private modalService: NzModalService, private accountService: AccountService, private viewContainerRef: ViewContainerRef, private notification: NotificationService) { }
 
@@ -49,19 +49,22 @@ export class UserComponent implements OnInit {
     }
   }
 
-  async getAccountData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, idToGetAccount = this.currentUserId, search_query = this.search_keyword) {
+  async getAccountData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, idToGetAccount = this.selectedAdminId || this.currentUserId, search_query = this.search_keyword) {
     this.loading = true;
     this.tabsorting = false;
     let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
-    sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
+    // sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
     let api_body = {
       offset: offset,
       limit: paginationParams.pageSize,
       created_by: idToGetAccount,
-      order: {
-        [sort_property]: sort_order
-      },
       search_query: search_query
+    }
+    if (sort_order !== null) {
+      sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
+      api_body['order'] = {
+        [sort_property]: sort_order
+      }
     }
     this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
       if (account.success) {
@@ -252,6 +255,11 @@ export class UserComponent implements OnInit {
 
   search(keyword) {
     this.search_keyword = keyword;
-    this.getAccountData(this.pag_params, 'firstname', 'ascend', this.currentUserId, this.search_keyword);
+    this.getAccountData(this.pag_params, 'reseller_firstname', 'ascend', this.currentUserId, this.search_keyword);
+  }
+
+  indexChanged(event) {
+    this.pag_params['pageIndex'] = event;
+    this.getAccountData(this.pag_params);
   }
 }

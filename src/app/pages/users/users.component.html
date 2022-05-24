@@ -4,8 +4,8 @@
     <!-- [ScrollConfig]="scrollConfig" -->
     <app-table class="height-max" [Config]="accountTableJSON" [Data]="accountList"
         (sortTableColumn)="sortAccountTable($event)" (header_addClick)="openModal('add', '')"
-        (header_deleteClick)="showDeleteConfirm(null)" (pageIndex)="getAccountData($event)" [loading]="loading"
-        [TotalItems]="totalData" [PageSize]="PageSize" [sorting]="tabsorting" (header_searchClick)="search($event)">
+        (header_deleteClick)="showDeleteConfirm(null)" (pageIndex)="indexChanged($event)" [loading]="loading"
+        [TotalItems]="totalData" [PageSize]="PageSize" (header_searchClick)="search($event)">
     </app-table>
 </ng-container>
 

@@ -29,15 +29,14 @@ export class AdminComponent implements OnInit {
   // When click on particular admin
   selectedAdminIdForSubAdmin: string = null;
   selectedAdminIdForAccounts: string = null;
-  tabsorting: boolean = false;
   loading: boolean = true;
   totalData: number = 10;
-  PageSize: number = 5;
-  pag_params: any = { pageIndex: 1, pageSize: 5 };
+  PageSize: number = 10;
+  pag_params: any = { pageIndex: 1, pageSize: 10 };
   adminRole: any = APP_CONST.Role.Admin;
   search_keyword: any = '';
   default_sort_property: string = 'username';
-  default_sort_order: string = 'ascend';
+  default_sort_order: string = null;
 
   constructor(
     private modalService: NzModalService,
@@ -48,7 +47,7 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
     this.getDefaults();
     this.createForm();
-    // this.getAdminData();
+    this.getAdminData();
   }
 
   getDefaults() {
@@ -78,30 +77,29 @@ export class AdminComponent implements OnInit {
 
   getAdminData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, search_query = this.search_keyword) {
     this.loading = true;
-    this.tabsorting = false;
     let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
-    sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
     let api_body = {
       created_by: this.currentUserDetails.id,
       role: this.adminRole,
       offset: offset,
       limit: paginationParams.pageSize,
-      order: {
-        [sort_property]: sort_order
-      },
       search_query: search_query
+    }
+    if (sort_order !== null) {
+      sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
+      api_body['order'] = {
+        [sort_property]: sort_order
+      }
     }
     this.adminService.getAllAdmin(api_body).then((response: any) => {
       if (response.success) {
         this.adminList = response.data;
         this.loading = false;
         this.totalData = response?.counts;
-        this.PageSize = response?.limit ? response?.limit : 5;
-        this.tabsorting = false;
+        this.PageSize = response?.limit ? response?.limit : 10;
       }
     }, (_error) => {
       this.loading = false;
-      this.tabsorting = false;
       this.notification.error(ADMIN_CONST.get_admin_error);
     });
   }
@@ -117,6 +115,7 @@ export class AdminComponent implements OnInit {
   }
 
   handleAccounts(data) {
+    console.log('ADMIN data: ', data);
     this.selectedAdminIdForAccounts = data.id;
     this.isAccountsVisible = true;
   }
@@ -258,12 +257,16 @@ export class AdminComponent implements OnInit {
   }
 
   sortAdminTable(event) {
-    this.tabsorting = true;
     this.getAdminData(this.pag_params, event.sort_property, event.sort_order,);
   }
 
   search(keyword) {
     this.search_keyword = keyword;
     this.getAdminData(this.pag_params, this.default_sort_property, this.default_sort_order, this.search_keyword);
+  }
+
+  indexChanged(event) {
+    this.pag_params['pageIndex'] = event;
+    this.getAdminData(this.pag_params);
   }
 }

@@ -2,9 +2,9 @@
 </div>
 <ng-container *ngIf="accountTableJSON">
     <app-table [Config]="accountTableJSON" [Data]="accountList" (header_addClick)="openModal('create', '')"
-        (header_closeClick)="close.emit()" (pageIndex)="getAccountData($event)" [loading]="loading"
+        (header_closeClick)="close.emit()" (pageIndex)="indexChanged($event)" [loading]="loading"
         [TotalItems]="totalData" [PageSize]="PageSize" (sortTableColumn)="sortAccountTable($event)"
-        [sorting]="tabsorting" (header_searchClick)="search($event)">
+        (header_searchClick)="search($event)">
     </app-table>
 </ng-container>
 

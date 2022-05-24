@@ -20,7 +20,7 @@ export class TableComponent implements OnInit {
   @Input() ExtraHeaderButtons: TemplateRef<any>;
   @Input() TotalItems: number = 500;
   @Input() PageIndex: number = 1;
-  @Input() PageSize: number = 5;
+  @Input() PageSize: number = 10;
   @Input() ScrollConfig: any = { x: 'auto' };
   @Input() loading: boolean = false;
 
@@ -170,14 +170,13 @@ export class TableComponent implements OnInit {
   } */
 
   pageIndexChanged(event) {
-    if (!this.sorting) this.pageIndex.emit(event);
+    this.pageIndex.emit(event);
   }
 
   sortColumn(event, property) {
-    this.sorting = true;
     let sortData = {
       sort_property: property,
-      sort_order: event == null ? 'ascend' : event,
+      sort_order: event,
     }
     this.sortTableColumn.emit(sortData)
   }

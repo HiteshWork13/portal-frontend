@@ -31,15 +31,14 @@ export class SubAdminComponent implements OnInit, OnChanges {
   mode: string = 'add';
   viewPermissionArr: any = [];
   permissionToBeUpdateRow: any;
-  tabsorting: boolean = false;
   loading: boolean = true;
   totalData: number = 10;
-  PageSize: number = 5;
-  pag_params: any = { pageIndex: 1, pageSize: 5 };
+  PageSize: number = 10;
+  pag_params: any = { pageIndex: 1, pageSize: 10 };
   subAdminRole: any = APP_CONST.Role.SubAdmin;
   search_keyword: any = '';
   default_sort_property: string = 'username';
-  default_sort_order: string = 'ascend';
+  default_sort_order: any = null;
 
   constructor(
     private modalService: NzModalService,
@@ -86,30 +85,30 @@ export class SubAdminComponent implements OnInit, OnChanges {
 
   getSubAdminData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, idToGetAccount = this.selectedAdminId || this.currentUserDetails.id, search_query = this.search_keyword) {
     this.loading = true;
-    const currentUserId = localStorage.getItem('current_user_id');
     let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
-    sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
+    // sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
     let api_body = {
       created_by: idToGetAccount,
       role: this.subAdminRole,
       offset: offset,
       limit: paginationParams.pageSize,
-      order: {
-        [sort_property]: sort_order
-      },
       search_query: search_query
     }
-    this.tabsorting = false;
+    if (sort_order !== null) {
+      sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
+      api_body['order'] = {
+        [sort_property]: sort_order
+      }
+    }
     this.subAdminService.getAllSubAdmin(api_body).then((response: any) => {
       if (response.success == true) {
         this.subAdminList = response.data;
         this.totalData = response?.counts;
-        this.PageSize = response?.limit ? response?.limit : 5;
+        this.PageSize = response?.limit ? response?.limit : 10;
         this.loading = false;
       }
     }, (_error) => {
       this.loading = false;
-      this.tabsorting = false;
       this.notification.error(SUB_ADMIN_CONST.get_sub_admin_error);
     });
   }
@@ -317,12 +316,16 @@ export class SubAdminComponent implements OnInit, OnChanges {
   }
 
   sortTable(event) {
-    this.tabsorting = true;
     this.getSubAdminData(this.pag_params, event.sort_property, event.sort_order,);
   }
 
   search(keyword) {
     this.search_keyword = keyword;
     this.getSubAdminData(this.pag_params, this.default_sort_property, this.default_sort_order, this.selectedAdminId || this.currentUserDetails.id, this.search_keyword);
+  }
+
+  indexChanged(event) {
+    this.pag_params['pageIndex'] = event;
+    this.getSubAdminData(this.pag_params);
   }
 }

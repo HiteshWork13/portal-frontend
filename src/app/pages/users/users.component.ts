@@ -24,14 +24,13 @@ export class UsersComponent implements OnInit {
   row_data: any = {};
   currentUserDetails: any;
   scrollConfig: any = { x: 'auto', y: '100%' };
-  pag_params: any = { pageIndex: 1, pageSize: 5 };
+  pag_params: any = { pageIndex: 1, pageSize: 10 };
   totalData: number = 10;
-  PageSize: number = 5;
+  PageSize: number = 10;
   loading: boolean = true;
-  tabsorting: boolean = false;
   search_keyword: any = '';
-  default_sort_property: string = 'firstname';
-  default_sort_order: string = 'ascend';
+  default_sort_property: string = 'reseller_firstname';
+  default_sort_order: any = null;
 
   constructor(
     private modalService: NzModalService,
@@ -45,35 +44,35 @@ export class UsersComponent implements OnInit {
     this.currentUserDetails = JSON.parse(current_user_details);
     this.accountTableJSON = this.currentUserDetails.role == this.superAdminRole ? JSON.parse(JSON.stringify(superAdminUserTableConfigJson as any)) : JSON.parse(JSON.stringify(userTableConfigJSON as any));
     this.getDefaults();
-    // this.getAccountData();
+    this.getAccountData();
   }
 
   async getAccountData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, search_query = this.search_keyword) {
     this.loading = true;
     const currentUserId = localStorage.getItem('current_user_id');
     let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
-    sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
     let api_body = {
       created_by: currentUserId,
       offset: offset,
       limit: paginationParams.pageSize,
-      order: {
-        [sort_property]: sort_order
-      },
       search_query: search_query
+    }
+    if (sort_order !== null) {
+      sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
+      api_body['order'] = {
+        [sort_property]: sort_order
+      }
     }
     this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
       if (account.success) {
         this.accountList = account?.data;
         this.loading = false;
         this.totalData = account?.counts;
-        this.PageSize = account?.limit ? account?.limit : 5;
-        this.tabsorting = false;
+        this.PageSize = account?.limit ? account?.limit : 10;
       }
     },
       (_error) => {
         this.loading = false;
-        this.tabsorting = false;
       }
     );
   }
@@ -262,12 +261,16 @@ export class UsersComponent implements OnInit {
   }
 
   sortAccountTable(event) {
-    this.tabsorting = true;
     this.getAccountData(this.pag_params, event.sort_property, event.sort_order);
   }
 
   search(keyword) {
     this.search_keyword = keyword;
-    this.getAccountData(this.pag_params, 'firstname', 'ascend', this.search_keyword);
+    this.getAccountData(this.pag_params, 'reseller_firstname', 'ascend', this.search_keyword);
+  }
+
+  indexChanged(event) {
+    this.pag_params['pageIndex'] = event;
+    this.getAccountData(this.pag_params);
   }
 }
