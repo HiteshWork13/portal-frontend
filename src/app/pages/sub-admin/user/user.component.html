@@ -9,18 +9,15 @@
 </ng-container>
 
 <ng-template #actionTemplate let-column="column" let-row="row" let-rowIndex="rowIndex" let-columnIndex="columnIndex">
-    <div style="position: relative" class="text-center" dropdown>
-        <a dropdownToggle class="btn btn-light px-2 py-1 font-size-xl dropdown-toggle"
-            (click)="$event.stopPropagation()">
-        </a>
-        <nz-button-group>
-            <span nz-button nzTrigger="click" nz-dropdown [nzDropdownMenu]="menu1" nzPlacement="bottomRight"
-                style="cursor: pointer">
-                <i nz-icon nzType="ellipsis"></i>
-            </span>
-        </nz-button-group>
-        <nz-dropdown-menu #menu1="nzDropdownMenu">
-            <ul nz-menu>
+    <div style="position: relative" class="text-center">
+
+        <button type="button" nz-button nz-dropdown nzTrigger="click" [nzDropdownMenu]="actionMenu"
+            nzPlacement="bottomRight" style="cursor: pointer" (click)="$event.stopPropagation()">
+            <i nz-icon nzType="ellipsis"></i>
+        </button>
+
+        <nz-dropdown-menu #actionMenu="nzDropdownMenu">
+            <ul nz-menu class="wi-action-menu">
                 <li nz-menu-item role="menuitem">
                     <a class="dropdown-item" (click)="accountDetailsModel(row)">View</a>
                 </li>

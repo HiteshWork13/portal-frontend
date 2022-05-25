@@ -48,7 +48,8 @@
 </ng-template>
 
 <ng-template #temp>
-  <form nz-form nzLayout="vertical" id="addAdminForm" [formGroup]="adminForm">
+  <form nz-form nzLayout="vertical" id="addAdminForm" [formGroup]="adminForm" (keydown.enter)="createAdmin()"
+    autocomplete="off">
     <nz-form-item>
       <nz-form-label>Admin Name</nz-form-label>
       <nz-form-control nzErrorTip="Enter a valid admin name">
@@ -59,7 +60,8 @@
     <nz-form-item *ngIf="mode == 'add'">
       <nz-form-label>Admin Email</nz-form-label>
       <nz-form-control nzErrorTip="Enter a valid admin email">
-        <input nz-input trim="blur" formControlName="email" maxlength="80" placeholder="Enter email address" />
+        <input nz-input trim="blur" formControlName="email" maxlength="80" placeholder="Enter email address"
+          name="adminEmail" autocomplete="new-email" #adminEmail />
       </nz-form-control>
     </nz-form-item>
     <nz-form-item *ngIf="mode == 'add'">
@@ -68,7 +70,7 @@
       <nz-form-control [nzErrorTip]="newPasswordRef">
         <nz-input-group [nzPrefix]="prefixLock">
           <input id="myinputbox" type="password" nz-input formControlName="password" placeholder="Enter new password"
-            autofocus />
+            autofocus name="adminPwd" autocomplete="new-password" #adminPwd />
         </nz-input-group>
         <ng-template #newPasswordRef>
           Password is not valid
