@@ -151,7 +151,7 @@
                             placeholder="Enter Email Address" tabindex="17" />
                     </nz-form-control>
                 </nz-form-item>
-                <nz-form-item>
+                <nz-form-item *ngIf="state !== 'edit'">
                     <nz-form-label>PO File</nz-form-label>
                     <nz-form-control nzErrorTip="Select a valid PO file">
                         <div class="ant-upload ant-upload-drag custom-file-uploader drag-file-uploader"

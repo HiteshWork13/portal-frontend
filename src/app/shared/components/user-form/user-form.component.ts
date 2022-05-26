@@ -38,7 +38,7 @@ export class UserFormComponent implements OnInit {
     },
   ];
   currentUserDetails: any;
-  countryList: Array<string> = countries.getNames();
+  countryList: Array<string> = (countries.getNames()).sort();
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
   oldForm: boolean = true;
 

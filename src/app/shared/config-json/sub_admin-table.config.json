@@ -6,7 +6,7 @@
     "showAdd": false,
     "showReset": false,
     "showDownload": false,
-    "showClose": true
+    "showClose": false
   },
   "Pagination": true,
   "PageSizeChanger": false,

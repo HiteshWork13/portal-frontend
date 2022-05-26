@@ -159,7 +159,7 @@ export class UserComponent implements OnInit {
   }
 
   getDefaults() {
-    this.accountTableJSON.Header.showClose = true;
+    this.accountTableJSON.Header.showClose = false;
     this.accountTableJSON.Header.showAdd = false;
     setTimeout(() => {
       this.accountTableJSON.Columns = this.accountTableJSON.Columns.map(
