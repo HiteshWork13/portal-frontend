@@ -79,7 +79,7 @@ export class UsersComponent implements OnInit {
 
   openModal(state: any, item: any) {
     this.modalService.create({
-      nzTitle: state == 'add' ? 'Add New' : 'Update' + ' Account',
+      nzTitle: state == 'add' ? 'Add New User' : 'Update User',
       nzContent: UserFormComponent,
       nzViewContainerRef: this.viewContainerRef,
       nzWidth: '80%',
@@ -87,23 +87,42 @@ export class UsersComponent implements OnInit {
         item: item,
         state: state
       },
-      nzOnOk: (event) => {
-        let formValue = event.accountForm.value;
-        let valid: boolean = event.accountForm.valid;
-        if (valid == true) {
-          state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
-          return true;
-        } else {
-          for (const i in event.accountForm.controls) {
-            event.accountForm.controls[i].markAsDirty();
-            event.accountForm.controls[i].updateValueAndValidity();
-          }
-          return false
-        }
-      },
+      // nzOnOk: (event) => {
+      //   let formValue = event.accountForm.value;
+      //   let valid: boolean = event.accountForm.valid;
+      //   if (valid == true) {
+      //     state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
+      //     return true;
+      //   } else {
+      //     for (const i in event.accountForm.controls) {
+      //       event.accountForm.controls[i].markAsDirty();
+      //       event.accountForm.controls[i].updateValueAndValidity();
+      //     }
+      //     return false
+      //   }
+      // },
       nzMaskClosable: false,
       nzAutofocus: null,
-      nzOnCancel: () => this.onClose(),
+      nzFooter: [
+        {
+          label: state == 'add' ? 'Save' : 'Update',
+          type: 'primary',
+          onClick: (event) => {
+            let formValue = event.accountForm.value;
+            let valid: boolean = event.accountForm.valid;
+            if (valid == true) {
+              state == 'add' ? this.onSubmit(formValue) : this.updateUser(item.id, formValue);
+              return true;
+            } else {
+              for (const i in event.accountForm.controls) {
+                event.accountForm.controls[i].markAsDirty();
+                event.accountForm.controls[i].updateValueAndValidity();
+              }
+              return false
+            }
+          },
+        },
+      ],
     });
   }
 
@@ -126,8 +145,13 @@ export class UsersComponent implements OnInit {
           return element;
         });
         this.notification.success(ACCOUNT_CONST.update_account_success);
-      }, (_error) => {
-        this.notification.error(ACCOUNT_CONST.update_account_error);
+        this.onClose();
+      }, (error) => {
+        if (error.status == 400) {
+          this.notification.error(ACCOUNT_CONST.invalid_form);
+        } else {
+          this.notification.error(ACCOUNT_CONST.update_account_error);
+        }
       })
   }
 
@@ -166,9 +190,14 @@ export class UsersComponent implements OnInit {
           this.accountList.push(result.data);
           this.notification.success(ACCOUNT_CONST.create_account_success);
         }
+        this.onClose();
       },
-      (_error) => {
-        this.notification.error(ACCOUNT_CONST.create_account_error);
+      (error) => {
+        if (error.status == 400) {
+          this.notification.error(ACCOUNT_CONST.invalid_form);
+        } else {
+          this.notification.error(ACCOUNT_CONST.create_account_error);
+        }
       }
     );
   }
@@ -193,7 +222,7 @@ export class UsersComponent implements OnInit {
 
   accountDetailsModel(row) {
     this.modalService.create({
-      nzTitle: 'Account Details',
+      nzTitle: 'User Details',
       nzContent: UserDetailsComponent,
       nzViewContainerRef: this.viewContainerRef,
       nzComponentParams: {
@@ -253,7 +282,7 @@ export class UsersComponent implements OnInit {
       nzComponentParams: {
         account_id: row_data.id,
       },
-      nzWidth: '60%',
+      nzWidth: '70%',
       nzMaskClosable: false,
       nzAutofocus: null,
       nzOnCancel: () => this.onClose(),

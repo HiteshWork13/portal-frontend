@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { subAdminTableConfigJSON } from '@configJson';
 import { APP_CONST } from '@constants';
 import { NotificationService, SubAdminService } from '@services';
@@ -40,7 +40,8 @@ export class SubAdminComponent implements OnInit {
   constructor(
     private modalService: NzModalService,
     private subAdminService: SubAdminService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -73,14 +74,26 @@ export class SubAdminComponent implements OnInit {
   }
 
   createForm() {
-    this.subAdminForm = new FormGroup({
+    /* this.subAdminForm = new FormGroup({
       username: new FormControl(null, Validators.required),
       email: new FormControl(null, Validators.required),
-      password: new FormControl(null, Validators.required),
+      password: new FormControl(null, [Validators.required),
       status: new FormControl(1),
       role: new FormControl(this.subAdminRole),
-      // created_by: new FormControl(this.currentUserDetails.id),
-    });
+      created_by: new FormControl(this.currentUserDetails.id),
+    }); */
+    this.subAdminForm = this.formBuilder.group(
+      {
+        username: [null, Validators.required],
+        email: [null, Validators.required],
+        status: [1],
+        role: [this.subAdminRole],
+        password: [null, [Validators.required]],
+        confirmPassword: [null, [Validators.required]]
+      },
+      {
+        validator: MustMatch('password', 'confirmPassword'),
+      })
   }
 
   getSubAdminData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, search_query = this.search_keyword) {
@@ -126,7 +139,7 @@ export class SubAdminComponent implements OnInit {
         nzContent: temp,
         nzFooter: [
           {
-            label: 'Save Sub admin',
+            label: 'Save',
             type: 'primary',
 
             onClick: () => this.createSubAdmin(),
@@ -144,7 +157,7 @@ export class SubAdminComponent implements OnInit {
         nzContent: temp,
         nzFooter: [
           {
-            label: 'Update Sub Admin',
+            label: 'Update',
             type: 'primary',
 
             onClick: () => this.updateSubadmin(item),
@@ -269,4 +282,23 @@ export class SubAdminComponent implements OnInit {
     this.pag_params['pageIndex'] = event;
     this.getSubAdminData(this.pag_params);
   }
+}
+
+export function MustMatch(controlName: string, matchingControlName: string) {
+  return (formGroup: FormGroup) => {
+    const control = formGroup.controls[controlName];
+    const matchingControl = formGroup.controls[matchingControlName];
+
+    if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+      // return if another validator has already found an error on the matchingControl
+      return;
+    }
+
+    // set error on matchingControl if validation fails
+    if (control.value !== matchingControl.value) {
+      matchingControl.setErrors({ mustMatch: true });
+    } else {
+      matchingControl.setErrors(null);
+    }
+  };
 }

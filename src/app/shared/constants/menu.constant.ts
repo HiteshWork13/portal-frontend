@@ -16,7 +16,7 @@ export const MENUITEMS = [
   {
     id: 'user',
     path: '/user',
-    title: 'Account',
+    title: 'User',
     enablesIn: [APP_CONST.Role.SuperAdmin, APP_CONST.Role.Admin, APP_CONST.Role.SubAdmin]
   },
 ];

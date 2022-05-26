@@ -1,7 +1,9 @@
 <nz-table #documentTable [nzData]="deviceList" [nzShowPagination]="false">
     <thead>
         <tr>
-            <th nzWidth="400px">Device Name</th>
+            <th nzWidth="210px">Licence Key</th>
+            <th nzWidth="180px">Product Key</th>
+            <th nzWidth="180px">Host Name</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
@@ -15,6 +17,22 @@
                 <ng-container *ngIf="data.is_edit_mode">
                     <input nz-input trim="blur" [(ngModel)]="licence_Key" #licenceKey class="key-input" />
                 </ng-container>
+            </td>
+            <td>
+                <ng-container>
+                    {{ data.productkey }}
+                </ng-container>
+                <!-- <ng-container *ngIf="data.is_edit_mode">
+                    <input nz-input trim="blur" [(ngModel)]="product_Key" #productKey class="key-input" />
+                </ng-container> -->
+            </td>
+            <td>
+                <ng-container>
+                    {{ data.hostname }}
+                </ng-container>
+                <!-- <ng-container *ngIf="data.is_edit_mode">
+                    <input nz-input trim="blur" [(ngModel)]="host_name" #licenceKey class="key-input" />
+                </ng-container> -->
             </td>
             <td>
                 <nz-switch *ngIf="data.is_edit_mode" nzSize="small" [(ngModel)]="updated_status">

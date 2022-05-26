@@ -41,6 +41,7 @@ export const ACCOUNT_CONST: any = {
     status_update_error: 'Error while updating status, please try again',
     delete_account_success: 'Account deleted successfully',
     delete_account_error: 'Error while deleting account, please try again',
+    invalid_form: 'Invalid input, please check and try again'
 }
 
 export const DOCUMENT_CONST: any = {

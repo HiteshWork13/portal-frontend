@@ -30,21 +30,33 @@
           autocomplete="new-email" name="sub-admin email" #subAdminEmail />
       </nz-form-control>
     </nz-form-item>
-    <nz-form-item *ngIf="mode == 'add'">
-      <nz-form-label nzFor="newPassword" class="text-black">Password
-      </nz-form-label>
-      <nz-form-control [nzErrorTip]="newPasswordRef">
-        <nz-input-group [nzPrefix]="prefixLock">
-          <input id="myinputbox" type="password" nz-input formControlName="password" placeholder="Enter new password"
-            autofocus autocomplete="new-password" name="sub-admin pwd" #subAdminPwd />
-        </nz-input-group>
-        <ng-template #newPasswordRef>
-          Password is not valid
-          <i class="fa fa-info-circle float-right pt-1" nzPopoverPlacement="bottom" nz-popover nzType="primary"
-            nzPopoverTitle="Password Criteria" [nzPopoverContent]="popoverContent"></i>
-        </ng-template>
-      </nz-form-control>
-    </nz-form-item>
+    <ng-container *ngIf="mode == 'add'">
+      <nz-form-item>
+        <nz-form-label nzFor="newPassword" class="text-black">Password
+        </nz-form-label>
+        <nz-form-control [nzErrorTip]="newPasswordRef">
+          <nz-input-group [nzPrefix]="prefixLock">
+            <input id="myinputbox" type="password" nz-input formControlName="password" placeholder="Enter new password"
+              autofocus autocomplete="new-password" name="sub-admin pwd" #subAdminPwd />
+          </nz-input-group>
+          <ng-template #newPasswordRef>
+            Enter a valid Password
+            <i class="fa fa-info-circle float-right pt-1" nzPopoverPlacement="bottom" nz-popover nzType="primary"
+              nzPopoverTitle="Password Criteria" [nzPopoverContent]="popoverContent"></i>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="confirmPassword" class="text-black">Re-enter new password
+        </nz-form-label>
+        <nz-form-control [nzErrorTip]="matchPasswordErr ? 'Passwords must match' : 'Enter a valid Confirmed Password'">
+          <nz-input-group [nzPrefix]="prefixLock">
+            <input #Pwd id="myinputbox" type="password" nz-input formControlName="confirmPassword"
+              (input)="matchPassword()" placeholder="Re-enter new password">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </ng-container>
   </form>
 </ng-template>
 
@@ -69,7 +81,7 @@
   <nz-dropdown-menu #actionMenu="nzDropdownMenu">
     <ul nz-menu class="wi-action-menu">
       <!--  <li nz-menu-item>
-        <a class="dropdown-item" (click)="showAccounts(row)">Accounts</a>
+        <a class="dropdown-item" (click)="showAccounts(row)">Users</a>
       </li> -->
       <li nz-menu-item>
         <a class="dropdown-item" (click)="openModal(addForm, 'edit', row)">Edit</a>

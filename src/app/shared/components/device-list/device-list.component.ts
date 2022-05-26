@@ -17,6 +17,8 @@ export class DeviceListComponent implements OnInit {
   deviceList: any = [];
   licence_Key: any;
   updated_status: boolean = false;
+  product_Key: any;
+  host_name: any;
 
   constructor(private modalService: NzModalService, private deviceService: DeviceService, private notification: NzNotificationService) { }
 
@@ -92,5 +94,7 @@ export class DeviceListComponent implements OnInit {
     this.editStatus(data, status);
     this.licence_Key = data.licencekey;
     this.updated_status = data.status;
+    this.product_Key = data.productkey;
+    this.host_name = data.hostname;
   }
 }

@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { adminTableConfigJSON } from "@configJson";
 import { APP_CONST } from '@constants';
 import { AdminService, NotificationService } from '@services';
@@ -41,7 +41,8 @@ export class AdminComponent implements OnInit {
   constructor(
     private modalService: NzModalService,
     private adminService: AdminService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -65,14 +66,26 @@ export class AdminComponent implements OnInit {
   }
 
   createForm() {
-    this.adminForm = new FormGroup({
+    /* this.adminForm = new FormGroup({
       username: new FormControl(null, Validators.required),
       email: new FormControl(null, Validators.required),
       password: new FormControl(null, Validators.required),
+      confirmPassword: new FormControl(null, Validators.required),
       status: new FormControl(1),
       role: new FormControl(this.adminRole),
-      // created_by: new FormControl(String(this.currentUserDetails.id)),
-    });
+    }); */
+    this.adminForm = this.formBuilder.group(
+      {
+        username: [null, [Validators.required]],
+        email: [null, [Validators.required]],
+        status: [1],
+        role: [this.adminRole],
+        password: [null, [Validators.required]],
+        confirmPassword: [null, [Validators.required]]
+      },
+      {
+        validator: MustMatch('password', 'confirmPassword'),
+      })
   }
 
   getAdminData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, search_query = this.search_keyword) {
@@ -115,7 +128,6 @@ export class AdminComponent implements OnInit {
   }
 
   handleAccounts(data) {
-    console.log('ADMIN data: ', data);
     this.selectedAdminIdForAccounts = data.id;
     this.isAccountsVisible = true;
   }
@@ -132,7 +144,7 @@ export class AdminComponent implements OnInit {
         nzContent: temp,
         nzFooter: [
           {
-            label: 'Save Admin',
+            label: 'Save',
             type: 'primary',
 
             onClick: () => this.createAdmin(),
@@ -150,7 +162,7 @@ export class AdminComponent implements OnInit {
         nzContent: temp,
         nzFooter: [
           {
-            label: 'Update Admin',
+            label: 'Update',
             type: 'primary',
 
             onClick: () => this.updateAdmin(item),
@@ -269,4 +281,34 @@ export class AdminComponent implements OnInit {
     this.pag_params['pageIndex'] = event;
     this.getAdminData(this.pag_params);
   }
+
+  matchPassword() {
+    this.matchPasswordErr = false;
+    if (
+      this.adminForm.controls['password'].value !==
+      this.adminForm.controls['confirmPassword'].value &&
+      this.adminForm.controls['confirmPassword'].value !== ''
+    ) {
+      this.matchPasswordErr = true;
+    }
+  }
+}
+
+export function MustMatch(controlName: string, matchingControlName: string) {
+  return (formGroup: FormGroup) => {
+    const control = formGroup.controls[controlName];
+    const matchingControl = formGroup.controls[matchingControlName];
+
+    if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+      // return if another validator has already found an error on the matchingControl
+      return;
+    }
+
+    // set error on matchingControl if validation fails
+    if (control.value !== matchingControl.value) {
+      matchingControl.setErrors({ mustMatch: true });
+    } else {
+      matchingControl.setErrors(null);
+    }
+  };
 }

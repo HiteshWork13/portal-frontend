@@ -83,7 +83,7 @@ export class UserComponent implements OnInit {
 
   openModal(state: any, item: any) {
     this.modalService.create({
-      nzTitle: state == 'add' ? 'Add New' : 'Update' + ' Account',
+      nzTitle: state == 'add' ? 'Add New User' : 'Update User',
       nzContent: UserFormComponent,
       nzViewContainerRef: this.viewContainerRef,
       nzWidth: '80%',
@@ -196,7 +196,7 @@ export class UserComponent implements OnInit {
 
   accountDetailsModel(row) {
     this.modalService.create({
-      nzTitle: 'Account Details',
+      nzTitle: 'User Details',
       nzContent: UserDetailsComponent,
       nzViewContainerRef: this.viewContainerRef,
       nzComponentParams: {
