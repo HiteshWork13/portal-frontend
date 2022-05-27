@@ -22,4 +22,8 @@ export class HeaderComponent implements OnInit {
     localStorage.clear();
     this.router.navigate(['/login']);
   }
+
+  profile() {
+    this.router.navigate(['/profile']);
+  }
 }

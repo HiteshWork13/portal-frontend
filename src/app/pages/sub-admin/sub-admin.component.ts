@@ -89,7 +89,14 @@ export class SubAdminComponent implements OnInit {
         status: [1],
         role: [this.subAdminRole],
         password: [null, [Validators.required]],
-        confirmPassword: [null, [Validators.required]]
+        confirmPassword: [null, [Validators.required]],
+        // Reseller
+        firstname: [null, [Validators.required]],
+        lastname: [null, [Validators.required]],
+        company: [null, [Validators.required]],
+        street: [null, [Validators.required]],
+        state: [null, [Validators.required]],
+        postcode: [null, [Validators.required]],
       },
       {
         validator: MustMatch('password', 'confirmPassword'),
@@ -145,7 +152,7 @@ export class SubAdminComponent implements OnInit {
             onClick: () => this.createSubAdmin(),
           },
         ],
-        nzWidth: 500,
+        nzWidth: '80%',
         nzMaskClosable: false,
         nzOnCancel: () => this.onClose(),
         nzAutofocus: null,

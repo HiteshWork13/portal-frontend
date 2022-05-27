@@ -32,7 +32,9 @@ export class TableHeaderComponent implements OnInit {
   }
 
   search() {
-    this.searchClick.emit(this.searchedValue);
+    setTimeout(() => {
+      this.searchClick.emit(this.searchedValue);
+    }, 500);
   }
 
   add() {

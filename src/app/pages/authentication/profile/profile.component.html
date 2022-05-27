@@ -1,0 +1,38 @@
+<div class="caption">
+    <label>Profile</label>
+</div>
+<div class="m-20">
+    <form nz-form nzLayout="vertical" id="addUserForm" [formGroup]="pwdForm" (ngSubmit)="onSubmit()">
+        <div nz-row style="margin-bottom: 0.50rem;">
+            <div nz-col nzSpan="24">
+                <h3>Password Settings</h3>
+            </div>
+        </div>
+        <nz-form-item>
+            <nz-form-label nzFor="newPassword" class="text-black">Change Password
+            </nz-form-label>
+            <nz-form-control>
+                <nz-input-group [nzPrefix]="prefixLock" class="w-50">
+                    <input id="myinputbox" type="password" nz-input formControlName="password"
+                        placeholder="Enter new password" autofocus name="adminPwd" autocomplete="new-password"
+                        #adminPwd />
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzFor="confirmPassword" class="text-black">Confirm password
+            </nz-form-label>
+            <nz-form-control
+                [nzErrorTip]="matchPasswordErr ? 'Passwords must match' : 'Enter a valid Confirmed Password'">
+                <nz-input-group [nzPrefix]="prefixLock" class="w-50">
+                    <input #Pwd id="myinputbox" type="password" nz-input formControlName="confirmPassword"
+                        (input)="matchPassword()" placeholder="Re-enter new password" />
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+    <ng-template #prefixLock><i nz-icon nzType="lock"></i></ng-template>
+    <div id="footer">
+        <button nz-button nzType="primary" (click)="savePassword()" *ngIf="saveChanges">Save</button>
+    </div>
+</div>
