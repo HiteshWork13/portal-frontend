@@ -21,7 +21,9 @@
             <th [ngStyle]="{'min-width': column['Width'] || 'auto' }" [nzSortFn]="true"
               (nzSortOrderChange)="sortColumn($event,column.property)"
               [ngClass]="{ 'bg-white': Mode == 'Normal', 'flex-1': last }"
-              class="text-left header_column header_column_{{ tableId }}_{{i}}" mwlResizable>
+              class="text-left header_column header_column_{{ tableId }}_{{i}}" nzBounds="window" nzPreview
+              (nzResizeEnd)="onResize($event, column.property)" nz-resizable [nzWidth]="column['Width'] || 'auto'"
+              [nzMaxWidth]="300" [nzMinWidth]="60">
               <!-- [ngStyle]="{ width: column.columnWidth }" -->
               <!-- nzLeft -->
               <!-- [enableGhostResize]="true"
@@ -35,6 +37,9 @@
                 </wic-table-column-sort-header> -->
               <app-table-column-header [index]="i" [column]="column" (sortColumnChanges)="sortColumnChanges($event)">
               </app-table-column-header>
+              <nz-resize-handle nzDirection="right">
+                <div class="resize-trigger"></div>
+              </nz-resize-handle>
             </th>
           </ng-container>
         </ng-container>

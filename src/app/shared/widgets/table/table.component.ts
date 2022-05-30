@@ -6,6 +6,7 @@ import {
   Output, TemplateRef
 } from '@angular/core';
 import { TableConfig } from '@models';
+import { NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'app-table',
@@ -179,5 +180,9 @@ export class TableComponent implements OnInit {
       sort_order: event,
     }
     this.sortTableColumn.emit(sortData)
+  }
+
+  onResize({ width }: NzResizeEvent, col: string): void {
+    this.Config['Columns'] = this.Config['Columns'].map(e => (e['property'] === col ? { ...e, Width: `${width}px` } : e));
   }
 }
