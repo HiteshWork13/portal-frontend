@@ -59,3 +59,8 @@ export const DEVICE_CONST: any = {
     delete_device_success: 'Device Deleted successfully',
     delete_device_error: 'Error while deleting device, please try again',
 }
+
+export const PROFILE_CONST: any = {
+    update_password_success: 'Password updated successfully',
+    update_password_error: 'Error while updating password, please try again',
+}

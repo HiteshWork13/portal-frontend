@@ -89,6 +89,7 @@ export class AdminComponent implements OnInit {
         street: [null, [Validators.required]],
         state: [null, [Validators.required]],
         postcode: [null, [Validators.required]],
+        reseller_default_email: [null, [Validators.required]],
       },
       {
         validator: MustMatch('password', 'confirmPassword'),

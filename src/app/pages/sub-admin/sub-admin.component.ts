@@ -97,6 +97,7 @@ export class SubAdminComponent implements OnInit {
         street: [null, [Validators.required]],
         state: [null, [Validators.required]],
         postcode: [null, [Validators.required]],
+        reseller_default_email: [null, [Validators.required]],
       },
       {
         validator: MustMatch('password', 'confirmPassword'),
@@ -216,9 +217,9 @@ export class SubAdminComponent implements OnInit {
   matchPassword() {
     this.matchPasswordErr = false;
     if (
-      this.subAdminForm.controls['newPassword'].value !==
-      this.subAdminForm.controls['newPasswordRepeat'].value &&
-      this.subAdminForm.controls['newPasswordRepeat'].value !== ''
+      this.subAdminForm.controls['password'].value !==
+      this.subAdminForm.controls['confirmPassword'].value &&
+      this.subAdminForm.controls['confirmPassword'].value !== ''
     ) {
       this.matchPasswordErr = true;
     }

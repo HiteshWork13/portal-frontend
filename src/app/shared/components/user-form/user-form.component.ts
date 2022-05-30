@@ -41,6 +41,7 @@ export class UserFormComponent implements OnInit {
   countryList: Array<string> = (countries.getNames()).sort();
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
   oldForm: boolean = true;
+  @Input() addData: any;
 
   constructor(private notification: NzNotificationService, private accountService: AccountService, private documentService: DocumentService) { }
 
@@ -53,6 +54,8 @@ export class UserFormComponent implements OnInit {
       this.accountForm.updateValueAndValidity();
       this.editAccount(this.item);
       if (this.item.created_by_id == null) this.editNewForm(this.item);
+    } else {
+      this.patchDefaults(this.addData);
     }
   }
 
@@ -277,6 +280,18 @@ export class UserFormComponent implements OnInit {
       registrationtype: item.registrationtype,
       totaldevices: item.totaldevices,
       expirydate: item.expirydate,
+    })
+  }
+
+  patchDefaults(item) {
+    this.accountForm.patchValue({
+      reseller_firstname: item.firstname,
+      reseller_lastname: item.lastname,
+      reseller_company: item.company,
+      reseller_street: item.street,
+      reseller_state: item.state,
+      reseller_code: item.postcode,
+      reseller_email: item.reseller_default_email,
     })
   }
 }

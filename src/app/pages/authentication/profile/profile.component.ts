@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminService, NotificationService } from '@services';
-import { ADMIN_CONST } from 'src/app/shared/constants/notifications.constant';
+import { PROFILE_CONST } from 'src/app/shared/constants/notifications.constant';
 
 @Component({
   selector: 'app-profile',
@@ -54,10 +54,15 @@ export class ProfileComponent implements OnInit {
     let data: any = {
       password: this.pwdForm.controls['password'].value
     }
-    this.adminService.updateAdmin(id, data).then((result) => {
-      this.notification.success(ADMIN_CONST.update_admin_success);
-    }, (error) => {
-      this.notification.error(ADMIN_CONST.update_admin_error);
+    this.adminService.updateAdmin(id, data).then((result: any) => {
+      if (result?.success == true) {
+        this.notification.success(PROFILE_CONST.update_password_success);
+        this.saveChanges = false;
+        this.pwdForm.reset();
+      }
+    }, (_error) => {
+      this.notification.error(PROFILE_CONST.update_password_error);
+      this.saveChanges = false;
     })
   }
 }

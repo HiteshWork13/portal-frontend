@@ -84,6 +84,7 @@ export class UsersComponent implements OnInit {
       nzViewContainerRef: this.viewContainerRef,
       nzWidth: '80%',
       nzComponentParams: {
+        addData: state == 'add' ? this.currentUserDetails : [],
         item: item,
         state: state
       },

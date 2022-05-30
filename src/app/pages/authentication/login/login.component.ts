@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
           role: login_response.role,
           status: login_response.status,
         };
-        localStorage.setItem('current_user_details', JSON.stringify(current_user_details));
+        localStorage.setItem('current_user_details', JSON.stringify(login_response));
         localStorage.setItem('current_user_id', current_user_details.id);
         localStorage.setItem('access_token', login_response.access_token);
         this.btn_loader = false;
