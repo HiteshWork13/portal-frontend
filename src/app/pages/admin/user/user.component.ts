@@ -69,6 +69,9 @@ export class UserComponent implements OnInit {
     this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
       if (account.success) {
         this.accountList = account.data;
+        this.accountList.map((element, index) => {
+          element['sr_no'] = index + 1;
+        });
         this.loading = false;
         this.totalData = account.counts;
         this.PageSize = account.limit;
@@ -132,6 +135,9 @@ export class UserComponent implements OnInit {
       (response: any) => {
         if (response.success) {
           this.accountList = this.accountList.filter((element) => element['id'] !== id);
+          this.accountList.map((element, index) => {
+            element['sr_no'] = index + 1;
+          });
           this.notification.success(ACCOUNT_CONST.delete_account_success);
         }
       }, (_error) => {
@@ -147,6 +153,9 @@ export class UserComponent implements OnInit {
       (result: any) => {
         if (result.success) {
           this.accountList.push(result.data);
+          this.accountList.map((element, index) => {
+            element['sr_no'] = index + 1;
+          });
           this.notification.success(ACCOUNT_CONST.create_account_success);
         }
       },

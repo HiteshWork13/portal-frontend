@@ -16,7 +16,27 @@
   "SearchType": "Static",
   "selectedRowClassName": "selected-row",
   "noDataLabel": "No Data Found",
+  "ScrollConfig": { "x": "auto" },
   "Columns": [
+    {
+      "name": "#ID",
+      "dataType": "text",
+      "property": "sr_no",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
     {
       "name": "License Key",
       "dataType": "text",

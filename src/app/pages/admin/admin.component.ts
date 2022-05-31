@@ -115,6 +115,9 @@ export class AdminComponent implements OnInit {
     this.adminService.getAllAdmin(api_body).then((response: any) => {
       if (response.success) {
         this.adminList = response.data;
+        this.adminList.map((element, index) => {
+          element['sr_no'] = index + 1;
+        });
         this.loading = false;
         this.totalData = response?.counts;
         this.PageSize = response?.limit ? response?.limit : 10;
@@ -211,6 +214,9 @@ export class AdminComponent implements OnInit {
       (response: any) => {
         if (response.success) {
           this.adminList = this.adminList.filter((element) => element['id'] !== admin_id);
+          this.adminList.map((element, index) => {
+            element['sr_no'] = index + 1;
+          });
           this.notification.success(ADMIN_CONST.delete_admin_success);
         }
       }, (_error) => {
@@ -229,6 +235,9 @@ export class AdminComponent implements OnInit {
         (response: any) => {
           if (response.success) {
             this.adminList = [...this.adminList, response['data']];
+            this.adminList.map((element, index) => {
+              element['sr_no'] = index + 1;
+            });
             this.modalService.closeAll();
             this.notification.success(ADMIN_CONST.create_admin_success);
           }

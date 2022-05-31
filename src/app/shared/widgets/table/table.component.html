@@ -10,12 +10,12 @@
 <nz-table class="core-table" #sortTable [nzTotal]="TotalItems" [nzPageSize]="PageSize" [nzPageIndex]="PageIndex"
   [nzData]="Data" [id]="tableId" nzFrontPagination="{{ Config.PaginationType != 'Dynamic' ? true : false }}"
   nzShowPagination="{{Config.Pagination || false}}" nzShowSizeChanger="{{Config.PageSizeChanger || false}}"
-  [nzScroll]="ScrollConfig" (nzPageIndexChange)="pageIndexChanged($event)" [nzLoading]="loading"
+  [nzScroll]="Config['ScrollConfig'] || null" (nzPageIndexChange)="pageIndexChanged($event)" [nzLoading]="loading"
   nzPaginationType="small">
   <thead>
     <tr class="header_row" [ngClass]="{ 'table-view-header': Mode == 'View' }">
       <ng-container *ngIf="Config.Columns.length > 0">
-        <th>#ID</th>
+        <!-- <th>#ID</th> -->
         <ng-container *ngFor="let column of Config.Columns;trackBy: trackBy;let i = index;let last = last">
           <ng-container *ngIf="column.visible">
             <th [ngStyle]="{'min-width': column['Width'] || 'auto' }" [nzSortFn]="true"
@@ -23,7 +23,8 @@
               [ngClass]="{ 'bg-white': Mode == 'Normal', 'flex-1': last }"
               class="text-left header_column header_column_{{ tableId }}_{{i}}" nzBounds="window" nzPreview
               (nzResizeEnd)="onResize($event, column.property)" nz-resizable [nzWidth]="column['Width'] || 'auto'"
-              [nzMaxWidth]="300" [nzMinWidth]="60">
+              [nzMaxWidth]="300" [nzMinWidth]="20" [class.pointer-events-none]="resizing"
+              (nzResizeStart)="resizing = true">
               <!-- [ngStyle]="{ width: column.columnWidth }" -->
               <!-- nzLeft -->
               <!-- [enableGhostResize]="true"
@@ -37,7 +38,7 @@
                 </wic-table-column-sort-header> -->
               <app-table-column-header [index]="i" [column]="column" (sortColumnChanges)="sortColumnChanges($event)">
               </app-table-column-header>
-              <nz-resize-handle nzDirection="right">
+              <nz-resize-handle nzDirection="right" *ngIf="!last">
                 <div class="resize-trigger"></div>
               </nz-resize-handle>
             </th>
@@ -55,9 +56,9 @@
       <ng-container *ngFor="let row of Data; let ri = index">
         <tr (click)="selectRow(ri, row)"
           class="{{ri == clickedRowIndex || row?.selected == true? Config.selectedRowClassName: ''}}">
-          <td>
+          <!-- <td>
             <span>{{ ri + 1 }}</span>
-          </td>
+          </td> -->
           <td [ngStyle]="{'min-width': column['Width'] || 'auto' }"
             *ngFor="let column of Config.Columns;trackBy: trackBy; let i = index; let last = last"
             [ngClass]="{ 'flex-1': last }"

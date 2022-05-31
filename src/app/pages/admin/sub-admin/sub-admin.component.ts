@@ -103,6 +103,9 @@ export class SubAdminComponent implements OnInit, OnChanges {
     this.subAdminService.getAllSubAdmin(api_body).then((response: any) => {
       if (response.success == true) {
         this.subAdminList = response.data;
+        this.subAdminList.map((element, index) => {
+          element['sr_no'] = index + 1;
+        });
         this.totalData = response?.counts;
         this.PageSize = response?.limit ? response?.limit : 10;
         this.loading = false;
@@ -182,6 +185,9 @@ export class SubAdminComponent implements OnInit, OnChanges {
       const formObj = this.subAdminForm.value;
       this.subAdminService.createSubAdmin(formObj).then((response) => {
         this.subAdminList = [...this.subAdminList, response['data']];
+        this.subAdminList.map((element, index) => {
+          element['sr_no'] = index + 1;
+        });
         this.modalService.closeAll();
         this.notification.success(SUB_ADMIN_CONST.create_sub_admin_success);
       }, (_error) => {
@@ -234,6 +240,9 @@ export class SubAdminComponent implements OnInit, OnChanges {
   deleteSubadmin(subadmin_id) {
     this.subAdminService.deleteSubAdmin(subadmin_id).then((response) => {
       this.subAdminList = this.subAdminList.filter((element) => element['id'] !== subadmin_id);
+      this.subAdminList.map((element, index) => {
+        element['sr_no'] = index + 1;
+      });
       this.notification.success(SUB_ADMIN_CONST.delete_sub_admin_success);
     }, (error) => {
       this.notification.error(SUB_ADMIN_CONST.delete_sub_admin_error);

@@ -22,7 +22,7 @@ export class TableComponent implements OnInit {
   @Input() TotalItems: number = 500;
   @Input() PageIndex: number = 1;
   @Input() PageSize: number = 10;
-  @Input() ScrollConfig: any = { x: 'auto' };
+  // @Input() ScrollConfig: any = { x: 'auto' };
   @Input() loading: boolean = false;
 
   @Output() onCellClick: EventEmitter<any> = new EventEmitter();
@@ -46,6 +46,7 @@ export class TableComponent implements OnInit {
   public readonly resizableEdge = { top: false, bottom: false, left: true, right: true, };
   public readonly defaultMaskDate = [/\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   @Input() sorting: boolean = false;
+  resizing: boolean = false;
 
   constructor() { }
 
@@ -184,5 +185,6 @@ export class TableComponent implements OnInit {
 
   onResize({ width }: NzResizeEvent, col: string): void {
     this.Config['Columns'] = this.Config['Columns'].map(e => (e['property'] === col ? { ...e, Width: `${width}px` } : e));
+    this.resizing = false;
   }
 }
