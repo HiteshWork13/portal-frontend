@@ -91,6 +91,9 @@
                 </ng-container>
               </ng-container>
             </span>
+            <span *ngIf="column.property == 'created_at'">
+              <!-- {{column['created_at']+'kk' | date:'dd/mm/yyyy'}} -->
+            </span>
             <div *ngIf="column.property != 'actions' && column.isHtml" [innerHtml]="getData(row, column)"></div>
             <span *ngIf="column.property == 'actions'">
               <ng-container *ngIf="!column.actionTemplate">
@@ -110,6 +113,7 @@
               <span class="wi-checkmark"></span>
             </label>
           </td>
+          <td></td>
         </tr>
       </ng-container>
     </ng-container>

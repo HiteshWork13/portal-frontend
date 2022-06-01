@@ -75,6 +75,26 @@
       }
     },
     {
+      "name": "Created",
+      "dataType": "text",
+      "property": "created_at",
+      "visible": true,
+      "searchable": false,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "Width": "200px",
+      "advanceFilter": {
+        "dataType": "date_range",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
       "name": "STATUS",
       "dataType": "text",
       "property": "status",

@@ -31,8 +31,8 @@ export class UserComponent implements OnInit {
   PageSize: number = 10;
   currentUserId = localStorage.getItem('current_user_id')
   search_keyword: any = '';
-  default_sort_property: string = 'reseller_firstname';
-  default_sort_order: any = null;
+  default_sort_property: string = 'created_at';
+  default_sort_order: any = 'desc';
 
   constructor(private modalService: NzModalService, private accountService: AccountService, private notification: NotificationService, private viewContainerRef: ViewContainerRef) { }
 

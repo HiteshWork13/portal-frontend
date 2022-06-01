@@ -35,8 +35,8 @@ export class AdminComponent implements OnInit {
   pag_params: any = { pageIndex: 1, pageSize: 10 };
   adminRole: any = APP_CONST.Role.Admin;
   search_keyword: any = '';
-  default_sort_property: string = 'username';
-  default_sort_order: string = null;
+  default_sort_property: string = 'created_at';
+  default_sort_order: any = 'desc';
 
   constructor(
     private modalService: NzModalService,
