@@ -143,8 +143,8 @@ export class SubAdminComponent implements OnInit {
     setTimeout(() => {
       this.username.nativeElement.focus();
     });
+    this.createForm();
     if (state == 'add') {
-      this.createForm();
       this.modalService.create({
         nzTitle: 'Add New Sub admin',
         nzContent: temp,
@@ -174,7 +174,7 @@ export class SubAdminComponent implements OnInit {
             onClick: () => this.updateSubadmin(item),
           },
         ],
-        nzWidth: 500,
+        nzWidth: '80%',
         nzMaskClosable: false,
         nzOnCancel: () => this.onClose(),
         nzAutofocus: null,
@@ -237,15 +237,33 @@ export class SubAdminComponent implements OnInit {
 
   editSubadmin(item) {
     this.subAdminForm.patchValue({
-      username: item.username
+      username: item.username,
+      firstname: item.firstname,
+      lastname: item.lastname,
+      company: item.company,
+      postcode: item.postcode,
+      reseller_default_email: item.reseller_default_email,
+      street: item.street,
+      state: item.state
     });
+    this.subAdminForm.get('password').clearValidators();
+    this.subAdminForm.get('password').updateValueAndValidity();
   }
 
   updateSubadmin(item) {
-    const formObj = {
-      username: this.subAdminForm.controls['username'].value
+    const formObj = this.subAdminForm.value;
+    let data = {
+      username: formObj.username,
+      firstname: formObj.firstname,
+      lastname: formObj.lastname,
+      company: formObj.company,
+      street: formObj.street,
+      state: formObj.state,
+      postcode: formObj.postcode,
+      reseller_default_email: formObj.reseller_default_email,
     }
-    this.subAdminService.updateSubAdmin(item.id, formObj).then((response) => {
+    if (formObj.password !== null) data['password'] = formObj.password;
+    this.subAdminService.updateSubAdmin(item.id, data).then((response) => {
       this.subAdminList = this.subAdminList.map((element) => {
         if (element['id'] == item.id) {
           element = response['data'];
@@ -287,6 +305,7 @@ export class SubAdminComponent implements OnInit {
   }
 
   sortTable(event) {
+    console.log('event: ', event);
     this.getSubAdminData(this.pag_params, event.sort_property, event.sort_order);
   }
 

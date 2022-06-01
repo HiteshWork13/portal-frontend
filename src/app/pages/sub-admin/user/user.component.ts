@@ -58,9 +58,6 @@ export class UserComponent implements OnInit {
       offset: offset,
       limit: paginationParams.pageSize,
       created_by: idToGetAccount,
-      order: {
-        [sort_property]: sort_order
-      },
       search_query: search_query
     }
     if (sort_order !== null) {

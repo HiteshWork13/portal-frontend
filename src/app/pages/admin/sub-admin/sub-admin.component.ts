@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { subAdminTableConfigJSON } from '@configJson';
 import { APP_CONST } from '@constants';
 import { NotificationService, SubAdminService } from '@services';
@@ -43,7 +43,8 @@ export class SubAdminComponent implements OnInit, OnChanges {
   constructor(
     private modalService: NzModalService,
     private subAdminService: SubAdminService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -73,14 +74,22 @@ export class SubAdminComponent implements OnInit, OnChanges {
   }
 
   createForm() {
-    this.subAdminForm = new FormGroup({
+    /* this.subAdminForm = new FormGroup({
       username: new FormControl(null, Validators.required),
       email: new FormControl(null, Validators.required),
       password: new FormControl(null, Validators.required),
       status: new FormControl(1),
       role: new FormControl(this.subAdminRole),
       // created_by: new FormControl(this.currentUserDetails.id),
-    });
+    }); */
+    this.subAdminForm = this.formBuilder.group({
+      username: [null, [Validators.required]],
+      password: [null, [Validators.required]],
+      confirmPassword: [null, [Validators.required]],
+    },
+      {
+        validator: MustMatch('password', 'confirmPassword'),
+      })
   }
 
   getSubAdminData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, idToGetAccount = this.selectedAdminId || this.currentUserDetails.id, search_query = this.search_keyword) {
@@ -134,7 +143,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
             onClick: () => this.createSubAdmin(),
           },
         ],
-        nzWidth: 500,
+        nzWidth: '80%',
         nzMaskClosable: false,
         nzOnCancel: () => this.onClose(),
         nzAutofocus: null,
@@ -152,7 +161,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
             onClick: () => this.updateSubadmin(item),
           },
         ],
-        nzWidth: 500,
+        nzWidth: '80%',
         nzMaskClosable: false,
         nzOnCancel: () => this.onClose(),
         nzAutofocus: null,
@@ -200,9 +209,9 @@ export class SubAdminComponent implements OnInit, OnChanges {
   matchPassword() {
     this.matchPasswordErr = false;
     if (
-      this.subAdminForm.controls['newPassword'].value !==
-      this.subAdminForm.controls['newPasswordRepeat'].value &&
-      this.subAdminForm.controls['newPasswordRepeat'].value !== ''
+      this.subAdminForm.controls['password'].value !==
+      this.subAdminForm.controls['confirmPasswordf'].value &&
+      this.subAdminForm.controls['confirmPasswordf'].value !== ''
     ) {
       this.matchPasswordErr = true;
     }
@@ -216,12 +225,16 @@ export class SubAdminComponent implements OnInit, OnChanges {
     this.subAdminForm.patchValue({
       username: item.username
     });
+    this.subAdminForm.get('password').clearValidators();
+    this.subAdminForm.get('password').updateValueAndValidity();
   }
 
   updateSubadmin(item) {
-    const formObj = {
-      username: this.subAdminForm.controls['username'].value
+    const formObj = this.subAdminForm.value;
+    let data = {
+      username: formObj.username
     }
+    if (formObj.password !== null) data['password'] = formObj.password;
     this.subAdminService.updateSubAdmin(item.id, formObj).then((response) => {
       this.subAdminList = this.subAdminList.map((element) => {
         if (element['id'] == item.id) {
@@ -337,4 +350,23 @@ export class SubAdminComponent implements OnInit, OnChanges {
     this.pag_params['pageIndex'] = event;
     this.getSubAdminData(this.pag_params);
   }
+}
+
+export function MustMatch(controlName: string, matchingControlName: string) {
+  return (formGroup: FormGroup) => {
+    const control = formGroup.controls[controlName];
+    const matchingControl = formGroup.controls[matchingControlName];
+
+    if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+      // return if another validator has already found an error on the matchingControl
+      return;
+    }
+
+    // set error on matchingControl if validation fails
+    if (control.value !== matchingControl.value) {
+      matchingControl.setErrors({ mustMatch: true });
+    } else {
+      matchingControl.setErrors(null);
+    }
+  };
 }

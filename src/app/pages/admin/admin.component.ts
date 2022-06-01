@@ -148,8 +148,8 @@ export class AdminComponent implements OnInit {
     setTimeout(() => {
       this.adminName.nativeElement.focus();
     });
+    this.createForm();
     if (state == 'add') {
-      this.createForm();
       this.modalService.create({
         nzTitle: 'Add New Admin',
         nzContent: temp,
@@ -179,7 +179,7 @@ export class AdminComponent implements OnInit {
             onClick: () => this.updateAdmin(item),
           },
         ],
-        nzWidth: 500,
+        nzWidth: '80%',
         nzMaskClosable: false,
         nzOnCancel: () => this.onClose(),
         nzAutofocus: null,
@@ -189,8 +189,17 @@ export class AdminComponent implements OnInit {
 
   editAdmin(item) {
     this.adminForm.patchValue({
-      username: item.username
+      username: item.username,
+      firstname: item.firstname,
+      lastname: item.lastname,
+      company: item.company,
+      postcode: item.postcode,
+      reseller_default_email: item.reseller_default_email,
+      street: item.street,
+      state: item.state
     });
+    this.adminForm.get('password').clearValidators();
+    this.adminForm.get('password').updateValueAndValidity();
   }
 
   onClose() {
@@ -251,14 +260,24 @@ export class AdminComponent implements OnInit {
   }
 
   updateAdmin(item) {
-    const formObj = {
-      username: this.adminForm.controls['username'].value
+    const formObj = this.adminForm.value;
+    let data = {
+      username: formObj.username,
+      firstname: formObj.firstname,
+      lastname: formObj.lastname,
+      company: formObj.company,
+      street: formObj.street,
+      state: formObj.state,
+      postcode: formObj.postcode,
+      reseller_default_email: formObj.reseller_default_email,
     }
-    this.adminService.updateAdmin(item.id, formObj).then((response: any) => {
+    if (formObj.password !== null) data['password'] = formObj.password;
+    this.adminService.updateAdmin(item.id, data).then((response: any) => {
       if (response.success == true) {
-        this.adminList = this.adminList.map((element) => {
+        this.adminList = this.adminList.map((element, index) => {
           if (element['id'] == item.id) {
             element = response['data'];
+            element['sr_no'] = index + 1;
           }
           return element;
         });
