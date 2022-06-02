@@ -37,15 +37,16 @@
       }
     },
     {
-      "name": "ADMIN NAME",
+      "name": "First Name",
       "dataType": "text",
-      "property": "username",
+      "property": "firstname",
       "visible": true,
       "searchable": true,
       "searchValue": null,
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
+      "Width": "120px",
       "advanceFilter": {
         "dataType": "text",
         "dpConfig": null,
@@ -56,7 +57,27 @@
       }
     },
     {
-      "name": "EMAIL",
+      "name": "Last Name",
+      "dataType": "text",
+      "property": "lastname",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "Width": "120px",
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "Email",
       "dataType": "text",
       "property": "email",
       "visible": true,
@@ -64,6 +85,26 @@
       "searchValue": null,
       "sortable": true,
       "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "date_range",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "Company Name",
+      "dataType": "text",
+      "property": "company",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "Width": "170px",
       "SearchFormTemplate": null,
       "advanceFilter": {
         "dataType": "date_range",
@@ -84,7 +125,6 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
-      "Width": "200px",
       "advanceFilter": {
         "dataType": "date_range",
         "dpConfig": null,
@@ -95,7 +135,7 @@
       }
     },
     {
-      "name": "STATUS",
+      "name": "Status",
       "dataType": "text",
       "property": "status",
       "visible": true,
@@ -106,7 +146,7 @@
       "SearchFormTemplate": null
     },
     {
-      "name": "ACTIONS",
+      "name": "Actions",
       "property": "actions",
       "visible": true,
       "searchable": false,

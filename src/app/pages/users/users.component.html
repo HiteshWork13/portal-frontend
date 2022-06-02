@@ -29,7 +29,7 @@
                     <a class="dropdown-item" (click)="openDocumentModal(row)">PO</a>
                 </li>
                 <li nz-menu-item role="menuitem" *ngIf="currentUserDetails.role == superAdminRole">
-                    <a class="dropdown-item" (click)="openDevicesModel(row)">View Devices</a>
+                    <a class="dropdown-item" (click)="openDevicesModel(row)">Devices</a>
                 </li>
                 <li nz-menu-item role="menuitem" *ngIf="currentUserDetails.role == superAdminRole">
                     <a class="dropdown-item" (click)="showDeleteConfirm(row.id)">Delete</a>

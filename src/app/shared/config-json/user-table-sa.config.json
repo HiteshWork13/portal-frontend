@@ -47,7 +47,7 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
-      "Width": "300px",
+      "Width": "180px",
       "advanceFilter": {
         "dataType": "text",
         "dpConfig": null,
@@ -68,7 +68,6 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
-      "Width": "150px",
       "advanceFilter": {
         "dataType": "text",
         "dpConfig": null,
@@ -76,7 +75,8 @@
         "textMask": null,
         "placeholder": "",
         "searchQuery": null
-      }
+      },
+      "Width": "10px"
     },
     {
       "name": "Email Address",
@@ -165,7 +165,6 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
-      "Width": "200px",
       "advanceFilter": {
         "dataType": "date_range",
         "dpConfig": null,

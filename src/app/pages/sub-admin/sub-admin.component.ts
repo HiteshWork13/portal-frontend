@@ -13,7 +13,7 @@ import { SUB_ADMIN_CONST } from 'src/app/shared/constants/notifications.constant
 export class SubAdminComponent implements OnInit {
   @ViewChild('actionTemplate') actionTemplate: TemplateRef<any>;
   @ViewChild('statusTemplate') statusTemplate: TemplateRef<any>;
-  @ViewChild('username', { static: false }) username: ElementRef;
+  @ViewChild('firstName', { static: false }) firstname: ElementRef;
 
   @Output() close: EventEmitter<any> = new EventEmitter();
 
@@ -75,7 +75,7 @@ export class SubAdminComponent implements OnInit {
 
   createForm() {
     /* this.subAdminForm = new FormGroup({
-      username: new FormControl(null, Validators.required),
+      firstname: new FormControl(null, Validators.required),
       email: new FormControl(null, Validators.required),
       password: new FormControl(null, [Validators.required),
       status: new FormControl(1),
@@ -84,20 +84,17 @@ export class SubAdminComponent implements OnInit {
     }); */
     this.subAdminForm = this.formBuilder.group(
       {
-        username: [null, Validators.required],
-        email: [null, Validators.required],
-        status: [1],
-        role: [this.subAdminRole],
-        password: [null, [Validators.required]],
-        confirmPassword: [null, [Validators.required]],
-        // Reseller
         firstname: [null, [Validators.required]],
         lastname: [null, [Validators.required]],
+        email: [null, Validators.required],
         company: [null, [Validators.required]],
         street: [null, [Validators.required]],
         state: [null, [Validators.required]],
         postcode: [null, [Validators.required]],
-        reseller_default_email: [null, [Validators.required]],
+        password: [null, [Validators.required]],
+        confirmPassword: [null, [Validators.required]],
+        status: [1],
+        role: [this.subAdminRole],
       },
       {
         validator: MustMatch('password', 'confirmPassword'),
@@ -141,7 +138,7 @@ export class SubAdminComponent implements OnInit {
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
     this.mode = state;
     setTimeout(() => {
-      this.username.nativeElement.focus();
+      this.firstname.nativeElement.focus();
     });
     this.createForm();
     if (state == 'add') {
@@ -207,7 +204,7 @@ export class SubAdminComponent implements OnInit {
     if (this.subAdminForm.valid && !this.matchPasswordErr) {
       const formObj = this.subAdminForm.value;
       this.subAdminService.createSubAdmin(formObj).then((response) => {
-        this.subAdminList = [...this.subAdminList, response['data']];
+        this.subAdminList = [response['data'], ...this.subAdminList];
         this.subAdminList.map((element, index) => {
           element['sr_no'] = index + 1;
         });
@@ -237,12 +234,11 @@ export class SubAdminComponent implements OnInit {
 
   editSubadmin(item) {
     this.subAdminForm.patchValue({
-      username: item.username,
       firstname: item.firstname,
       lastname: item.lastname,
       company: item.company,
       postcode: item.postcode,
-      reseller_default_email: item.reseller_default_email,
+      email: item.email,
       street: item.street,
       state: item.state
     });
@@ -253,14 +249,13 @@ export class SubAdminComponent implements OnInit {
   updateSubadmin(item) {
     const formObj = this.subAdminForm.value;
     let data = {
-      username: formObj.username,
       firstname: formObj.firstname,
       lastname: formObj.lastname,
       company: formObj.company,
       street: formObj.street,
       state: formObj.state,
       postcode: formObj.postcode,
-      reseller_default_email: formObj.reseller_default_email,
+      email: formObj.email,
     }
     if (formObj.password !== null) data['password'] = formObj.password;
     this.subAdminService.updateSubAdmin(item.id, data).then((response) => {

@@ -3,6 +3,7 @@ import { superAdminUserTableConfigJson, userTableConfigJSON } from '@configJson'
 import { APP_CONST } from '@constants';
 import { AccountService, NotificationService } from '@services';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { DeviceListComponent } from 'src/app/shared/components/device-list/device-list.component';
 import { DocumentListComponent } from 'src/app/shared/components/document-list/document-list.component';
 import { UserFormComponent } from 'src/app/shared/components/user-form/user-form.component';
 import { ACCOUNT_CONST } from 'src/app/shared/constants/notifications.constant';
@@ -270,5 +271,20 @@ export class UserComponent implements OnInit {
   indexChanged(event) {
     this.pag_params['pageIndex'] = event;
     this.getAccountData(this.pag_params);
+  }
+
+  openDevicesModel(row_data) {
+    this.modalService.create({
+      nzTitle: 'Devices',
+      nzContent: DeviceListComponent,
+      nzViewContainerRef: this.viewContainerRef,
+      nzComponentParams: {
+        account_id: row_data.id,
+      },
+      nzWidth: '70%',
+      nzMaskClosable: false,
+      nzAutofocus: null,
+      nzOnCancel: () => this.onClose(),
+    });
   }
 }

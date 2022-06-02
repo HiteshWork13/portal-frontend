@@ -194,7 +194,8 @@ export class UsersComponent implements OnInit {
     this.accountService.createAccount(input).then(
       (result: any) => {
         if (result.success) {
-          this.accountList.push(result.data);
+          // this.accountList.push(result.data);
+          this.accountList = [result['data'], ...this.accountList];
           this.accountList.map((element, index) => {
             element['sr_no'] = index + 1;
           });

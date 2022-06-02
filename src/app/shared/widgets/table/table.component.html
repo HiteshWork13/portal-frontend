@@ -69,7 +69,7 @@
             <!-- <span *ngIf="column.property == 'status'">
               <nz-tag [nzColor]="'#87d068'">Active</nz-tag>
             </span> -->
-            <span *ngIf="column.property != 'actions' && !column.isHtml">
+            <span *ngIf="column.property != 'actions' && !column.isHtml && column.property !== 'created_at'">
               <ng-container *ngIf="!column.actionTemplate">
                 <ng-container *ngIf="column.dataType == 'price_range'">
                   {{ getData(row, column) }}
@@ -92,9 +92,10 @@
               </ng-container>
             </span>
             <span *ngIf="column.property == 'created_at'">
-              <!-- {{column['created_at']+'kk' | date:'dd/mm/yyyy'}} -->
+              {{ getData(row, column) | date:'dd/MM/yyyy'}}
             </span>
-            <div *ngIf="column.property != 'actions' && column.isHtml" [innerHtml]="getData(row, column)"></div>
+            <div *ngIf="column.property != 'actions' && column.property !== 'created_at' && column.isHtml"
+              [innerHtml]="getData(row, column)"></div>
             <span *ngIf="column.property == 'actions'">
               <ng-container *ngIf="!column.actionTemplate">
                 No Action Template
@@ -113,7 +114,6 @@
               <span class="wi-checkmark"></span>
             </label>
           </td>
-          <td></td>
         </tr>
       </ng-container>
     </ng-container>

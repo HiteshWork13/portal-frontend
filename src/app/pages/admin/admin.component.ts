@@ -76,20 +76,17 @@ export class AdminComponent implements OnInit {
     }); */
     this.adminForm = this.formBuilder.group(
       {
-        username: [null, [Validators.required]],
-        email: [null, [Validators.required]],
-        status: [1],
-        role: [this.adminRole],
-        password: [null, [Validators.required]],
-        confirmPassword: [null, [Validators.required]],
-        // Reseller
         firstname: [null, [Validators.required]],
         lastname: [null, [Validators.required]],
+        email: [null, [Validators.required]],
+        password: [null, [Validators.required]],
+        confirmPassword: [null, [Validators.required]],
         company: [null, [Validators.required]],
         street: [null, [Validators.required]],
         state: [null, [Validators.required]],
         postcode: [null, [Validators.required]],
-        reseller_default_email: [null, [Validators.required]],
+        status: [1],
+        role: [this.adminRole],
       },
       {
         validator: MustMatch('password', 'confirmPassword'),
@@ -115,6 +112,7 @@ export class AdminComponent implements OnInit {
     this.adminService.getAllAdmin(api_body).then((response: any) => {
       if (response.success) {
         this.adminList = response.data;
+        console.log('this.adminList: ', this.adminList);
         this.adminList.map((element, index) => {
           element['sr_no'] = index + 1;
         });
@@ -194,7 +192,7 @@ export class AdminComponent implements OnInit {
       lastname: item.lastname,
       company: item.company,
       postcode: item.postcode,
-      reseller_default_email: item.reseller_default_email,
+      email: item.email,
       street: item.street,
       state: item.state
     });
@@ -243,7 +241,7 @@ export class AdminComponent implements OnInit {
       this.adminService.createAdmin(formObj).then(
         (response: any) => {
           if (response.success) {
-            this.adminList = [...this.adminList, response['data']];
+            this.adminList = [response['data'], ...this.adminList];
             this.adminList.map((element, index) => {
               element['sr_no'] = index + 1;
             });
@@ -262,14 +260,13 @@ export class AdminComponent implements OnInit {
   updateAdmin(item) {
     const formObj = this.adminForm.value;
     let data = {
-      username: formObj.username,
       firstname: formObj.firstname,
       lastname: formObj.lastname,
       company: formObj.company,
       street: formObj.street,
       state: formObj.state,
       postcode: formObj.postcode,
-      reseller_default_email: formObj.reseller_default_email,
+      email: formObj.email,
     }
     if (formObj.password !== null) data['password'] = formObj.password;
     this.adminService.updateAdmin(item.id, data).then((response: any) => {

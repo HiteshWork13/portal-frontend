@@ -9,7 +9,9 @@
   <nz-button-group style="padding: 0 25px">
     <button nz-button nz-dropdown [nzDropdownMenu]="menu2" nzPlacement="bottomRight">
       <!-- <i nz-icon nzType="user" nzTheme="outline"></i> -->
-      {{currentUserDetails.username}}
+      <span *ngIf="currentUserDetails.firstname !== null">
+        {{currentUserDetails.firstname + ' ' + currentUserDetails.lastname}}
+      </span>
       <i nz-icon nzType="more" nzTheme="outline"></i>
     </button>
   </nz-button-group>

@@ -47,7 +47,7 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
-      "Width": "300px",
+      "Width": "164px",
       "advanceFilter": {
         "dataType": "text",
         "dpConfig": null,
@@ -67,7 +67,7 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
-      "Width": "150px",
+      "Width": "102px",
       "advanceFilter": {
         "dataType": "text",
         "dpConfig": null,
@@ -87,7 +87,7 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
-      "Width": "150px",
+      "Width": "102px",
       "advanceFilter": {
         "dataType": "text",
         "dpConfig": null,
@@ -107,7 +107,7 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
-      "Width": "170px",
+      "Width": "140px",
       "advanceFilter": {
         "dataType": "date_range",
         "dpConfig": null,
@@ -195,7 +195,6 @@
       "sortable": true,
       "sortOrder": "",
       "SearchFormTemplate": null,
-      "Width": "200px",
       "advanceFilter": {
         "dataType": "date_range",
         "dpConfig": null,
