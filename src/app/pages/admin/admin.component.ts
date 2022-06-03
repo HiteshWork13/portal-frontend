@@ -112,7 +112,6 @@ export class AdminComponent implements OnInit {
     this.adminService.getAllAdmin(api_body).then((response: any) => {
       if (response.success) {
         this.adminList = response.data;
-        console.log('this.adminList: ', this.adminList);
         this.adminList.map((element, index) => {
           element['sr_no'] = index + 1;
         });

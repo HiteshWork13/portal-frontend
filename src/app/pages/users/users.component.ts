@@ -68,7 +68,6 @@ export class UsersComponent implements OnInit {
     this.accountService.getAllAccountsOfCurrentUser(api_body).then((account: any) => {
       if (account.success) {
         this.accountList = account?.data;
-        console.log('this.accountList: ', this.accountList);
         this.accountList.map((element, index) => {
           element['sr_no'] = index + 1;
         });

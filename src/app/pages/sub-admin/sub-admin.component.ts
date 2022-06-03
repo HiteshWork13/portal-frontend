@@ -300,7 +300,6 @@ export class SubAdminComponent implements OnInit {
   }
 
   sortTable(event) {
-    console.log('event: ', event);
     this.getSubAdminData(this.pag_params, event.sort_property, event.sort_order);
   }
 
