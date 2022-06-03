@@ -39,7 +39,7 @@
 </ng-template>
 
 <ng-template #created_by_template let-row="row" let-column="column">
-    <span *ngIf="row[column.property]">{{row[column.property]['username']}}</span>
+    <span *ngIf="row[column.property]">{{row[column.property]['firstname']}}</span>
 </ng-template>
 
 <ng-template #statusTemplate let-column="column" let-row="row" let-rowIndex="rowIndex" let-columnIndex="columnIndex">
