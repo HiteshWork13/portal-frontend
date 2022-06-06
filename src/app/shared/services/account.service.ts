@@ -33,4 +33,8 @@ export class AccountService {
   async deleteAccount(id) {
     return await this.dataService.DELETE(`/account/deleteAccount/${id}`)
   }
+
+  async exportHistory(data) {
+    return await this.dataService.POST(`/historyexport/getAllHistory`, data)
+  }
 }

@@ -1,1 +1,59 @@
-<p>packages works!</p>
+<app-table class="height-max" [Config]="packageTableJSON" [Data]="packageList" (sortTableColumn)="sortPackage($event)"
+    (header_addClick)="openModal(temp,'add', '')" (header_deleteClick)="showDeleteConfirm(null)"
+    (pageIndex)="indexChanged($event)" [loading]="loading" [TotalItems]="totalData" [PageSize]="PageSize"
+    (header_searchClick)="search($event)">
+</app-table>
+
+<ng-template #temp>
+    <form nz-form nzLayout="vertical" id="addUserForm" [formGroup]="packageForm" (ngSubmit)="onSubmit()">
+        <nz-form-item>
+            <nz-form-label>Package Name</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid package name">
+                <input nz-input trim="blur" formControlName="packagename" maxlength="80" #packageName
+                    placeholder="Enter Package Name" tabindex="2" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>Export</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid export">
+                <input nz-input trim="blur" formControlName="exportcost" maxlength="80" #exportcost
+                    placeholder="Enter Export" type="number" tabindex="2" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>Length</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid length">
+                <input nz-input trim="blur" formControlName="lengthcost" maxlength="80" #lengthcost
+                    placeholder="Enter Length" tabindex="2" type="number" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>Total</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid total">
+                <input nz-input trim="blur" formControlName="totalcost" maxlength="80" #totalcost
+                    placeholder="Enter Total" tabindex="2" type="number" />
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</ng-template>
+
+<ng-template #actionTemplate let-column="column" let-row="row" let-rowIndex="rowIndex" let-columnIndex="columnIndex">
+    <div style="position: relative" class="text-center">
+
+        <button type="button" nz-button nz-dropdown nzTrigger="click" [nzDropdownMenu]="actionMenu"
+            nzPlacement="bottomRight" style="cursor: pointer" (click)="$event.stopPropagation()">
+            <i nz-icon nzType="ellipsis"></i>
+        </button>
+
+        <nz-dropdown-menu #actionMenu="nzDropdownMenu">
+            <ul nz-menu class="wi-action-menu">
+                <li nz-menu-item role="menuitem">
+                    <a class="dropdown-item" (click)="openModal(temp, 'edit', row)">Edit</a>
+                </li>
+                <li nz-menu-item role="menuitem">
+                    <a class="dropdown-item" (click)="showDeleteConfirm(row.id)">Delete</a>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+    </div>
+</ng-template>

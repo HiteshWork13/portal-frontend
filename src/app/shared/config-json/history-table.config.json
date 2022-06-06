@@ -1,0 +1,97 @@
+{
+  "Caption": "",
+  "Header": {
+    "showColumnToggle": true,
+    "showSearch": false,
+    "showAdd": false,
+    "showReset": false,
+    "showDownload": false,
+    "showClose": false
+  },
+  "Pagination": true,
+  "PageSizeChanger": false,
+  "PaginationType": "Dynamic",
+  "SortingType": "Static",
+  "SearchType": "Static",
+  "selectedRowClassName": "selected-row",
+  "noDataLabel": "No Data Found",
+  "ScrollConfig": { "x": "auto" },
+  "Columns": [
+    {
+      "name": "#ID",
+      "dataType": "text",
+      "property": "sr_no",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "MAC",
+      "dataType": "text",
+      "property": "mac",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "date_range",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "Version",
+      "dataType": "text",
+      "property": "version",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "Timestamp",
+      "dataType": "text",
+      "property": "timestamp",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    }
+  ]
+}

@@ -22,6 +22,7 @@ export class UsersComponent implements OnInit {
   accountList: Array<any>;
   accountTableJSON: any = [];
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
+  subAdminRole: any = APP_CONST.Role.SubAdmin;
   Data: any = [];
   row_data: any = {};
   currentUserDetails: any;
@@ -308,7 +309,7 @@ export class UsersComponent implements OnInit {
 
   search(keyword) {
     this.search_keyword = keyword;
-    this.getAccountData(this.pag_params, 'reseller_firstname', 'ascend', this.search_keyword);
+    this.getAccountData(this.pag_params, this.default_sort_order, this.default_sort_order, this.search_keyword);
   }
 
   indexChanged(event) {
@@ -321,9 +322,9 @@ export class UsersComponent implements OnInit {
       nzTitle: 'History',
       nzContent: ExportHistoryComponent,
       nzViewContainerRef: this.viewContainerRef,
-      /* nzComponentParams: {
+      nzComponentParams: {
         account_id: row_data.id,
-      }, */
+      },
       nzWidth: '70%',
       nzMaskClosable: false,
       nzAutofocus: null,
@@ -336,9 +337,9 @@ export class UsersComponent implements OnInit {
       nzTitle: 'Packages',
       nzContent: PackagesComponent,
       nzViewContainerRef: this.viewContainerRef,
-      /* nzComponentParams: {
+      nzComponentParams: {
         account_id: row_data.id,
-      }, */
+      },
       nzWidth: '70%',
       nzMaskClosable: false,
       nzAutofocus: null,

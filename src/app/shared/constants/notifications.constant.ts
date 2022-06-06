@@ -64,3 +64,11 @@ export const PROFILE_CONST: any = {
     update_password_success: 'Password updated successfully',
     update_password_error: 'Error while updating password, please try again',
 }
+
+export const PACKAGE_CONST: any = {
+    get_package_error: 'Error while fetching packages, please try again',
+    create_package_success: 'Package Created successfully',
+    create_package_error: 'Error while creating package, please try again',
+    delete_package_success: 'Package Deleted successfully',
+    delete_package_error: 'Error while deleting package, please try again',
+}
