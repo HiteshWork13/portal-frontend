@@ -81,7 +81,8 @@
                     <nz-form-control nzErrorTip="Enter a valid package">
                         <nz-select formControlName="packageid" nzPlaceHolder="Select Package" tabindex="10"
                             (ngModelChange)="handleCredit($event)">
-                            <nz-option *ngFor="let pack of packageList" [nzValue]="pack.id" [nzLabel]="pack.label">
+                            <nz-option *ngFor="let pack of packageList" [nzValue]="pack.id"
+                                [nzLabel]="pack.packagename">
                             </nz-option>
                         </nz-select>
                     </nz-form-control>
