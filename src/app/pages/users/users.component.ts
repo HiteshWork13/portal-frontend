@@ -308,7 +308,7 @@ export class UsersComponent implements OnInit {
 
   search(keyword) {
     this.search_keyword = keyword;
-    this.getAccountData(this.pag_params, this.default_sort_order, this.default_sort_order, this.search_keyword);
+    this.getAccountData(this.pag_params, this.default_sort_property, this.default_sort_order, this.search_keyword);
   }
 
   indexChanged(event) {
