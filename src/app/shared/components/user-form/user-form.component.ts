@@ -294,7 +294,7 @@ export class UserFormComponent implements OnInit {
       reseller_street: item.street,
       reseller_state: item.state,
       reseller_code: item.postcode,
-      reseller_email: item.reseller_default_email,
+      reseller_email: item.email,
     })
   }
 
