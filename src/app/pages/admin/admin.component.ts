@@ -15,7 +15,7 @@ import { ADMIN_CONST } from 'src/app/shared/constants/notifications.constant';
 export class AdminComponent implements OnInit {
   @ViewChild('actionTemplate') actionTemplate: TemplateRef<any>;
   @ViewChild('statusTemplate') statusTemplate: TemplateRef<any>;
-  @ViewChild('adminName', { static: false }) adminName: ElementRef;
+  @ViewChild('firstname', { static: false }) firstname: ElementRef;
   adminTableJSON: any = JSON.parse(JSON.stringify((adminTableConfigJSON as any)));
 
   // listOfData: Array<{ name: string; age: number; address: string }> = [];
@@ -145,7 +145,7 @@ export class AdminComponent implements OnInit {
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
     this.mode = state;
     setTimeout(() => {
-      this.adminName.nativeElement.focus();
+      this.firstname.nativeElement.focus();
     });
     this.createForm();
     if (state == 'add') {
@@ -233,6 +233,7 @@ export class AdminComponent implements OnInit {
   }
 
   createAdmin() {
+    console.log('this.adminForm: ', this.adminForm);
     for (const i in this.adminForm.controls) {
       this.adminForm.controls[i].markAsDirty();
       this.adminForm.controls[i].updateValueAndValidity();
