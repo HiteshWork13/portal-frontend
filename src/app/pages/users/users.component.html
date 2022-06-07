@@ -34,9 +34,6 @@
                 <li nz-menu-item role="menuitem">
                     <a class="dropdown-item" (click)="openHistoryModel(row)">Export History</a>
                 </li>
-                <li nz-menu-item role="menuitem" *ngIf="currentUserDetails.role !== subAdminRole">
-                    <a class="dropdown-item" (click)="openPackageModel(row)">Packages</a>
-                </li>
                 <li nz-menu-item role="menuitem" *ngIf="currentUserDetails.role == superAdminRole">
                     <a class="dropdown-item" (click)="showDeleteConfirm(row.id)">Delete</a>
                 </li>

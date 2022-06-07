@@ -32,6 +32,9 @@
           <a class="dropdown-item" (click)="openModal(temp, 'edit', row)">Edit</a>
         </li>
         <li nz-menu-item role="menuitem">
+          <a class="dropdown-item" (click)="openPackageModel(row)">Packages</a>
+        </li>
+        <li nz-menu-item role="menuitem">
           <a class="dropdown-item" (click)="showDeleteConfirm(row.id)">Delete</a>
         </li>
       </ul>

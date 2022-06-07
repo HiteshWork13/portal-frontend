@@ -6,7 +6,6 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { DeviceListComponent } from 'src/app/shared/components/device-list/device-list.component';
 import { DocumentListComponent } from 'src/app/shared/components/document-list/document-list.component';
 import { ExportHistoryComponent } from 'src/app/shared/components/export-history/export-history.component';
-import { PackagesComponent } from 'src/app/shared/components/packages/packages.component';
 import { UserFormComponent } from 'src/app/shared/components/user-form/user-form.component';
 import { ACCOUNT_CONST } from 'src/app/shared/constants/notifications.constant';
 import { UserDetailsComponent } from 'src/app/shared/user-details/user-details.component';
@@ -321,21 +320,6 @@ export class UsersComponent implements OnInit {
     this.modalService.create({
       nzTitle: 'History',
       nzContent: ExportHistoryComponent,
-      nzViewContainerRef: this.viewContainerRef,
-      nzComponentParams: {
-        account_id: row_data.id,
-      },
-      nzWidth: '70%',
-      nzMaskClosable: false,
-      nzAutofocus: null,
-      nzOnCancel: () => this.onClose(),
-    });
-  }
-
-  openPackageModel(row_data) {
-    this.modalService.create({
-      nzTitle: 'Packages',
-      nzContent: PackagesComponent,
       nzViewContainerRef: this.viewContainerRef,
       nzComponentParams: {
         account_id: row_data.id,

@@ -1,9 +1,10 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { adminTableConfigJSON } from "@configJson";
 import { APP_CONST } from '@constants';
 import { AdminService, NotificationService } from '@services';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { PackagesComponent } from 'src/app/shared/components/packages/packages.component';
 import { ADMIN_CONST } from 'src/app/shared/constants/notifications.constant';
 
 @Component({
@@ -42,7 +43,8 @@ export class AdminComponent implements OnInit {
     private modalService: NzModalService,
     private adminService: AdminService,
     private notification: NotificationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private viewContainerRef: ViewContainerRef
   ) { }
 
   ngOnInit(): void {
@@ -323,6 +325,21 @@ export class AdminComponent implements OnInit {
     ) {
       this.matchPasswordErr = true;
     }
+  }
+
+  openPackageModel(row_data) {
+    this.modalService.create({
+      nzTitle: 'Packages',
+      nzContent: PackagesComponent,
+      nzViewContainerRef: this.viewContainerRef,
+      nzComponentParams: {
+        account_id: row_data.id,
+      },
+      nzWidth: '70%',
+      nzMaskClosable: false,
+      nzAutofocus: null,
+      nzOnCancel: () => this.onClose(),
+    });
   }
 }
 
