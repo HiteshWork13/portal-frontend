@@ -11,61 +11,114 @@
 <ng-template #addForm>
   <form nz-form nzLayout="vertical" id="addSubAdminForm" [formGroup]="subAdminForm" (keydown.enter)="createSubAdmin()"
     autocomplete="off">
-    <nz-form-item>
-      <nz-form-label>Sub Admin Name</nz-form-label>
-      <nz-form-control nzErrorTip="Enter a valid sub admin name">
-        <input #username nz-input trim="blur" formControlName="username" maxlength="80" #subAdminName
-          placeholder="Enter sub admin name" />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item *ngIf="mode == 'edit'">
-      <nz-form-label nzFor="newPassword" class="text-black">Change Password
-      </nz-form-label>
-      <nz-form-control [nzErrorTip]="newPasswordRef">
-        <nz-input-group [nzPrefix]="prefixLock">
-          <input id="myinputbox" type="password" nz-input formControlName="password"
-            placeholder="Enter changed password" autofocus name="adminPwd" autocomplete="new-password" #adminPwd />
-        </nz-input-group>
-        <ng-template #newPasswordRef>
-          Enter a valid Password
-          <i class="fa fa-info-circle float-right pt-1" nzPopoverPlacement="bottom" nz-popover nzType="primary"
-            nzPopoverTitle="Password Criteria" [nzPopoverContent]="popoverContent"></i>
-        </ng-template>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzFor="confirmPassword" class="text-black">Re-enter new password
-      </nz-form-label>
-      <nz-form-control [nzErrorTip]="matchPasswordErr ? 'Passwords must match' : 'Enter a valid Confirmed Password'">
-        <nz-input-group [nzPrefix]="prefixLock">
-          <input #Pwd id="myinputbox" type="password" nz-input formControlName="confirmPassword"
-            (input)="matchPassword()"
-            [placeholder]="mode == 'add' ? 'Re-enter new password' : 'Re-enter changed password'">
-        </nz-input-group>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item *ngIf="mode == 'add'">
-      <nz-form-label>Sub Admin Email</nz-form-label>
-      <nz-form-control nzErrorTip="Enter a valid sub admin email">
-        <input nz-input trim="blur" formControlName="email" maxlength="80" #adminEmail placeholder="Enter email address"
-          autocomplete="new-email" name="sub-admin email" #subAdminEmail />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item *ngIf="mode == 'add'">
-      <nz-form-label nzFor="newPassword" class="text-black">Password
-      </nz-form-label>
-      <nz-form-control [nzErrorTip]="newPasswordRef">
-        <nz-input-group [nzPrefix]="prefixLock">
-          <input id="myinputbox" type="password" nz-input formControlName="password" placeholder="Enter new password"
-            autofocus autocomplete="new-password" name="sub-admin pwd" #subAdminPwd />
-        </nz-input-group>
-        <ng-template #newPasswordRef>
-          Password is not valid
-          <i class="fa fa-info-circle float-right pt-1" nzPopoverPlacement="bottom" nz-popover nzType="primary"
-            nzPopoverTitle="Password Criteria" [nzPopoverContent]="popoverContent"></i>
-        </ng-template>
-      </nz-form-control>
-    </nz-form-item>
+    <div nz-row [nzGutter]="32">
+      <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label>First Name</nz-form-label>
+          <nz-form-control nzErrorTip="Enter a valid first name">
+            <input nz-input trim="blur" formControlName="firstname" maxlength="80" #firstname
+              placeholder="Enter First Name" tabindex="11" #firstName />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>Company</nz-form-label>
+          <nz-form-control nzErrorTip="Enter a valid Company">
+            <input nz-input trim="blur" formControlName="company" maxlength="80" #company
+              placeholder="Enter Company Name" tabindex="13" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>State</nz-form-label>
+          <nz-form-control nzErrorTip="Enter a valid State">
+            <input nz-input trim="blur" formControlName="state" maxlength="80" #state placeholder="Enter State"
+              tabindex="15" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label>Last Name</nz-form-label>
+          <nz-form-control nzErrorTip="Enter a valid last name">
+            <input nz-input trim="blur" formControlName="lastname" maxlength="80" #lastname
+              placeholder="Enter Last Name" tabindex="12" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>Street</nz-form-label>
+          <nz-form-control nzErrorTip="Enter a valid Street">
+            <input nz-input trim="blur" formControlName="street" maxlength="80" #street placeholder="Enter Street"
+              tabindex="14" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>Postcode</nz-form-label>
+          <nz-form-control nzErrorTip="Enter a valid Postcode">
+            <input nz-input trim="blur" formControlName="postcode" maxlength="80" #code placeholder="Enter Postcode"
+              tabindex="16" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="32">
+      <div nz-col nzSpan="24">
+        <nz-form-item>
+          <nz-form-label>Email</nz-form-label>
+          <nz-form-control nzErrorTip="Enter a valid Email">
+            <input nz-input trim="blur" formControlName="email" maxlength="80" #email placeholder="Enter Email Address"
+              tabindex="17" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="32">
+      <div nz-col nzSpan="12">
+        <nz-form-item *ngIf="mode == 'add'">
+          <nz-form-label nzFor="newPassword" class="text-black">Password
+          </nz-form-label>
+          <nz-form-control [nzErrorTip]="newPasswordRef">
+            <nz-input-group [nzPrefix]="prefixLock">
+              <input id="myinputbox" type="password" nz-input formControlName="password"
+                placeholder="Enter new password" autofocus autocomplete="new-password" name="sub-admin pwd"
+                #subAdminPwd />
+            </nz-input-group>
+            <ng-template #newPasswordRef>
+              Enter a valid Password
+              <i class="fa fa-info-circle float-right pt-1" nzPopoverPlacement="bottom" nz-popover nzType="primary"
+                nzPopoverTitle="Password Criteria" [nzPopoverContent]="popoverContent"></i>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="mode == 'edit'">
+          <nz-form-label nzFor="newPassword" class="text-black">Change Password
+          </nz-form-label>
+          <nz-form-control [nzErrorTip]="newPasswordRef">
+            <nz-input-group [nzPrefix]="prefixLock">
+              <input id="myinputbox" type="password" nz-input formControlName="password"
+                placeholder="Enter changed password" autofocus name="adminPwd" autocomplete="new-password" #adminPwd />
+            </nz-input-group>
+            <ng-template #newPasswordRef>
+              Enter a valid Password
+              <i class="fa fa-info-circle float-right pt-1" nzPopoverPlacement="bottom" nz-popover nzType="primary"
+                nzPopoverTitle="Password Criteria" [nzPopoverContent]="popoverContent"></i>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzFor="confirmPassword" class="text-black">Re-enter password
+          </nz-form-label>
+          <nz-form-control
+            [nzErrorTip]="matchPasswordErr ? 'Passwords must match' : 'Enter a valid Confirmed Password'">
+            <nz-input-group [nzPrefix]="prefixLock">
+              <input #Pwd id="myinputbox" type="password" nz-input formControlName="confirmPassword"
+                (input)="matchPassword()"
+                [placeholder]="mode == 'add' ? 'Re-enter new password' : 'Re-enter changed password'">
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
   </form>
 </ng-template>
 

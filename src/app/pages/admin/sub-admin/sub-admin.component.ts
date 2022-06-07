@@ -13,7 +13,7 @@ import { PERMISSION_CONST, SUB_ADMIN_CONST } from 'src/app/shared/constants/noti
 export class SubAdminComponent implements OnInit, OnChanges {
   @ViewChild('actionTemplate') actionTemplate: TemplateRef<any>;
   @ViewChild('statusTemplate') statusTemplate: TemplateRef<any>;
-  @ViewChild('username', { static: false }) username: ElementRef;
+  @ViewChild('firstname', { static: false }) firstname: ElementRef;
 
   @Input() selectedAdminId: string = null;
 
@@ -83,9 +83,17 @@ export class SubAdminComponent implements OnInit, OnChanges {
       // created_by: new FormControl(this.currentUserDetails.id),
     }); */
     this.subAdminForm = this.formBuilder.group({
-      username: [null, [Validators.required]],
+      firstname: [null, [Validators.required]],
+      lastname: [null, [Validators.required]],
+      email: [null, Validators.required],
+      company: [null, [Validators.required]],
+      street: [null, [Validators.required]],
+      state: [null, [Validators.required]],
+      postcode: [null, [Validators.required]],
       password: [null, [Validators.required]],
       confirmPassword: [null, [Validators.required]],
+      status: [1],
+      role: [this.subAdminRole],
     },
       {
         validator: MustMatch('password', 'confirmPassword'),
@@ -128,8 +136,9 @@ export class SubAdminComponent implements OnInit, OnChanges {
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
     this.mode = state;
     setTimeout(() => {
-      this.username.nativeElement.focus();
+      this.firstname.nativeElement.focus();
     });
+    this.createForm();
     if (state == 'add') {
       this.createForm();
       this.modalService.create({
@@ -223,7 +232,13 @@ export class SubAdminComponent implements OnInit, OnChanges {
 
   editSubadmin(item) {
     this.subAdminForm.patchValue({
-      username: item.username
+      firstname: item.firstname,
+      lastname: item.lastname,
+      company: item.company,
+      postcode: item.postcode,
+      email: item.email,
+      street: item.street,
+      state: item.state
     });
     this.subAdminForm.get('password').clearValidators();
     this.subAdminForm.get('password').updateValueAndValidity();
@@ -232,13 +247,21 @@ export class SubAdminComponent implements OnInit, OnChanges {
   updateSubadmin(item) {
     const formObj = this.subAdminForm.value;
     let data = {
-      username: formObj.username
+      firstname: formObj.firstname,
+      lastname: formObj.lastname,
+      company: formObj.company,
+      street: formObj.street,
+      state: formObj.state,
+      postcode: formObj.postcode,
+      email: formObj.email,
     }
+    console.log('formObj.password: ', formObj.password);
     if (formObj.password !== null) data['password'] = formObj.password;
-    this.subAdminService.updateSubAdmin(item.id, formObj).then((response) => {
-      this.subAdminList = this.subAdminList.map((element) => {
+    this.subAdminService.updateSubAdmin(item.id, data).then((response) => {
+      this.subAdminList = this.subAdminList.map((element, index) => {
         if (element['id'] == item.id) {
           element = response['data'];
+          element['sr_no'] = index + 1;
         }
         return element;
       });

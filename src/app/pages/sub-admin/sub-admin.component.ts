@@ -259,9 +259,10 @@ export class SubAdminComponent implements OnInit {
     }
     if (formObj.password !== null) data['password'] = formObj.password;
     this.subAdminService.updateSubAdmin(item.id, data).then((response) => {
-      this.subAdminList = this.subAdminList.map((element) => {
+      this.subAdminList = this.subAdminList.map((element, index) => {
         if (element['id'] == item.id) {
           element = response['data'];
+          element['sr_no'] = index + 1;
         }
         return element;
       });
