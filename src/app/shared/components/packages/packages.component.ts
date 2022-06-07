@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { packageTableDataJSON } from '@configJson';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -13,6 +13,7 @@ import { PackageService } from '../../services/package.service';
 export class PackagesComponent implements OnInit {
 
   @ViewChild('actionTemplate') actionTemplate: TemplateRef<any>;
+  @ViewChild('packageName', { static: false }) packageName: ElementRef;
   @Input() account_id: any;
   loading: boolean = true;
   pag_params: any = { pageIndex: 1, pageSize: 10 };
@@ -39,7 +40,8 @@ export class PackagesComponent implements OnInit {
         packagename: [null, [Validators.required]],
         exportcost: [null, [Validators.required]],
         lengthcost: [null, [Validators.required]],
-        totalcost: [null, [Validators.required]]
+        totalcost: [null, [Validators.required]],
+        planid: [null, [Validators.required]]
       })
   }
 
@@ -90,7 +92,11 @@ export class PackagesComponent implements OnInit {
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
+    setTimeout(() => {
+      this.packageName.nativeElement.focus();
+    });
     this.createForm();
+    if (state == 'edit') this.patchFormVal(item);
     this.modalService.create({
       nzTitle: state == 'add' ? 'Add New Package' : 'Update Package',
       nzContent: temp,
@@ -101,22 +107,32 @@ export class PackagesComponent implements OnInit {
         {
           label: state == 'add' ? 'Save' : 'Update',
           type: 'primary',
-          onClick: (event) => {
+          onClick: () => {
             let formValue = this.packageForm.value;
-            let valid: boolean = this.packageForm.valid;
-            if (valid == true) {
-              state == 'add' ? this.onSave(formValue) : this.updateUser(item.id, formValue);
-              return true;
-            } else {
-              for (const i in this.packageForm.controls) {
-                this.packageForm.controls[i].markAsDirty();
-                this.packageForm.controls[i].updateValueAndValidity();
-              }
-              return false
-            }
+            // let valid: boolean = this.packageForm.valid;
+            // if (valid == true) {
+            state == 'add' ? this.onSave(formValue) : this.updateUser(item.id, formValue);
+            return true;
+            // } else {
+            // for (const i in this.packageForm.controls) {
+            //   this.packageForm.controls[i].markAsDirty();
+            //   this.packageForm.controls[i].updateValueAndValidity();
+            // }
+            // return false
+            // }
           },
         },
       ],
+    });
+  }
+
+  patchFormVal(item) {
+    this.packageForm.patchValue({
+      packagename: item.packagename,
+      exportcost: item.exportcost,
+      lengthcost: item.lengthcost,
+      totalcost: item.totalcost,
+      planid: item.planid
     });
   }
 
@@ -127,7 +143,6 @@ export class PackagesComponent implements OnInit {
     }
     if (this.packageForm.valid) {
       const formObj = value;
-      formObj.planid = "394105";
       formObj.userid = this.account_id;
       this.packageService.createPackage(formObj).then(
         (response: any) => {
@@ -143,7 +158,29 @@ export class PackagesComponent implements OnInit {
   }
 
   updateUser(id, value) {
-    // 
+    // const ref: NzModalRef = this.modalService.info();
+    for (const i in this.packageForm.controls) {
+      this.packageForm.controls[i].markAsDirty();
+      this.packageForm.controls[i].updateValueAndValidity();
+    }
+    if (this.packageForm.valid) {
+      const formObj = value;
+      this.packageService.updatePackage(id, formObj).then((response: any) => {
+        if (response.success) {
+          this.packageList = this.packageList.map((element, index) => {
+            if (element['id'] == id) {
+              element = response['data'];
+              element['sr_no'] = index + 1;
+            }
+          })
+          this.notification.success(PACKAGE_CONST.update_package_success);
+          this.modalService.closeAll();
+          // this.modalService.close();
+        }
+      }, (_error) => {
+        this.notification.error(PACKAGE_CONST.update_package_error);
+      })
+    }
   }
 
   showDeleteConfirm(row_id: any) {

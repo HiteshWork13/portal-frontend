@@ -10,28 +10,35 @@
             <nz-form-label>Package Name</nz-form-label>
             <nz-form-control nzErrorTip="Enter a valid package name">
                 <input nz-input trim="blur" formControlName="packagename" maxlength="80" #packageName
-                    placeholder="Enter Package Name" tabindex="2" />
+                    placeholder="Enter Package Name" />
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
             <nz-form-label>Export</nz-form-label>
             <nz-form-control nzErrorTip="Enter a valid export">
                 <input nz-input trim="blur" formControlName="exportcost" maxlength="80" #exportcost
-                    placeholder="Enter Export" type="number" tabindex="2" />
+                    placeholder="Enter Export" type="number" />
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
             <nz-form-label>Length</nz-form-label>
             <nz-form-control nzErrorTip="Enter a valid length">
                 <input nz-input trim="blur" formControlName="lengthcost" maxlength="80" #lengthcost
-                    placeholder="Enter Length" tabindex="2" type="number" />
+                    placeholder="Enter Length" type="number" />
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
             <nz-form-label>Total</nz-form-label>
             <nz-form-control nzErrorTip="Enter a valid total">
                 <input nz-input trim="blur" formControlName="totalcost" maxlength="80" #totalcost
-                    placeholder="Enter Total" tabindex="2" type="number" />
+                    placeholder="Enter Total" type="number" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>Plan</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid plan">
+                <input nz-input trim="blur" formControlName="planid" maxlength="80" #planid placeholder="Enter Plan"
+                    type="number" />
             </nz-form-control>
         </nz-form-item>
     </form>
