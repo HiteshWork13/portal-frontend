@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { packageTableDataJSON } from '@configJson';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { PACKAGE_CONST } from '../../constants/notifications.constant';
 import { NotificationService } from '../../services/notification.service';
 import { PackageService } from '../../services/package.service';
@@ -25,6 +25,7 @@ export class PackagesComponent implements OnInit {
   packageList: any;
   packageTableJSON: any = JSON.parse(JSON.stringify((packageTableDataJSON as any)));
   packageForm: FormGroup;
+  createmodal: NzModalRef;
 
   constructor(private packageService: PackageService, private notification: NotificationService, private modalService: NzModalService, private formBuilder: FormBuilder) { }
 
@@ -97,7 +98,7 @@ export class PackagesComponent implements OnInit {
     });
     this.createForm();
     if (state == 'edit') this.patchFormVal(item);
-    this.modalService.create({
+    this.createmodal = this.modalService.create({
       nzTitle: state == 'add' ? 'Add New Package' : 'Update Package',
       nzContent: temp,
       nzWidth: '60%',
@@ -112,7 +113,7 @@ export class PackagesComponent implements OnInit {
             // let valid: boolean = this.packageForm.valid;
             // if (valid == true) {
             state == 'add' ? this.onSave(formValue) : this.updateUser(item.id, formValue);
-            return true;
+            return false;
             // } else {
             // for (const i in this.packageForm.controls) {
             //   this.packageForm.controls[i].markAsDirty();
@@ -149,7 +150,8 @@ export class PackagesComponent implements OnInit {
           if (response.success) {
             this.packageList = [response['data'], ...this.packageList];
             this.notification.success(PACKAGE_CONST.create_package_success);
-            this.modalService.closeAll();
+            // this.modalService.closeAll();
+            this.createmodal.close();
           }
         }, (_error) => {
           this.notification.error(PACKAGE_CONST.create_package_error);
@@ -174,8 +176,9 @@ export class PackagesComponent implements OnInit {
             }
           })
           this.notification.success(PACKAGE_CONST.update_package_success);
-          this.modalService.closeAll();
+          // this.modalService.closeAll();
           // this.modalService.close();
+          this.createmodal.close();
         }
       }, (_error) => {
         this.notification.error(PACKAGE_CONST.update_package_error);
@@ -219,6 +222,6 @@ export class PackagesComponent implements OnInit {
   }
 
   onSubmit() {
-    // 
+    //
   }
 }
