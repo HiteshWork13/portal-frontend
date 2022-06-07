@@ -11,8 +11,8 @@ import { AccountService } from '../../services/account.service';
 export class ExportHistoryComponent implements OnInit {
 
   @Input() account_id: any;
-  default_sort_property: string = 'length';
-  default_sort_order: any = 'desc';
+  default_sort_property: string = null;
+  default_sort_order: any = null;
   pag_params: any = { pageIndex: 1, pageSize: 10 };
   historyList: any;
   historyTableJSON: any = JSON.parse(JSON.stringify((historyTableConfigJSON as any)));
@@ -37,12 +37,12 @@ export class ExportHistoryComponent implements OnInit {
       limit: paginationParams.pageSize,
       client_id: account_id
     }
-    /* if (sort_order !== null) {
+    if (sort_order !== null) {
       sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
       api_body['order'] = {
         [sort_property]: sort_order
       }
-    } */
+    }
     this.accountService.exportHistory(api_body).then((response: any) => {
       if (response.success) {
         this.historyList = response.data;
@@ -60,10 +60,11 @@ export class ExportHistoryComponent implements OnInit {
   }
 
   sortPackage(event) {
-    this.getHistoryExport(this.pag_params, event.sort_property, event.sort_order);
+    this.getHistoryExport(this.pag_params, this.account_id, event.sort_property, event.sort_order);
   }
 
   indexChanged(event) {
-    // 
+    this.pag_params['pageIndex'] = event;
+    this.getHistoryExport(this.pag_params, this.account_id);
   }
 }
