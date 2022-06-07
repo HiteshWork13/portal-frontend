@@ -7,6 +7,7 @@ import { Observable, Observer } from 'rxjs';
 import { APP_CONST } from '../../constants/app.constant';
 import { AccountService } from '../../services/account.service';
 import { DocumentService } from '../../services/document.service';
+import { PackageService } from '../../services/package.service';
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
@@ -42,12 +43,14 @@ export class UserFormComponent implements OnInit {
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
   oldForm: boolean = true;
   @Input() addData: any;
+  subAdminRole: any = APP_CONST.Role.SubAdmin;
 
-  constructor(private notification: NzNotificationService, private accountService: AccountService, private documentService: DocumentService) { }
+  constructor(private notification: NzNotificationService, private accountService: AccountService, private documentService: DocumentService, private packageService: PackageService) { }
 
   ngOnInit(): void {
     let current_user_details: any = localStorage.getItem('current_user_details');
     this.currentUserDetails = JSON.parse(current_user_details);
+    this.getPackageList();
     this.createForm();
     if (this.state == 'edit') {
       this.accountForm.get('file').clearValidators();
@@ -292,6 +295,20 @@ export class UserFormComponent implements OnInit {
       reseller_state: item.state,
       reseller_code: item.postcode,
       reseller_email: item.reseller_default_email,
+    })
+  }
+
+  getPackageList() {
+    let api_body = {};
+    if (this.currentUserDetails.role == this.subAdminRole) {
+      api_body['userid'] = this.currentUserDetails.created_by
+    } else {
+      api_body['userid'] = this.currentUserDetails.id
+    }
+    this.packageService.getAllPackages(api_body).then((response: any) => {
+      if (response.success) {
+        this.packageList = response['data'];
+      }
     })
   }
 }
