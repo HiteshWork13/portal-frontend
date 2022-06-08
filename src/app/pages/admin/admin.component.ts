@@ -161,7 +161,7 @@ export class AdminComponent implements OnInit {
             onClick: () => this.createAdmin(),
           },
         ],
-        nzWidth: '80%',
+        nzWidth: '50%',
         nzMaskClosable: false,
         nzOnCancel: () => this.onClose(),
         nzAutofocus: null,
@@ -179,7 +179,7 @@ export class AdminComponent implements OnInit {
             onClick: () => this.updateAdmin(item),
           },
         ],
-        nzWidth: '80%',
+        nzWidth: '50%',
         nzMaskClosable: false,
         nzOnCancel: () => this.onClose(),
         nzAutofocus: null,
@@ -189,7 +189,6 @@ export class AdminComponent implements OnInit {
 
   editAdmin(item) {
     this.adminForm.patchValue({
-      username: item.username,
       firstname: item.firstname,
       lastname: item.lastname,
       company: item.company,

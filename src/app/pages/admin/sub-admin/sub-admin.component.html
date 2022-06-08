@@ -135,7 +135,7 @@
       <ng-container *ngFor="let row of subAdminList; let ri = index">
         <tr *ngIf="permissionToBeUpdateRow.id != row.id">
           <td><span class="truncate">{{ri + 1}}</span></td>
-          <td><span class="truncate">{{row.username}}</span></td>
+          <td><span class="truncate">{{row.firstname}}</span></td>
           <td style="text-align: center;">
             <nz-switch nzSize="small"
               [ngModel]="permissionToBeUpdateRow?.permissions?.viewAccounts ? permissionToBeUpdateRow.permissions.viewAccounts.indexOf(row.id) > -1 : false"

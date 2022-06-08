@@ -153,7 +153,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
             onClick: () => this.createSubAdmin(),
           },
         ],
-        nzWidth: '80%',
+        nzWidth: '50%',
         nzMaskClosable: false,
         nzOnCancel: () => this.onClose(),
         nzAutofocus: null,
@@ -171,7 +171,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
             onClick: () => this.updateSubadmin(item),
           },
         ],
-        nzWidth: '80%',
+        nzWidth: '50%',
         nzMaskClosable: false,
         nzOnCancel: () => this.onClose(),
         nzAutofocus: null,
@@ -220,8 +220,8 @@ export class SubAdminComponent implements OnInit, OnChanges {
     this.matchPasswordErr = false;
     if (
       this.subAdminForm.controls['password'].value !==
-      this.subAdminForm.controls['confirmPasswordf'].value &&
-      this.subAdminForm.controls['confirmPasswordf'].value !== ''
+      this.subAdminForm.controls['confirmPassword'].value &&
+      this.subAdminForm.controls['confirmPassword'].value !== ''
     ) {
       this.matchPasswordErr = true;
     }
@@ -256,7 +256,6 @@ export class SubAdminComponent implements OnInit, OnChanges {
       postcode: formObj.postcode,
       email: formObj.email,
     }
-    console.log('formObj.password: ', formObj.password);
     if (formObj.password !== null) data['password'] = formObj.password;
     this.subAdminService.updateSubAdmin(item.id, data).then((response) => {
       this.subAdminList = this.subAdminList.map((element, index) => {

@@ -37,7 +37,7 @@ export class UserDetailsComponent implements OnInit {
       ];
       this.row_data['userData'] = userData;
     } else {
-      let created_by_id = row.created_by_id.username
+      let created_by_id = row.created_by_id.firstname
       let endUserData = [
         { field: "First Name", value: row.firstname },
         { field: "Last Name", value: row.lastname },

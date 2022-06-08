@@ -37,7 +37,7 @@
       }
     },
     {
-      "name": "MAC",
+      "name": "Device",
       "dataType": "text",
       "property": "mac",
       "visible": true,
