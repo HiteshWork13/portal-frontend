@@ -308,7 +308,7 @@ export class UserFormComponent implements OnInit {
     }
     this.packageService.getAllPackages(api_body).then((response: any) => {
       if (response.success) {
-        this.packageList = response['data'].length > 0 ? response['data'] : this.defaultPackageList;
+        this.packageList = response['data'];
       }
     })
   }
