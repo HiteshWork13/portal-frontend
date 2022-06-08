@@ -33,6 +33,7 @@ export class UsersComponent implements OnInit {
   search_keyword: any = '';
   default_sort_property: string = 'created_at';
   default_sort_order: any = 'desc';
+  offset = (this.pag_params.pageIndex - 1) * this.pag_params.pageSize;
 
   constructor(
     private modalService: NzModalService,
@@ -52,10 +53,10 @@ export class UsersComponent implements OnInit {
   async getAccountData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, search_query = this.search_keyword) {
     this.loading = true;
     const currentUserId = localStorage.getItem('current_user_id');
-    let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
+    this.offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
     let api_body = {
       created_by: currentUserId,
-      offset: offset,
+      offset: this.offset,
       limit: paginationParams.pageSize,
       search_query: search_query
     }
@@ -69,7 +70,7 @@ export class UsersComponent implements OnInit {
       if (account.success) {
         this.accountList = account?.data;
         this.accountList.map((element, index) => {
-          element['sr_no'] = index + 1;
+          element['sr_no'] = this.offset + (index + 1);
         });
         this.loading = false;
         this.totalData = account?.counts;
@@ -144,9 +145,10 @@ export class UsersComponent implements OnInit {
     input.append("data", JSON.stringify(event));
     this.accountService.updateAccount(id, input).then(
       (response: any) => {
-        this.accountList = this.accountList.map((element) => {
+        this.accountList = this.accountList.map((element, index) => {
           if (element['id'] == id) {
             element = response['data'];
+            element['sr_no'] = this.offset + (index + 1);
           }
           return element;
         });
@@ -179,7 +181,7 @@ export class UsersComponent implements OnInit {
         if (response.success) {
           this.accountList = this.accountList.filter((element) => element['id'] !== id);
           this.accountList.map((element, index) => {
-            element['sr_no'] = index + 1;
+            element['sr_no'] = this.offset + (index + 1);
           });
           this.notification.success(ACCOUNT_CONST.delete_account_success);
         }
@@ -199,7 +201,7 @@ export class UsersComponent implements OnInit {
           // this.accountList.push(result.data);
           this.accountList = [result['data'], ...this.accountList];
           this.accountList.map((element, index) => {
-            element['sr_no'] = index + 1;
+            element['sr_no'] = this.offset + (index + 1);
           });
           this.notification.success(ACCOUNT_CONST.create_account_success);
         }

@@ -75,7 +75,6 @@ export class PackagesComponent implements OnInit {
       if (response.success) {
         this.packageList = response.data;
         this.packageList.map((element, index) => {
-          // let sr_no = paginationParams.pageIndex * paginationParams.pageSize;
           element['sr_no'] = index + 1;
         });
         this.loading = false;
@@ -149,6 +148,9 @@ export class PackagesComponent implements OnInit {
         (response: any) => {
           if (response.success) {
             this.packageList = [response['data'], ...this.packageList];
+            this.packageList.map((element, index) => {
+              element['sr_no'] = index + 1;
+            });
             this.notification.success(PACKAGE_CONST.create_package_success);
             // this.modalService.closeAll();
             this.createmodal.close();

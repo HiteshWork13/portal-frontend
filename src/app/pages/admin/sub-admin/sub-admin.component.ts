@@ -39,6 +39,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
   search_keyword: any = '';
   default_sort_property: string = 'created_at';
   default_sort_order: any = 'desc';
+  offset = (this.pag_params.pageIndex - 1) * this.pag_params.pageSize;
 
   constructor(
     private modalService: NzModalService,
@@ -102,12 +103,12 @@ export class SubAdminComponent implements OnInit, OnChanges {
 
   getSubAdminData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, idToGetAccount = this.selectedAdminId || this.currentUserDetails.id, search_query = this.search_keyword) {
     this.loading = true;
-    let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
+    this.offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
     // sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
     let api_body = {
       created_by: idToGetAccount,
       role: this.subAdminRole,
-      offset: offset,
+      offset: this.offset,
       limit: paginationParams.pageSize,
       search_query: search_query
     }
@@ -121,7 +122,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
       if (response.success == true) {
         this.subAdminList = response.data;
         this.subAdminList.map((element, index) => {
-          element['sr_no'] = index + 1;
+          element['sr_no'] = this.offset + (index + 1);
         });
         this.totalData = response?.counts;
         this.PageSize = response?.limit ? response?.limit : 10;
@@ -204,7 +205,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
       this.subAdminService.createSubAdmin(formObj).then((response) => {
         this.subAdminList = [...this.subAdminList, response['data']];
         this.subAdminList.map((element, index) => {
-          element['sr_no'] = index + 1;
+          element['sr_no'] = this.offset + (index + 1);
         });
         this.modalService.closeAll();
         this.notification.success(SUB_ADMIN_CONST.create_sub_admin_success);
@@ -261,7 +262,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
       this.subAdminList = this.subAdminList.map((element, index) => {
         if (element['id'] == item.id) {
           element = response['data'];
-          element['sr_no'] = index + 1;
+          element['sr_no'] = this.offset + (index + 1);
         }
         return element;
       });
@@ -277,7 +278,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
     this.subAdminService.deleteSubAdmin(subadmin_id).then((response) => {
       this.subAdminList = this.subAdminList.filter((element) => element['id'] !== subadmin_id);
       this.subAdminList.map((element, index) => {
-        element['sr_no'] = index + 1;
+        element['sr_no'] = this.offset + (index + 1);
       });
       this.notification.success(SUB_ADMIN_CONST.delete_sub_admin_success);
     }, (error) => {

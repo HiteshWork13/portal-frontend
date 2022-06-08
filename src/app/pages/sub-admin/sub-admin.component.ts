@@ -36,6 +36,7 @@ export class SubAdminComponent implements OnInit {
   default_sort_property: string = 'created_at';
   default_sort_order: any = 'desc';
   subAdminRole: any = APP_CONST.Role.SubAdmin;
+  offset = (this.pag_params.pageIndex - 1) * this.pag_params.pageSize;
 
   constructor(
     private modalService: NzModalService,
@@ -104,12 +105,12 @@ export class SubAdminComponent implements OnInit {
   getSubAdminData(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, search_query = this.search_keyword) {
     this.loading = true;
     const currentUserId = localStorage.getItem('current_user_id');
-    let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
+    this.offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
     // sort_order = sort_order == 'ascend' ? 'ASC' : 'DESC';
     let api_body = {
       created_by: currentUserId,
       role: this.subAdminRole,
-      offset: offset,
+      offset: this.offset,
       limit: paginationParams.pageSize,
       search_query: search_query
     }
@@ -123,7 +124,7 @@ export class SubAdminComponent implements OnInit {
       if (response.success) {
         this.subAdminList = response.data;
         this.subAdminList.map((element, index) => {
-          element['sr_no'] = index + 1;
+          element['sr_no'] = this.offset + (index + 1);
         });
         this.loading = false;
         this.totalData = response?.counts;
@@ -206,7 +207,7 @@ export class SubAdminComponent implements OnInit {
       this.subAdminService.createSubAdmin(formObj).then((response) => {
         this.subAdminList = [response['data'], ...this.subAdminList];
         this.subAdminList.map((element, index) => {
-          element['sr_no'] = index + 1;
+          element['sr_no'] = this.offset + (index + 1);
         });
         this.modalService.closeAll();
         this.notification.success(SUB_ADMIN_CONST.create_sub_admin_success);
@@ -262,7 +263,7 @@ export class SubAdminComponent implements OnInit {
       this.subAdminList = this.subAdminList.map((element, index) => {
         if (element['id'] == item.id) {
           element = response['data'];
-          element['sr_no'] = index + 1;
+          element['sr_no'] = this.offset + (index + 1);
         }
         return element;
       });
@@ -278,7 +279,7 @@ export class SubAdminComponent implements OnInit {
     this.subAdminService.deleteSubAdmin(subadmin_id).then((response) => {
       this.subAdminList = this.subAdminList.filter((element) => element['id'] !== subadmin_id);
       this.subAdminList.map((element, index) => {
-        element['sr_no'] = index + 1;
+        element['sr_no'] = this.offset + (index + 1);
       });
       this.notification.success(SUB_ADMIN_CONST.delete_sub_admin_success);
     }, (_error) => {

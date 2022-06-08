@@ -21,23 +21,24 @@ export class UserFormComponent implements OnInit {
   @Input() btnName: any = 'Save';
   accountForm: FormGroup;
   newForm: FormGroup;
-  packageList: Array<any> = [
+  defaultPackageList: Array<any> = [
     {
       id: 1,
-      label: 'Pack 1',
+      packagename: 'Dummy Pack 1',
       credit: 10000,
     },
     {
       id: 2,
-      label: 'Pack 2',
+      packagename: 'Dummy Pack 2',
       credit: 20000,
     },
     {
       id: 3,
-      label: 'Pack 3',
+      packagename: 'Dummy Pack 3',
       credit: 30000,
     },
   ];
+  packageList: any;
   currentUserDetails: any;
   countryList: Array<string> = (countries.getNames()).sort();
   superAdminRole: any = APP_CONST.Role.SuperAdmin;
@@ -307,7 +308,7 @@ export class UserFormComponent implements OnInit {
     }
     this.packageService.getAllPackages(api_body).then((response: any) => {
       if (response.success) {
-        this.packageList = response['data'];
+        this.packageList = response['data'].length > 0 ? response['data'] : this.defaultPackageList;
       }
     })
   }
