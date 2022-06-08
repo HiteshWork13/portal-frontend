@@ -26,6 +26,7 @@ export class PackagesComponent implements OnInit {
   packageTableJSON: any = JSON.parse(JSON.stringify((packageTableDataJSON as any)));
   packageForm: FormGroup;
   createmodal: NzModalRef;
+  offset = (this.pag_params.pageIndex - 1) * this.pag_params.pageSize;
 
   constructor(private packageService: PackageService, private notification: NotificationService, private modalService: NzModalService, private formBuilder: FormBuilder) { }
 
@@ -58,10 +59,10 @@ export class PackagesComponent implements OnInit {
 
   getPackages(paginationParams = this.pag_params, sort_property = this.default_sort_property, sort_order = this.default_sort_order, search_query = this.search_keyword) {
     this.loading = true;
-    let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
+    this.offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
     let api_body = {
       userid: this.account_id,
-      offset: offset,
+      offset: this.offset,
       limit: paginationParams.pageSize,
       search_query: search_query
     }
@@ -75,7 +76,7 @@ export class PackagesComponent implements OnInit {
       if (response.success) {
         this.packageList = response.data;
         this.packageList.map((element, index) => {
-          element['sr_no'] = index + 1;
+          element['sr_no'] = this.offset + (index + 1);
         });
         this.loading = false;
         this.totalData = response?.counts;
@@ -149,7 +150,7 @@ export class PackagesComponent implements OnInit {
           if (response.success) {
             this.packageList = [response['data'], ...this.packageList];
             this.packageList.map((element, index) => {
-              element['sr_no'] = index + 1;
+              element['sr_no'] = this.offset + (index + 1);
             });
             this.notification.success(PACKAGE_CONST.create_package_success);
             // this.modalService.closeAll();
@@ -174,7 +175,7 @@ export class PackagesComponent implements OnInit {
           this.packageList = this.packageList.map((element, index) => {
             if (element['id'] == id) {
               element = response['data'];
-              element['sr_no'] = index + 1;
+              element['sr_no'] = this.offset + (index + 1);
             }
           })
           this.notification.success(PACKAGE_CONST.update_package_success);
@@ -204,7 +205,7 @@ export class PackagesComponent implements OnInit {
       if (response.success) {
         this.packageList = this.packageList.filter((element) => element['id'] !== id);
         this.packageList.map((element, index) => {
-          element['sr_no'] = index + 1;
+          element['sr_no'] = this.offset + (index + 1);
         });
         this.notification.success(PACKAGE_CONST.delete_package_success);
       }
