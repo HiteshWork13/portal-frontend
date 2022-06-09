@@ -31,7 +31,7 @@
             <nz-form-label>Total Cost</nz-form-label>
             <nz-form-control nzErrorTip="Enter a valid total cost">
                 <input nz-input trim="blur" formControlName="totalcost" maxlength="80" #totalcost
-                    placeholder="Enter Total Cost" type="number" />
+                    (keypress)="onlyNumber($event)" placeholder="Enter Total Cost" type="number" />
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
