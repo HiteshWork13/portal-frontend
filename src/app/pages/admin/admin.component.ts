@@ -39,6 +39,7 @@ export class AdminComponent implements OnInit {
   default_sort_property: string = 'created_at';
   default_sort_order: any = 'desc';
   offset = (this.pag_params.pageIndex - 1) * this.pag_params.pageSize;
+  edit_item: any;
 
   constructor(
     private modalService: NzModalService,
@@ -144,6 +145,7 @@ export class AdminComponent implements OnInit {
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
+    this.edit_item = [];
     this.mode = state;
     setTimeout(() => {
       this.firstname.nativeElement.focus();
@@ -167,6 +169,7 @@ export class AdminComponent implements OnInit {
         nzAutofocus: null,
       });
     } else {
+      this.edit_item = item;
       this.editAdmin(item);
       this.modalService.create({
         nzTitle: 'Update Admin',
@@ -233,7 +236,6 @@ export class AdminComponent implements OnInit {
   }
 
   createAdmin() {
-    console.log('this.adminForm: ', this.adminForm);
     for (const i in this.adminForm.controls) {
       this.adminForm.controls[i].markAsDirty();
       this.adminForm.controls[i].updateValueAndValidity();
@@ -282,8 +284,10 @@ export class AdminComponent implements OnInit {
         });
         this.notification.success(ADMIN_CONST.update_admin_success);
         this.modalService.closeAll();
+        this.edit_item = [];
       }
     }, (_error) => {
+      this.edit_item = [];
       this.notification.error(ADMIN_CONST.update_admin_error);
       this.modalService.closeAll();
     });
@@ -341,6 +345,14 @@ export class AdminComponent implements OnInit {
       nzAutofocus: null,
       nzOnCancel: () => this.onClose(),
     });
+  }
+
+  saveForm() {
+    if (this.mode == 'add') {
+      this.createAdmin();
+    } else {
+      this.updateAdmin(this.edit_item);
+    }
   }
 }
 

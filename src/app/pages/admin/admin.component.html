@@ -51,7 +51,7 @@
 </ng-template>
 
 <ng-template #temp>
-  <form nz-form nzLayout="vertical" id="addAdminForm" [formGroup]="adminForm" (keydown.enter)="createAdmin()"
+  <form nz-form nzLayout="vertical" id="addAdminForm" [formGroup]="adminForm" (keydown.enter)="saveForm()"
     autocomplete="off">
     <div nz-row style="margin-bottom: 0.50rem;">
       <div nz-col nzSpan="24">
@@ -64,21 +64,21 @@
           <nz-form-label>First Name</nz-form-label>
           <nz-form-control nzErrorTip="Enter a valid first name">
             <input nz-input trim="blur" formControlName="firstname" maxlength="80" #firstname
-              placeholder="Enter First Name" tabindex="11" />
+              placeholder="Enter First Name" tabindex="1" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label>Company</nz-form-label>
           <nz-form-control nzErrorTip="Enter a valid Company">
             <input nz-input trim="blur" formControlName="company" maxlength="80" #company
-              placeholder="Enter Company Name" tabindex="13" />
+              placeholder="Enter Company Name" tabindex="3" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label>State</nz-form-label>
           <nz-form-control nzErrorTip="Enter a valid State">
             <input nz-input trim="blur" formControlName="state" maxlength="80" #state placeholder="Enter State"
-              tabindex="15" />
+              tabindex="5" />
           </nz-form-control>
         </nz-form-item>
       </div>
@@ -87,21 +87,21 @@
           <nz-form-label>Last Name</nz-form-label>
           <nz-form-control nzErrorTip="Enter a valid last name">
             <input nz-input trim="blur" formControlName="lastname" maxlength="80" #lastname
-              placeholder="Enter Last Name" tabindex="12" />
+              placeholder="Enter Last Name" tabindex="2" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label>Street</nz-form-label>
           <nz-form-control nzErrorTip="Enter a valid Street">
             <input nz-input trim="blur" formControlName="street" maxlength="80" #street placeholder="Enter Street"
-              tabindex="14" />
+              tabindex="4" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label>Postcode</nz-form-label>
           <nz-form-control nzErrorTip="Enter a valid Postcode">
             <input nz-input trim="blur" formControlName="postcode" maxlength="80" #code placeholder="Enter Postcode"
-              tabindex="16" />
+              tabindex="6" />
           </nz-form-control>
         </nz-form-item>
       </div>
@@ -112,7 +112,7 @@
           <nz-form-label>Email</nz-form-label>
           <nz-form-control nzErrorTip="Enter a valid Email">
             <input nz-input trim="blur" formControlName="email" maxlength="80" #email placeholder="Enter Email Address"
-              tabindex="17" />
+              tabindex="7" />
           </nz-form-control>
         </nz-form-item>
       </div>
@@ -123,7 +123,8 @@
           <nz-form-control [nzErrorTip]="newPasswordRef">
             <nz-input-group [nzPrefix]="prefixLock">
               <input id="myinputbox" type="password" nz-input formControlName="password"
-                placeholder="Enter new password" autofocus name="adminPwd" autocomplete="new-password" #adminPwd />
+                placeholder="Enter new password" autofocus name="adminPwd" autocomplete="new-password" #adminPwd
+                tabindex="8" />
             </nz-input-group>
             <ng-template #newPasswordRef>
               Enter a valid Password
@@ -137,7 +138,7 @@
           </nz-form-label>
           <nz-form-control [nzErrorTip]="newPasswordRef">
             <nz-input-group [nzPrefix]="prefixLock">
-              <input id="myinputbox" type="password" nz-input formControlName="password"
+              <input id="myinputbox" type="password" nz-input formControlName="password" tabindex="8"
                 placeholder="Enter changed password" autofocus name="adminPwd" autocomplete="new-password" #adminPwd />
             </nz-input-group>
             <ng-template #newPasswordRef>
@@ -156,7 +157,7 @@
             [nzErrorTip]="matchPasswordErr ? 'Passwords must match' : 'Enter a valid Confirmed Password'">
             <nz-input-group [nzPrefix]="prefixLock">
               <input #Pwd id="myinputbox" type="password" nz-input formControlName="confirmPassword"
-                (input)="matchPassword()"
+                (input)="matchPassword()" tabindex="9"
                 [placeholder]="mode == 'add' ? 'Re-enter new password' : 'Re-enter changed password'">
             </nz-input-group>
           </nz-form-control>

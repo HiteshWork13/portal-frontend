@@ -40,6 +40,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
   default_sort_property: string = 'created_at';
   default_sort_order: any = 'desc';
   offset = (this.pag_params.pageIndex - 1) * this.pag_params.pageSize;
+  edit_item: any;
 
   constructor(
     private modalService: NzModalService,
@@ -135,6 +136,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
+    this.edit_item = [];
     this.mode = state;
     setTimeout(() => {
       this.firstname.nativeElement.focus();
@@ -159,6 +161,7 @@ export class SubAdminComponent implements OnInit, OnChanges {
         nzAutofocus: null,
       });
     } else {
+      this.edit_item = item;
       this.editSubadmin(item);
       this.modalService.create({
         nzTitle: 'Update Sub Admin',
@@ -267,7 +270,9 @@ export class SubAdminComponent implements OnInit, OnChanges {
       });
       this.notification.success(SUB_ADMIN_CONST.update_sub_admin_success);
       this.modalService.closeAll();
-    }, (error) => {
+      this.edit_item = [];
+    }, (_error) => {
+      this.edit_item = [];
       this.notification.error(SUB_ADMIN_CONST.update_sub_admin_error);
       this.modalService.closeAll();
     });
@@ -372,6 +377,14 @@ export class SubAdminComponent implements OnInit, OnChanges {
   indexChanged(event) {
     this.pag_params['pageIndex'] = event;
     this.getSubAdminData(this.pag_params);
+  }
+
+  saveForm() {
+    if (this.mode == 'add') {
+      this.createSubAdmin();
+    } else {
+      this.updateSubadmin(this.edit_item);
+    }
   }
 }
 

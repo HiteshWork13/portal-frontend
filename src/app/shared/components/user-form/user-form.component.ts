@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as countries from 'country-list';
 import moment from 'moment';
@@ -21,23 +21,6 @@ export class UserFormComponent implements OnInit {
   @Input() btnName: any = 'Save';
   accountForm: FormGroup;
   newForm: FormGroup;
-  defaultPackageList: Array<any> = [
-    {
-      id: 1,
-      packagename: 'Dummy Pack 1',
-      credit: 10000,
-    },
-    {
-      id: 2,
-      packagename: 'Dummy Pack 2',
-      credit: 20000,
-    },
-    {
-      id: 3,
-      packagename: 'Dummy Pack 3',
-      credit: 30000,
-    },
-  ];
   packageList: any;
   currentUserDetails: any;
   countryList: Array<string> = (countries.getNames()).sort();
@@ -45,6 +28,7 @@ export class UserFormComponent implements OnInit {
   oldForm: boolean = true;
   @Input() addData: any;
   subAdminRole: any = APP_CONST.Role.SubAdmin;
+  @ViewChild('firstname', { static: false }) firstname: ElementRef;
 
   constructor(private notification: NzNotificationService, private accountService: AccountService, private documentService: DocumentService, private packageService: PackageService) { }
 
@@ -61,6 +45,9 @@ export class UserFormComponent implements OnInit {
     } else {
       this.patchDefaults(this.addData);
     }
+    setTimeout(() => {
+      this.firstname.nativeElement.focus();
+    });
   }
 
   createForm() {
@@ -146,7 +133,7 @@ export class UserFormComponent implements OnInit {
   handleCredit(e) {
     const selectedPack = this.packageList.find((pack) => pack.id == e);
     if (selectedPack) {
-      this.accountForm.controls.credits.setValue(selectedPack['credit']);
+      this.accountForm.controls.credits.setValue(selectedPack['totalcost']);
     }
   }
 

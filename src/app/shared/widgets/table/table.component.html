@@ -69,7 +69,8 @@
             <!-- <span *ngIf="column.property == 'status'">
               <nz-tag [nzColor]="'#87d068'">Active</nz-tag>
             </span> -->
-            <span *ngIf="column.property != 'actions' && !column.isHtml && column.property !== 'created_at'">
+            <span
+              *ngIf="column.property != 'actions' && !column.isHtml && column.property !== 'created_at' && column.property !== 'timestamp'">
               <ng-container *ngIf="!column.actionTemplate">
                 <ng-container *ngIf="column.dataType == 'price_range'">
                   {{ getData(row, column) }}
@@ -91,10 +92,11 @@
                 </ng-container>
               </ng-container>
             </span>
-            <span *ngIf="column.property == 'created_at'">
-              {{ getData(row, column) | date:'dd/MM/yyyy'}}
+            <span *ngIf="column.property == 'created_at' || column.property == 'timestamp'">
+              {{ getData(row, column) | date: column.property == 'timestamp' ? 'h:mm a dd/MM/yyyy' : 'dd/MM/yyyy'}}
             </span>
-            <div *ngIf="column.property != 'actions' && column.property !== 'created_at' && column.isHtml"
+            <div
+              *ngIf="column.property != 'actions' && column.property !== 'created_at' && column.property !== 'timestamp' && column.isHtml"
               [innerHtml]="getData(row, column)"></div>
             <span *ngIf="column.property == 'actions'">
               <ng-container *ngIf="!column.actionTemplate">

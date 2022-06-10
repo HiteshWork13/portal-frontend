@@ -19,6 +19,7 @@ export class ExportHistoryComponent implements OnInit {
   loading: boolean = true;
   totalData: number = 10;
   PageSize: number = 10;
+  offset = (this.pag_params.pageIndex - 1) * this.pag_params.pageSize;
 
   constructor(private modalService: NzModalService, private accountService: AccountService) { }
 
@@ -31,9 +32,9 @@ export class ExportHistoryComponent implements OnInit {
   }
 
   getHistoryExport(paginationParams = this.pag_params, account_id, sort_property = this.default_sort_property, sort_order = this.default_sort_order) {
-    let offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
+    this.offset = (paginationParams.pageIndex - 1) * paginationParams.pageSize;
     let api_body = {
-      offset: offset,
+      offset: this.offset,
       limit: paginationParams.pageSize,
       client_id: account_id
     }
@@ -47,7 +48,7 @@ export class ExportHistoryComponent implements OnInit {
       if (response.success) {
         this.historyList = response.data;
         this.historyList.map((element, index) => {
-          element['sr_no'] = index + 1;
+          element['sr_no'] = this.offset + (index + 1);
         });
         this.loading = false;
         this.totalData = response?.counts;

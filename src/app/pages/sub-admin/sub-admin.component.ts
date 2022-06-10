@@ -37,6 +37,7 @@ export class SubAdminComponent implements OnInit {
   default_sort_order: any = 'desc';
   subAdminRole: any = APP_CONST.Role.SubAdmin;
   offset = (this.pag_params.pageIndex - 1) * this.pag_params.pageSize;
+  edit_item: any;
 
   constructor(
     private modalService: NzModalService,
@@ -137,6 +138,7 @@ export class SubAdminComponent implements OnInit {
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
+    this.edit_item = [];
     this.mode = state;
     setTimeout(() => {
       this.firstname.nativeElement.focus();
@@ -160,6 +162,7 @@ export class SubAdminComponent implements OnInit {
         nzAutofocus: null,
       });
     } else {
+      this.edit_item = item;
       this.editSubadmin(item);
       this.modalService.create({
         nzTitle: 'Update Sub Admin',
@@ -269,7 +272,9 @@ export class SubAdminComponent implements OnInit {
       });
       this.notification.success(SUB_ADMIN_CONST.update_sub_admin_success);
       this.modalService.closeAll();
+      this.edit_item = [];
     }, (_error) => {
+      this.edit_item = [];
       this.notification.error(SUB_ADMIN_CONST.update_sub_admin_error);
       this.modalService.closeAll();
     });
@@ -313,6 +318,14 @@ export class SubAdminComponent implements OnInit {
   indexChanged(event) {
     this.pag_params['pageIndex'] = event;
     this.getSubAdminData(this.pag_params);
+  }
+
+  saveForm() {
+    if (this.mode == 'add') {
+      this.createSubAdmin();
+    } else {
+      this.updateSubadmin(this.edit_item);
+    }
   }
 }
 
