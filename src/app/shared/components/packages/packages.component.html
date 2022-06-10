@@ -5,7 +5,7 @@
 </app-table>
 
 <ng-template #temp>
-    <form nz-form nzLayout="vertical" id="addUserForm" [formGroup]="packageForm" (ngSubmit)="onSubmit()">
+    <form nz-form nzLayout="vertical" id="addUserForm" [formGroup]="packageForm" (keydown.enter)="saveForm()">
         <nz-form-item>
             <nz-form-label>Package Name</nz-form-label>
             <nz-form-control nzErrorTip="Enter a valid package name">

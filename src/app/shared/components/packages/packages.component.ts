@@ -27,6 +27,8 @@ export class PackagesComponent implements OnInit {
   packageForm: FormGroup;
   createmodal: NzModalRef;
   offset = (this.pag_params.pageIndex - 1) * this.pag_params.pageSize;
+  mode: any = 'add';
+  edit_item: any;
 
   constructor(private packageService: PackageService, private notification: NotificationService, private modalService: NzModalService, private formBuilder: FormBuilder) { }
 
@@ -93,10 +95,12 @@ export class PackagesComponent implements OnInit {
   }
 
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
+    this.createForm();
+    this.mode = state;
+    this.edit_item = item.id;
     setTimeout(() => {
       this.packageName.nativeElement.focus();
     });
-    this.createForm();
     if (state == 'edit') this.patchFormVal(item);
     this.createmodal = this.modalService.create({
       nzTitle: state == 'add' ? 'Add New Package' : 'Update Package',
@@ -112,7 +116,7 @@ export class PackagesComponent implements OnInit {
             let formValue = this.packageForm.value;
             // let valid: boolean = this.packageForm.valid;
             // if (valid == true) {
-            state == 'add' ? this.onSave(formValue) : this.updateUser(item.id, formValue);
+            state == 'add' ? this.createPackage() : this.updateUser(item.id);
             return false;
             // } else {
             // for (const i in this.packageForm.controls) {
@@ -137,13 +141,13 @@ export class PackagesComponent implements OnInit {
     });
   }
 
-  onSave(value) {
+  createPackage() {
     for (const i in this.packageForm.controls) {
       this.packageForm.controls[i].markAsDirty();
       this.packageForm.controls[i].updateValueAndValidity();
     }
     if (this.packageForm.valid) {
-      const formObj = value;
+      const formObj = this.packageForm.value;
       formObj.userid = this.account_id;
       this.packageService.createPackage(formObj).then(
         (response: any) => {
@@ -162,14 +166,14 @@ export class PackagesComponent implements OnInit {
     }
   }
 
-  updateUser(id, value) {
+  updateUser(id) {
     // const ref: NzModalRef = this.modalService.info();
     for (const i in this.packageForm.controls) {
       this.packageForm.controls[i].markAsDirty();
       this.packageForm.controls[i].updateValueAndValidity();
     }
     if (this.packageForm.valid) {
-      const formObj = value;
+      const formObj = this.packageForm.value;
       this.packageService.updatePackage(id, formObj).then((response: any) => {
         if (response.success) {
           this.packageList = this.packageList.map((element, index) => {
@@ -177,13 +181,16 @@ export class PackagesComponent implements OnInit {
               element = response['data'];
               element['sr_no'] = this.offset + (index + 1);
             }
+            return element;
           })
           this.notification.success(PACKAGE_CONST.update_package_success);
           // this.modalService.closeAll();
           // this.modalService.close();
           this.createmodal.close();
+          this.edit_item = [];
         }
       }, (_error) => {
+        this.edit_item = [];
         this.notification.error(PACKAGE_CONST.update_package_error);
       })
     }
@@ -235,5 +242,13 @@ export class PackagesComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  saveForm() {
+    if (this.mode == 'add') {
+      this.createPackage();
+    } else {
+      this.updateUser(this.edit_item);
+    }
   }
 }
