@@ -140,9 +140,6 @@ export class SubAdminComponent implements OnInit {
   openModal(temp: TemplateRef<{}>, state: any, item: any) {
     this.edit_item = [];
     this.mode = state;
-    setTimeout(() => {
-      this.firstname.nativeElement.focus();
-    });
     this.createForm();
     if (state == 'add') {
       this.modalService.create({

@@ -98,9 +98,6 @@ export class PackagesComponent implements OnInit {
     this.createForm();
     this.mode = state;
     this.edit_item = item.id;
-    setTimeout(() => {
-      this.packageName.nativeElement.focus();
-    });
     if (state == 'edit') this.patchFormVal(item);
     this.createmodal = this.modalService.create({
       nzTitle: state == 'add' ? 'Add New Package' : 'Update Package',

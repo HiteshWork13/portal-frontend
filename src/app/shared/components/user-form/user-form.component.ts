@@ -45,9 +45,6 @@ export class UserFormComponent implements OnInit {
     } else {
       this.patchDefaults(this.addData);
     }
-    setTimeout(() => {
-      this.firstname.nativeElement.focus();
-    });
   }
 
   createForm() {
