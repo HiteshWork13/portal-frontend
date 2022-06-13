@@ -16,21 +16,21 @@
                         <nz-form-label>First Name</nz-form-label>
                         <nz-form-control nzErrorTip="Enter a valid first name">
                             <input nz-input trim="blur" formControlName="firstname" maxlength="80" #firstname
-                                placeholder="Enter First Name" tabindex="11" />
+                                placeholder="Enter First Name" tabindex="1" />
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item>
                         <nz-form-label>Company</nz-form-label>
                         <nz-form-control nzErrorTip="Enter a valid Company">
                             <input nz-input trim="blur" formControlName="company" maxlength="80" #company
-                                placeholder="Enter Company Name" tabindex="13" />
+                                placeholder="Enter Company Name" tabindex="3" />
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item>
                         <nz-form-label>State</nz-form-label>
                         <nz-form-control nzErrorTip="Enter a valid State">
                             <input nz-input trim="blur" formControlName="state" maxlength="80" #state
-                                placeholder="Enter State" tabindex="15" />
+                                placeholder="Enter State" tabindex="5" />
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -39,21 +39,21 @@
                         <nz-form-label>Last Name</nz-form-label>
                         <nz-form-control nzErrorTip="Enter a valid last name">
                             <input nz-input trim="blur" formControlName="lastname" maxlength="80" #lastname
-                                placeholder="Enter Last Name" tabindex="12" />
+                                placeholder="Enter Last Name" tabindex="2" />
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item>
                         <nz-form-label>Street</nz-form-label>
                         <nz-form-control nzErrorTip="Enter a valid Street">
                             <input nz-input trim="blur" formControlName="street" maxlength="80" #street
-                                placeholder="Enter Street" tabindex="14" />
+                                placeholder="Enter Street" tabindex="4" />
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item>
                         <nz-form-label>Postcode</nz-form-label>
                         <nz-form-control nzErrorTip="Enter a valid Postcode">
                             <input nz-input trim="blur" formControlName="postcode" maxlength="80" #code
-                                placeholder="Enter Postcode" tabindex="16" />
+                                placeholder="Enter Postcode" tabindex="6" />
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -70,8 +70,8 @@
             <nz-form-control>
                 <nz-input-group [nzPrefix]="prefixLock" class="w-50">
                     <input id="myinputbox" type="password" nz-input formControlName="old_password"
-                        (input)="addPwdValidator()" placeholder="Enter old password" autofocus name="adminPwd"
-                        autocomplete="new-password" #adminPwd />
+                        (input)="addPwdValidator()" placeholder="Enter old password" name="adminoldPwd"
+                        autocomplete="new-password" #adminoldPwd tabindex="7" />
                 </nz-input-group>
             </nz-form-control>
         </nz-form-item>
@@ -81,8 +81,8 @@
             <nz-form-control>
                 <nz-input-group [nzPrefix]="prefixLock" class="w-50">
                     <input id="myinputbox" type="password" nz-input formControlName="password"
-                        placeholder="Enter new password" autofocus name="adminPwd" autocomplete="new-password"
-                        #adminPwd />
+                        placeholder="Enter new password" name="adminChangePwd" autocomplete="new-password"
+                        #adminChangePwd tabindex="8" />
                 </nz-input-group>
             </nz-form-control>
         </nz-form-item>
@@ -93,13 +93,13 @@
                 [nzErrorTip]="matchPasswordErr ? 'Passwords must match' : 'Enter a valid Confirmed Password'">
                 <nz-input-group [nzPrefix]="prefixLock" class="w-50">
                     <input #Pwd id="myinputbox" type="password" nz-input formControlName="confirmPassword"
-                        (input)="matchPassword()" placeholder="Re-enter new password" />
+                        (input)="matchPassword()" placeholder="Re-enter new password" tabindex="9" />
                 </nz-input-group>
             </nz-form-control>
         </nz-form-item>
     </form>
     <ng-template #prefixLock><i nz-icon nzType="lock"></i></ng-template>
     <div id="footer">
-        <button nz-button nzType="primary" *ngIf="profileForm.touched" (click)="updateAccountDetails()">Update</button>
+        <button nz-button nzType="primary" *ngIf="profileForm.dirty" (click)="updateAccountDetails()">Update</button>
     </div>
 </div>

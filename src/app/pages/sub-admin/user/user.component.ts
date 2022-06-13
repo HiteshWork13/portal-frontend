@@ -122,7 +122,7 @@ export class UserComponent implements OnInit {
 
   showDeleteConfirm(row_id: any): void {
     this.modalService.confirm({
-      nzTitle: 'Are you sure you want to delete this account?',
+      nzTitle: 'Are you sure you want to delete this user?',
       nzOkText: 'Yes',
       nzOkType: 'primary',
       nzOkDanger: true,

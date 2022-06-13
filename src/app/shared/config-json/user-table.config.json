@@ -4,7 +4,7 @@
     "showColumnToggle": true,
     "showSearch": true,
     "showAdd": true,
-    "addTooltipText": "Add Account",
+    "addTooltipText": "Add User",
     "showReset": false,
     "showDownload": false,
     "showClose": false

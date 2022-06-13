@@ -4,6 +4,7 @@
     "showColumnToggle": true,
     "showSearch": true,
     "showAdd": false,
+    "addTooltipText": "Add sub admin",
     "showReset": false,
     "showDownload": false,
     "showClose": false
