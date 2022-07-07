@@ -8,7 +8,12 @@
   <ul>
     <ng-container *ngFor="let item of menuItems">
       <li nz-menu-item [nzMatchRouter]="true" *ngIf="item.enablesIn.indexOf(currentUserDetails.role) > -1">
-        <a [routerLink]="item.path" style="color: black;"><b>{{ item.title }}</b></a>
+        <a [routerLink]="item.path" style="color: black;">
+          <!-- <i nz-icon nzType="file-sync" nzTheme="outline" *ngIf="currentUserDetails.role == 4 && packageid !== 1"
+            style="color: black;"></i> -->
+          <img alt="" src="./assets/images/{{item.id}}.jpg" class="menu-img" />
+          <b>{{ item.title }}</b>
+        </a>
       </li>
     </ng-container>
   </ul>

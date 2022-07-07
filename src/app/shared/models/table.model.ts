@@ -26,6 +26,7 @@ export interface TableConfig {
   rowSelectable: Boolean;
   selectedRowClassName: string;
   noDataLabel: string;
+  showCaption: boolean;
 }
 
 export interface TableHeader {

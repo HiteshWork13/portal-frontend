@@ -19,4 +19,10 @@ export const MENUITEMS = [
     title: 'User',
     enablesIn: [APP_CONST.Role.SuperAdmin, APP_CONST.Role.Admin, APP_CONST.Role.SubAdmin]
   },
+  {
+    id: 'identity_cloak',
+    path: '/history-export',
+    title: 'Identity Cloak',
+    enablesIn: [APP_CONST.Role.User]
+  }
 ];

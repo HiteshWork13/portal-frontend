@@ -35,6 +35,10 @@ const routes: Routes = [
         path: 'profile',
         loadChildren: () => import('./pages/authentication/profile/profile.module').then((m) => m.ProfileModule),
       },
+      {
+        path: 'history-export',
+        loadChildren: () => import('./pages/history-export/history-export.module').then((m) => m.HistoryExportModule),
+      },
     ],
   },
   {

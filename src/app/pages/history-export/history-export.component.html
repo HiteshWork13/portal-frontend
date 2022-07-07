@@ -1,0 +1,3 @@
+<app-table [Data]="historyList" (sortTableColumn)="sortPackage($event)" [Config]="historyTableJSON"
+    (pageIndex)="indexChanged($event)" [loading]="loading" [TotalItems]="totalData" [PageSize]="PageSize">
+</app-table>

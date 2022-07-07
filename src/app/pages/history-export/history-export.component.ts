@@ -1,16 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { historyTableConfigJSON } from '@configJson';
+import { AccountService } from '@services';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { AccountService } from '../../services/account.service';
 
 @Component({
-  selector: 'app-export-history',
-  templateUrl: './export-history.component.html',
-  styleUrls: ['./export-history.component.scss']
+  selector: 'app-history-export',
+  templateUrl: './history-export.component.html',
+  styleUrls: ['./history-export.component.scss']
 })
-export class ExportHistoryComponent implements OnInit {
+export class HistoryExportComponent implements OnInit {
 
-  @Input() account_id: any;
+  account_id: any = localStorage.getItem('current_user_id');
   default_sort_property: string = null;
   default_sort_order: any = null;
   pag_params: any = { pageIndex: 1, pageSize: 10 };
@@ -24,7 +24,6 @@ export class ExportHistoryComponent implements OnInit {
   constructor(private modalService: NzModalService, private accountService: AccountService) { }
 
   ngOnInit(): void {
-    this.getDefaults();
     this.getHistoryExport(this.pag_params, this.account_id);
   }
 
@@ -70,7 +69,4 @@ export class ExportHistoryComponent implements OnInit {
     this.getHistoryExport(this.pag_params, this.account_id);
   }
 
-  getDefaults() {
-    setTimeout(() => { this.historyTableJSON.Caption = "" }, 0);
-  }
 }
