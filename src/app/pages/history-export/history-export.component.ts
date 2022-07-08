@@ -20,6 +20,8 @@ export class HistoryExportComponent implements OnInit {
   totalData: number = 10;
   PageSize: number = 10;
   offset = (this.pag_params.pageIndex - 1) * this.pag_params.pageSize;
+  packageid = 1;
+  packageid_dr = 1;
 
   constructor(private modalService: NzModalService, private accountService: AccountService) { }
 
@@ -44,6 +46,24 @@ export class HistoryExportComponent implements OnInit {
         [sort_property]: sort_order
       }
     }
+    if (this.packageid_dr !== 1) {
+      this.historyDrApi(api_body);
+    } else {
+      this.historyApi(api_body);
+    }
+  }
+
+  sortPackage(event) {
+    this.getHistoryExport(this.pag_params, this.account_id, event.sort_property, event.sort_order);
+  }
+
+  indexChanged(event) {
+    this.pag_params['pageIndex'] = event;
+    this.getHistoryExport(this.pag_params, this.account_id);
+  }
+
+
+  historyApi(api_body) {
     this.accountService.exportHistory(api_body).then((response: any) => {
       if (response.success) {
         this.historyList = response.data;
@@ -60,13 +80,21 @@ export class HistoryExportComponent implements OnInit {
     })
   }
 
-  sortPackage(event) {
-    this.getHistoryExport(this.pag_params, this.account_id, event.sort_property, event.sort_order);
+  historyDrApi(api_body) {
+    this.accountService.exportHistoryDr(api_body).then((response: any) => {
+      if (response.success) {
+        this.historyList = response.data;
+        console.log('this.historyList: ', this.historyList);
+        this.historyList.map((element, index) => {
+          element['sr_no'] = this.offset + (index + 1);
+        });
+        this.loading = false;
+        this.totalData = response?.counts;
+        this.PageSize = response?.limit ? response?.limit : 10;
+      }
+    }, (error) => {
+      this.loading = false;
+      // this.notification.error(PACKAGE_CONST.get_package_error);
+    })
   }
-
-  indexChanged(event) {
-    this.pag_params['pageIndex'] = event;
-    this.getHistoryExport(this.pag_params, this.account_id);
-  }
-
 }

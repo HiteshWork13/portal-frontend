@@ -37,4 +37,8 @@ export class AccountService {
   async exportHistory(data) {
     return await this.dataService.POST(`/historyexport/getAllHistory`, data)
   }
+
+  async exportHistoryDr(data) {
+    return await this.dataService.POST(`/history-export-dr/getAllHistoryDr`, data)
+  }
 }

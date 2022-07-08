@@ -92,6 +92,44 @@
         "placeholder": "",
         "searchQuery": null
       }
+    },
+    {
+      "name": "Trial",
+      "dataType": "text",
+      "property": "trial",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
+    },
+    {
+      "name": "App Type",
+      "dataType": "text",
+      "property": "app_type",
+      "visible": true,
+      "searchable": true,
+      "searchValue": null,
+      "sortable": true,
+      "sortOrder": "",
+      "SearchFormTemplate": null,
+      "advanceFilter": {
+        "dataType": "text",
+        "dpConfig": null,
+        "dprConfig": null,
+        "textMask": null,
+        "placeholder": "",
+        "searchQuery": null
+      }
     }
   ]
 }

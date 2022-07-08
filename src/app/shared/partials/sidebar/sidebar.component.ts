@@ -12,7 +12,8 @@ export class SidebarComponent implements OnInit {
   menuItems: any;
   currentUserDetails: any;
   packageid = 1;
-  packageid_dr = 1;
+  packageid_dr = 2;
+  user_data: any = localStorage.getItem('current_user_details');
 
   constructor() { }
 
@@ -22,6 +23,11 @@ export class SidebarComponent implements OnInit {
     );
     this.currentUserDetails = JSON.parse(current_user_details);
     this.menuItems = MENUITEMS;
+    if (this.user_data.role == 4)
+      this.sideMenuForUser();
+  }
+
+  sideMenuForUser() {
     this.menuItems.forEach(element => {
       if (element.id = "clock") {
         if (this.packageid_dr !== 1) {
