@@ -11,20 +11,15 @@ export class SidebarComponent implements OnInit {
   role_id: any = 1;
   menuItems: any;
   currentUserDetails: any;
-  packageid = 1;
-  packageid_dr = 2;
-  user_data: any = localStorage.getItem('current_user_details');
+  user_data: any = JSON.parse(localStorage.getItem('current_user_details'));
+  packageid = this.user_data.packageid;
+  packageid_dr = this.user_data.packageid_dr;
 
   constructor() { }
 
   ngOnInit(): void {
-    let current_user_details: any = localStorage.getItem(
-      'current_user_details'
-    );
-    this.currentUserDetails = JSON.parse(current_user_details);
     this.menuItems = MENUITEMS;
-    if (this.user_data.role == 4)
-      this.sideMenuForUser();
+    if (this.user_data.role == 4) this.sideMenuForUser();
   }
 
   sideMenuForUser() {

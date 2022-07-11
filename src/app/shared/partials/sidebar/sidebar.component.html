@@ -7,9 +7,9 @@
 <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed" style="background-color: #FBF3EB;">
   <ul>
     <ng-container *ngFor="let item of menuItems">
-      <li nz-menu-item [nzMatchRouter]="true" *ngIf="item.enablesIn.indexOf(currentUserDetails.role) > -1">
+      <li nz-menu-item [nzMatchRouter]="true" *ngIf="item.enablesIn.indexOf(user_data.role) > -1">
         <a [routerLink]="item.path" style="color: black;">
-          <!-- <i nz-icon nzType="file-sync" nzTheme="outline" *ngIf="currentUserDetails.role == 4 && packageid !== 1"
+          <!-- <i nz-icon nzType="file-sync" nzTheme="outline" *ngIf="user_data.role == 4 && packageid !== 1"
             style="color: black;"></i> -->
           <img alt="" src="./assets/images/{{item.id}}.jpg" class="menu-img" />
           <b>{{ item.title }}</b>

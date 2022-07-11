@@ -51,7 +51,6 @@ export class LoginComponent implements OnInit {
     this.loginservice.LogIn(data).then((response: any) => {
       if (response?.success) {
         let login_response: any = response.data;
-        console.log('login_response: ', login_response);
         let current_user_details: any = {
           id: login_response.id,
           username: login_response.username,

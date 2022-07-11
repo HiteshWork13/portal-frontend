@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as countries from 'country-list';
 import moment from 'moment';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
@@ -29,8 +29,9 @@ export class UserFormComponent implements OnInit {
   @Input() addData: any;
   subAdminRole: any = APP_CONST.Role.SubAdmin;
   @ViewChild('firstname', { static: false }) firstname: ElementRef;
+  matchPasswordErr: boolean = false;
 
-  constructor(private notification: NzNotificationService, private accountService: AccountService, private documentService: DocumentService, private packageService: PackageService) { }
+  constructor(private notification: NzNotificationService, private accountService: AccountService, private documentService: DocumentService, private packageService: PackageService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     let current_user_details: any = localStorage.getItem('current_user_details');
@@ -47,10 +48,92 @@ export class UserFormComponent implements OnInit {
     }
   }
 
+  // createForm() {
+  //   const email = `${Date.now()}@facitdatasystems.com`;
+  //   /* Below form is used when account is created in normal flow */
+  //   this.accountForm = new FormGroup({
+  //     code: new FormControl(null),
+  //     // End User
+  //     firstname: new FormControl(null, [Validators.required]),
+  //     lastname: new FormControl(null, [Validators.required]),
+  //     companyname: new FormControl(null, [Validators.required]),
+  //     enduser_street: new FormControl(null, [Validators.required]),
+  //     enduser_state: new FormControl(null, [Validators.required]),
+  //     postcode: new FormControl(null, [Validators.required]),
+  //     enduser_email: new FormControl(null, [Validators.required]),
+  //     enduser_classification: new FormControl(null, [Validators.required]),
+  //     country: new FormControl(null, [Validators.required]),
+  //     packageid: new FormControl(null, [Validators.required]),
+
+  //     // Reseller
+  //     reseller_firstname: new FormControl(null, [Validators.required]),
+  //     reseller_lastname: new FormControl(null, [Validators.required]),
+  //     reseller_company: new FormControl(null, [Validators.required]),
+  //     reseller_street: new FormControl(null, [Validators.required]),
+  //     reseller_state: new FormControl(null, [Validators.required]),
+  //     reseller_code: new FormControl(null, [Validators.required]),
+  //     reseller_email: new FormControl(null, [Validators.required]),
+
+  //     // Hard Core Values
+  //     triallimit: new FormControl(7),
+  //     // password: new FormControl(`${Date.now()}${Math.random()}`),
+  //     password: new FormControl(null, Validators.required),
+  //     confirmPassword: new FormControl(null, Validators.required),
+  //     totaldevices: new FormControl(1),
+  //     twofactor: new FormControl(false),
+  //     expirydate: new FormControl(moment().add(7, 'd').format('YYYY-MM-DD')),
+  //     payasgo: new FormControl(false),
+  //     payid: new FormControl(1),
+  //     billingemail: new FormControl(email),
+  //     credits: new FormControl(60000),
+  //     accounttype: new FormControl(1),
+  //     email: new FormControl(email),
+  //     purchased: new FormControl(true),
+  //     role: new FormControl(4),
+  //     registrationtype: new FormControl(0),
+  //     analyticsstatus: new FormControl(true),
+  //     communicationstatus: new FormControl(true),
+  //     phone: new FormControl(null),
+  //     customerid: new FormControl(null),
+  //     address: new FormControl(null),
+  //     vat: new FormControl(null),
+  //     city: new FormControl(null),
+  //     verificationtoken: new FormControl(null),
+
+  //     file: new FormControl(null, (this.currentUserDetails.role !== this.superAdminRole ? Validators.required : null)),
+
+  //     // packageid_dr: new FormControl(null,[Validators.required]),
+  //     // size_dr: new FormControl(null,[Validators.required]),
+  //     // totaldevices_dr: new FormControl(null,[Validators.required]),
+  //     // expirydate_dr: new FormControl(null,[Validators.required]),
+  //   });
+  //   /* Below form is used when account is created by another software, "created_by_id = null" */
+  //   this.newForm = new FormGroup({
+  //     firstname: new FormControl(null, [Validators.required]),
+  //     lastname: new FormControl(null, [Validators.required]),
+  //     enduser_email: new FormControl(null, [Validators.required]),
+  //     companyname: new FormControl(null, [Validators.required]),
+  //     address: new FormControl(null, [Validators.required]),
+  //     postcode: new FormControl(null, [Validators.required]),
+  //     country: new FormControl(null, [Validators.required]),
+  //     packageid: new FormControl(null, [Validators.required]),
+  //     // Hard Core Values
+  //     phone: new FormControl(null),
+  //     triallimit: new FormControl(7),
+  //     accounttype: new FormControl(1),
+  //     credits: new FormControl(60000),
+  //     purchased: new FormControl(true),
+  //     role: new FormControl(4),
+  //     registrationtype: new FormControl(0),
+  //     totaldevices: new FormControl(1),
+  //     expirydate: new FormControl(moment().add(7, 'd').format('YYYY-MM-DD')),
+  //   })
+  // }
+
   createForm() {
     const email = `${Date.now()}@facitdatasystems.com`;
     /* Below form is used when account is created in normal flow */
-    this.accountForm = new FormGroup({
+    this.accountForm = this.formBuilder.group({
       code: new FormControl(null),
       // End User
       firstname: new FormControl(null, [Validators.required]),
@@ -75,7 +158,9 @@ export class UserFormComponent implements OnInit {
 
       // Hard Core Values
       triallimit: new FormControl(7),
-      password: new FormControl(`${Date.now()}${Math.random()}`),
+      // password: new FormControl(`${Date.now()}${Math.random()}`),
+      password: new FormControl(null, Validators.required),
+      confirmPassword: new FormControl(null, Validators.required),
       totaldevices: new FormControl(1),
       twofactor: new FormControl(false),
       expirydate: new FormControl(moment().add(7, 'd').format('YYYY-MM-DD')),
@@ -103,7 +188,10 @@ export class UserFormComponent implements OnInit {
       // size_dr: new FormControl(null,[Validators.required]),
       // totaldevices_dr: new FormControl(null,[Validators.required]),
       // expirydate_dr: new FormControl(null,[Validators.required]),
-    });
+    }),
+    {
+      validator: MustMatch('password', 'confirmPassword'),
+    };
     /* Below form is used when account is created by another software, "created_by_id = null" */
     this.newForm = new FormGroup({
       firstname: new FormControl(null, [Validators.required]),
@@ -187,6 +275,8 @@ export class UserFormComponent implements OnInit {
 
       file: file_details,
     });
+    this.accountForm.get('password').clearValidators();
+    this.accountForm.get('password').updateValueAndValidity();
   }
 
   handleChange(event) {
@@ -296,4 +386,34 @@ export class UserFormComponent implements OnInit {
       }
     })
   }
+
+  matchPassword() {
+    this.matchPasswordErr = false;
+    if (
+      this.accountForm.controls['password'].value !==
+      this.accountForm.controls['confirmPassword'].value &&
+      this.accountForm.controls['confirmPassword'].value !== ''
+    ) {
+      this.matchPasswordErr = true;
+    }
+  }
+}
+
+export function MustMatch(controlName: string, matchingControlName: string) {
+  return (formGroup: FormGroup) => {
+    const control = formGroup.controls[controlName];
+    const matchingControl = formGroup.controls[matchingControlName];
+
+    if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+      // return if another validator has already found an error on the matchingControl
+      return;
+    }
+
+    // set error on matchingControl if validation fails
+    if (control.value !== matchingControl.value) {
+      matchingControl.setErrors({ mustMatch: true });
+    } else {
+      matchingControl.setErrors(null);
+    }
+  };
 }

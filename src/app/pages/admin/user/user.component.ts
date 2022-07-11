@@ -92,7 +92,7 @@ export class UserComponent implements OnInit {
       nzTitle: state == 'add' ? 'Add New User' : 'Update User',
       nzContent: UserFormComponent,
       nzViewContainerRef: this.viewContainerRef,
-      nzWidth: '80%',
+      nzWidth: '85%',
       nzComponentParams: {
         item: item,
         state: state

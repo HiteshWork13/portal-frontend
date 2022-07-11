@@ -20,8 +20,9 @@ export class HistoryExportComponent implements OnInit {
   totalData: number = 10;
   PageSize: number = 10;
   offset = (this.pag_params.pageIndex - 1) * this.pag_params.pageSize;
-  packageid = 1;
-  packageid_dr = 1;
+  user_data: any = JSON.parse(localStorage.getItem('current_user_details'));
+  packageid = this.user_data.packageid;
+  packageid_dr = this.user_data.packageid_dr;
 
   constructor(private modalService: NzModalService, private accountService: AccountService) { }
 
@@ -84,7 +85,6 @@ export class HistoryExportComponent implements OnInit {
     this.accountService.exportHistoryDr(api_body).then((response: any) => {
       if (response.success) {
         this.historyList = response.data;
-        console.log('this.historyList: ', this.historyList);
         this.historyList.map((element, index) => {
           element['sr_no'] = this.offset + (index + 1);
         });
