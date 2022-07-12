@@ -28,11 +28,11 @@ export class SidebarComponent implements OnInit {
         if (this.packageid_dr !== 1) {
           element.title = "Document Redaction";
           element.id = "document_redaction";
-          element.path = "history-export-dr"
+          // element.path = "history-export-dr"
         } else {
           element.title = "Identity Clock";
           element.id = "identity_cloak";
-          element.path = "history-export"
+          // element.path = "history-export"
         }
       }
     })

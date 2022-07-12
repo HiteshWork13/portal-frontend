@@ -27,7 +27,21 @@ export class HistoryExportComponent implements OnInit {
   constructor(private modalService: NzModalService, private accountService: AccountService) { }
 
   ngOnInit(): void {
+    this.getDefaults();
     this.getHistoryExport(this.pag_params, this.account_id);
+  }
+
+  getDefaults() {
+    setTimeout(() => {
+      if (this.packageid_dr !== 1) {
+        this.historyTableJSON.Caption = "Export History Dr";
+      }
+      else {
+        this.historyTableJSON.Columns = this.historyTableJSON.Columns.filter((column: any) => {
+          return (column.property !== 'trial' && column.property !== 'app_type');
+        });
+      }
+    }, 0);
   }
 
   onClose() {
