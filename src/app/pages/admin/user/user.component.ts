@@ -151,6 +151,7 @@ export class UserComponent implements OnInit {
   onSubmit(event) {
     const input = new FormData()
     if (event['file'] !== null) input.append("file", event['file']);
+    if ('confirmPassword' in event) delete event['confirmPassword'];
     input.append("data", JSON.stringify(event))
     this.accountService.createAccount(input).then(
       (result: any) => {
@@ -172,6 +173,7 @@ export class UserComponent implements OnInit {
     const input = new FormData();
     if (event['file'] !== null) input.append("file", event['file']);
     delete event['file'];
+    if ('confirmPassword' in event) delete event['confirmPassword'];
     input.append("data", JSON.stringify(event));
     this.accountService.updateAccount(id, input).then(
       (response: any) => {
