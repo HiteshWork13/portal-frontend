@@ -72,7 +72,15 @@ export class LoginComponent implements OnInit {
         } else if (login_response.role == APP_CONST.Role.SubAdmin) {
           this.router.navigate(['/user']);
         } else if (login_response?.isUserLogin) {
-          this.router.navigate(['/history-export']);
+          if (login_response?.packageid == 1 && login_response?.packageid_dr == 1) {
+            this.router.navigate(['/history-export']);
+          } else if (login_response?.packageid == 1 && login_response?.packageid_dr !== 1) {
+            this.router.navigate(['/history-export-dr']);
+          } else if (login_response?.packageid !== 1 && login_response?.packageid_dr == 1) {
+            this.router.navigate(['/history-export']);
+          } else {
+            this.router.navigate(['/history-export']);
+          }
         }
 
       }

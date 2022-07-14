@@ -23,19 +23,18 @@ export class SidebarComponent implements OnInit {
   }
 
   sideMenuForUser() {
-    this.menuItems.forEach(element => {
-      if (element.id = "identity_cloak") {
-        if (this.packageid_dr !== 1) {
-          element.title = "Document Redaction";
-          element.id = "document_redaction";
-        } else if ((this.packageid_dr == 1 && this.packageid == 1)) {
-          element.title = "Identity Clock";
-          element.id = "identity_cloak";
-        } else {
-          element.title = "Identity Clock";
-          element.id = "identity_cloak";
-        }
-      }
+    if (this.packageid == 1 && this.packageid_dr == 1) {
+      this.filterMenu('identity_cloak');
+    } else if (this.packageid == 1 && this.packageid_dr !== 1) {
+      this.filterMenu('document_redaction');
+    } else if (this.packageid !== 1 && this.packageid_dr == 1) {
+      this.filterMenu('identity_cloak');
+    }
+  }
+
+  filterMenu(key) {
+    this.menuItems = this.menuItems.filter((element) => {
+      return element.id == key;
     })
   }
 }

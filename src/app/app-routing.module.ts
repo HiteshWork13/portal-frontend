@@ -39,6 +39,10 @@ const routes: Routes = [
         path: 'history-export',
         loadChildren: () => import('./pages/history-export/history-export.module').then((m) => m.HistoryExportModule),
       },
+      {
+        path: 'history-export-dr',
+        loadChildren: () => import('./pages/history-export-dr/history-export-dr.module').then((m) => m.HistoryExportDrModule),
+      },
     ],
   },
   {

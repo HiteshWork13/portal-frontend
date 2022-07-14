@@ -24,5 +24,11 @@ export const MENUITEMS = [
     path: '/history-export',
     title: 'Identity Cloak',
     enablesIn: [APP_CONST.Role.User]
+  },
+  {
+    id: 'document_redaction',
+    path: '/history-export-dr',
+    title: 'Document Redaction',
+    enablesIn: [APP_CONST.Role.User]
   }
 ];

@@ -4,11 +4,11 @@ import { AccountService } from '@services';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
-  selector: 'app-history-export',
-  templateUrl: './history-export.component.html',
-  styleUrls: ['./history-export.component.scss']
+  selector: 'app-history-export-dr',
+  templateUrl: './history-export-dr.component.html',
+  styleUrls: ['./history-export-dr.component.scss']
 })
-export class HistoryExportComponent implements OnInit {
+export class HistoryExportDrComponent implements OnInit {
 
   account_id: any = localStorage.getItem('current_user_id');
   default_sort_property: string = null;
@@ -27,20 +27,7 @@ export class HistoryExportComponent implements OnInit {
   constructor(private modalService: NzModalService, private accountService: AccountService) { }
 
   ngOnInit(): void {
-    this.getDefaults();
     this.getHistoryExport(this.pag_params, this.account_id);
-  }
-
-  getDefaults() {
-    setTimeout(() => {
-      this.historyTableJSON.Columns = this.historyTableJSON.Columns.filter((column: any) => {
-        return (column.property !== 'trial' && column.property !== 'app_type');
-      });
-    }, 0);
-  }
-
-  onClose() {
-    this.modalService.closeAll();
   }
 
   getHistoryExport(paginationParams = this.pag_params, account_id, sort_property = this.default_sort_property, sort_order = this.default_sort_order) {
@@ -56,7 +43,12 @@ export class HistoryExportComponent implements OnInit {
         [sort_property]: sort_order
       }
     }
-    this.accountService.exportHistory(api_body).then((response: any) => {
+    /* if (this.packageid_dr !== 1) {
+      this.historyDrApi(api_body);
+    } else {
+      this.historyApi(api_body);
+    } */
+    this.accountService.exportHistoryDr(api_body).then((response: any) => {
       if (response.success) {
         this.historyList = response.data;
         this.historyList.map((element, index) => {
@@ -80,21 +72,4 @@ export class HistoryExportComponent implements OnInit {
     this.pag_params['pageIndex'] = event;
     this.getHistoryExport(this.pag_params, this.account_id);
   }
-
-  /* historyDrApi(api_body) {
-    this.accountService.exportHistoryDr(api_body).then((response: any) => {
-      if (response.success) {
-        this.historyList = response.data;
-        this.historyList.map((element, index) => {
-          element['sr_no'] = this.offset + (index + 1);
-        });
-        this.loading = false;
-        this.totalData = response?.counts;
-        this.PageSize = response?.limit ? response?.limit : 10;
-      }
-    }, (error) => {
-      this.loading = false;
-      // this.notification.error(PACKAGE_CONST.get_package_error);
-    })
-  } */
 }
