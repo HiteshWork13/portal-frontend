@@ -11,6 +11,8 @@ import { NgZorroAntdModule } from './ng-zorro-antd.module';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { WidgetModule } from './widgets/widget.module';
 
+
+
 @NgModule({
   declarations: [UserFormComponent, UserDetailsComponent, DocumentListComponent, DeviceListComponent, ExportHistoryComponent, PackagesComponent],
   imports: [
